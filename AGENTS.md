@@ -8,14 +8,40 @@ Read `README.md`, `PROJECT_STATE.md`, and the official elimination task before c
 
 Important repository status:
 - `Jamoliddin-00i/WIUT-HACKATHON` is currently a **handoff / staging repository**, not the final canonical team repository.
-- Hamid has a separate real team repository. When the user has access to it locally, Codex should work there and carry over the relevant project state/code.
-- Do not assume missing teammate artifacts indicate a sync failure. Hamid's detailed EDA files currently remain on Hamid's side; only the facts explicitly handed over in `PROJECT_STATE.md` are available to us right now.
+- The canonical team repository is **`abdulhamid-n/saleh-traffic-events`** on GitHub. Jamoliddin is a collaborator.
+- The canonical repo already contains teammate EDA under at least `reports/eda/C3905/` and `reports/eda/C3896/`, including charts, `eda.json`, and `direction_field.json` per video, plus scripts under `tools/eda/`.
+- Hamid said C3897 and C3902 EDA will be added in the same structure.
+- Raw YOLO11m track CSVs are too large for Git; Hamid can provide them separately if needed.
+- When the user has the canonical repo locally, Codex should work there and stop treating the staging repo as the implementation target.
+
+### Recommended local migration
+
+Prefer a **fresh clone of the canonical repo** rather than repointing the staging repo's `origin`, because the repositories may have different histories.
+
+Suggested Windows layout:
+
+```text
+D:\wiut hackathon\code\WIUT-HACKATHON       # staging / handoff repo
+D:\wiut hackathon\code\saleh-traffic-events # canonical team repo
+```
+
+Clone command:
+
+```powershell
+cd "D:\wiut hackathon\code"
+git clone https://github.com/abdulhamid-n/saleh-traffic-events.git
+cd saleh-traffic-events
+git pull origin main
+```
+
+Then open `D:\wiut hackathon\code\saleh-traffic-events` as the Codex workspace. Copy/cherry-pick only useful work from the staging repo after inspecting conflicts; do not blindly merge unrelated histories.
 
 Before starting work in the canonical team repo:
-1. Verify `git remote -v` and make sure `origin` is the real team repository.
+1. Verify `git remote -v` and make sure `origin` points to `abdulhamid-n/saleh-traffic-events`.
 2. `git pull` / sync `main`.
-3. Read this file, `README.md`, and `PROJECT_STATE.md`.
-4. Inspect teammate-generated artifacts that are actually present before recreating them.
+3. Read the canonical repo's own README/docs first.
+4. Inspect `reports/eda/` and `tools/eda/` before recreating teammate work.
+5. Carry over only the relevant project-state notes/scripts from the staging repo that are still needed.
 
 After any meaningful discovery, benchmark, implementation decision, changed constraint, teammate handoff, or completed task:
 - update `PROJECT_STATE.md` or the relevant Markdown doc in the same work session;
