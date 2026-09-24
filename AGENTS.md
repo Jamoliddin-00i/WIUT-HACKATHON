@@ -1,6 +1,37 @@
 # AI / Codex working instructions
 
-Read `README.md` and the official elimination task before changing the implementation.
+Read `README.md`, `PROJECT_STATE.md`, and the official elimination task before changing the implementation.
+
+## Canonical workflow / handoff discipline
+
+**Codex is the primary coding agent and repository Markdown is the project memory.** The user should not have to repeat project context across chats.
+
+Important repository status:
+- `Jamoliddin-00i/WIUT-HACKATHON` is currently a **handoff / staging repository**, not the final canonical team repository.
+- Hamid has a separate real team repository. When the user has access to it locally, Codex should work there and carry over the relevant project state/code.
+- Do not assume missing teammate artifacts indicate a sync failure. Hamid's detailed EDA files currently remain on Hamid's side; only the facts explicitly handed over in `PROJECT_STATE.md` are available to us right now.
+
+Before starting work in the canonical team repo:
+1. Verify `git remote -v` and make sure `origin` is the real team repository.
+2. `git pull` / sync `main`.
+3. Read this file, `README.md`, and `PROJECT_STATE.md`.
+4. Inspect teammate-generated artifacts that are actually present before recreating them.
+
+After any meaningful discovery, benchmark, implementation decision, changed constraint, teammate handoff, or completed task:
+- update `PROJECT_STATE.md` or the relevant Markdown doc in the same work session;
+- if the information is already documented and still correct, **do not rewrite or duplicate it**;
+- update an existing statement only when the fact actually changed;
+- keep the current-state / next-actions section fresh so another Codex session can resume without chat history.
+
+### Git authorship / contributors
+
+The canonical team repository must show **human contributors only**.
+
+- Commits made from the user's machine must use the user's configured Git identity.
+- Do **not** add `Co-authored-by:` trailers for Codex, ChatGPT, Claude, or other AI assistants.
+- Do **not** configure an AI/bot author identity.
+- Do **not** create commits or PRs in the canonical team repo through an AI/bot GitHub identity when the same change can be made locally and committed by the user.
+- AI tools may generate/edit code locally, but the visible Git author/contributor should remain the human team member who owns and submits the work.
 
 ## Hard requirement: models run locally
 
@@ -15,11 +46,19 @@ Prefer GPU execution explicitly when supported (for example PyTorch `cuda`, Ultr
 
 CPU fallback is acceptable only when a component does not benefit from GPU or CUDA is unavailable. Do not silently run a heavy detector on CPU if the GPU is usable.
 
+Kaggle may be used for T4-like benchmarking or fine-tuning, but final inference must remain offline/reproducible from the submitted package.
+
 ## Final judging constraint
 
 The judges run inference **offline** on an NVIDIA T4-class GPU with about 16 GB VRAM. Therefore development may use the user's GPU, but the final code must also fit and run reliably on that judge GPU, within the 3x-video-duration wall-clock limit and <=5 GB total model weights.
 
 No OpenAI, Gemini, Anthropic, or other hosted model/API may be called during final inference. Coding assistants are allowed for development only.
+
+### Decode/runtime warning
+
+The official raw videos are 4K H.264 High 4:2:2 10-bit and the T4 cannot be assumed to hardware-decode that format. CPU decode is therefore part of the runtime budget. The organizer harness also calls `RiskEstimator.step()` on every frame after `cv2.VideoCapture` decodes/converts the frame to BGR, so frame decoding cannot simply be skipped for Part B.
+
+Treat actual OpenCV decode benchmarking as a first-class performance constraint and keep Part A comfortably below the remaining budget. See `PROJECT_STATE.md` for current measurements and pending benchmark work.
 
 ## Local assets
 
