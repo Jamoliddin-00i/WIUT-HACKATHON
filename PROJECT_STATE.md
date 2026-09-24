@@ -15,6 +15,10 @@ This is the living handoff file for Codex and other development sessions. Keep i
 
 - `Jamoliddin-00i/WIUT-HACKATHON` is currently a **handoff / staging repository**.
 - The real canonical team repository is elsewhere and is managed by the team/Hamid.
+- Jamoliddin supplied `https://github.com/abdulhamid-n/salen-traffic-events.git`
+  on 2026-09-24. A clone attempt returned GitHub "Repository not found" and
+  `gh auth status` showed no GitHub login on this machine. Access or a local
+  checkout is still needed; do not push to that repository.
 - When Jamoliddin has the real team repo locally, Codex should continue there, not maintain a parallel final implementation here.
 - Before working in the final repo, verify `git remote -v` so `origin` points to the real team repository.
 - AI assistants may edit/generate code locally, but commits pushed to the canonical team repo should be authored by the human contributor, so AI accounts do not appear as contributors.
@@ -66,24 +70,24 @@ Observed:
 
 Important: this is **not yet the number that matters most** because `ffmpeg -f null` is cheaper than the actual `cv2.VideoCapture -> BGR ndarray` path used by the harness.
 
-### Immediate benchmark still required
+### Local Windows OpenCV BGR decode benchmark
 
-Run the exact OpenCV path locally:
+Measured 2026-09-24 with `scripts/benchmark_decode.py` on the first 600 frames of
+`C3905.MP4`. This uses `cv2.VideoCapture.read()` and retains the BGR ndarray, as
+the organizer harness does. A CUDA PyTorch wheel download was also active during
+these measurements, so repeat if a precise final runtime margin is needed.
 
-```python
-import cv2, time
-c = cv2.VideoCapture("C3905.MP4")
-n = 0
-t = time.time()
-while n < 600:
-    ok, f = c.read()
-    if not ok:
-        break
-    n += 1
-print(n / (time.time() - t), "fps")
-```
+| CPU affinity | Wall time | Decode rate | Wall / source duration |
+| --- | ---: | ---: | ---: |
+| 16 logical CPUs (default), first run | 23.78 s | 25.23 fps | 1.19x |
+| first 8 logical CPUs | 27.17 s | 22.09 fps | 1.36x |
+| 16 logical CPUs, user's exact `time.time()` script, later run | 19.82 s | 30.28 fps | 0.99x |
 
-Then repeat while limiting the process to roughly **8 CPU cores** using Windows Task Manager affinity (or another reliable process-affinity method). Record both results here.
+The OpenCV BGR path is much slower than the FFmpeg-null benchmark above. It
+costs roughly one video-duration of wall time on this machine, with meaningful
+run-to-run variance; the restricted eight-logical-CPU result is slower. The
+combined 3x budget therefore leaves limited margin for Part A detection and
+Part B processing; sample model inference sparingly and benchmark end to end.
 
 Optional/secondary benchmark:
 - Kaggle/Linux environment for a closer judge-like CPU/T4 setup.
@@ -156,8 +160,9 @@ A local annotation script exists at `scripts/label_video.py` / is being used for
 
 Local GUI note:
 - `opencv-python-headless` cannot use `cv2.imshow()`.
-- For the manual labeling workstation, use normal `opencv-python` in the local/dev environment.
-- Keep final/judge dependencies headless if appropriate; ideally separate dev-only GUI dependencies from submission dependencies.
+- The labeler now uses Tkinter and Pillow for its GUI while OpenCV only decodes
+  frames; `requirements-labeler.txt` adds Pillow without changing judge deps.
+- A desktop smoke test opened and closed successfully on 2026-09-24.
 
 Ground-truth dev annotations should ultimately be saved in the official evaluator-compatible shape, e.g. `dev_labels.json`, then tested with `run_submission.py` and `evaluate.py`.
 
@@ -166,15 +171,40 @@ Manual labeling principle already established:
 - use official event start/end conventions;
 - do not label a traffic-law violation unless the relevant signal/lane/crossing rule is actually supported by the footage/scene geometry.
 
+Jamoliddin has asked for automatic event labeling because manually identifying
+traffic violations is impractical. Build an automatic first pass from local
+detector/tracker tracks and scene rules. Keep its proposals separate from
+`dev_labels.json`; pseudo-labels should not be treated as ground truth when
+evaluating the model. For `failure_to_yield`, the event is a vehicle **driving
+through** the crossing while a pedestrian is on or entering it; stopping to
+yield is not that event.
+
+Initial local automatic pass now exists in `scripts/auto_label_video.py` with
+normalized scene geometry in `config/scene.json`. It uses locally stored
+`weights/yolo26n.pt` and CUDA YOLO tracking to propose `jaywalking` and
+`failure_to_yield` segments, writing `auto_proposals.json` separately from
+reviewed labels and `debug/*_auto_tracks.csv` for diagnostics. The scene masks
+and thresholds are preliminary and must be checked on footage. The first 20 s
+run at 3 fps / 1280 px produced false positives; a 2 fps / 960 px pass was
+faster, and island/sidewalk/motion filters are being checked on the full clip.
+
+Local ML environment: isolated `.venv`, PyTorch `2.14.0+cu130`, CUDA 13.0,
+RTX 3050 Laptop GPU with 4 GB VRAM. Ultralytics `8.4.161` and local YOLO26n
+weights (~5.5 MB) are present. The final judge dependency recipe is not yet
+settled; do not assume this minimal dev environment is the final package.
+Ultralytics states that its code and models use AGPL-3.0 or an Enterprise
+license; check the canonical team's license/attribution plan before committing
+the weights or packaging Ultralytics in the final submission.
+
 ## 7. Immediate next actions for Codex
 
 1. Continue local work from the available sample videos; do **not** wait for Hamid's full EDA directory.
-2. Run the **exact OpenCV 600-frame decode benchmark** on C3905 and record fps here.
-3. Repeat with the process limited to ~8 CPU cores and record fps here.
+2. Use the OpenCV decode numbers above when setting the detector sampling rate.
+3. Build an automatic local event-proposal pass; keep it distinct from reviewed dev labels.
 4. Use the numerical EDA facts already handed over (signal ROI, stop positions, ignore zones, exposure warning) to shape scene/rule code only where they are sufficient.
 5. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
 6. When Hamid shares `direction_field.json` and YOLO11m track CSVs, inspect and integrate them.
-7. Continue manual dev labeling of the sample videos using official event boundary conventions.
+7. Use manual review only where it adds value to automatic proposals, with official event boundary conventions.
 8. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
 9. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
 

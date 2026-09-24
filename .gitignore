@@ -11,6 +11,7 @@ debug/
 outputs/
 predictions_*.json
 dev_labels.json
+auto_proposals.json
 
 # Python
 .venv/

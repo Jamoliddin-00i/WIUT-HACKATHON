@@ -559,3 +559,10 @@ python evaluate.py --pred predictions.json --gt ground_truth.json
 ```
 
 A crash or timeout for a video is effectively scored as an empty prediction for that video, so robustness is part of model quality.
+
+## Automatic sample annotation (development)
+
+See [docs/auto_proposals.md](docs/auto_proposals.md) for the local CUDA
+detector/tracker and scene-rule tool. It writes `auto_proposals.json` separately
+from reviewed `dev_labels.json`. This development tool is not yet wired into
+the organizer submission interface in `solution.py`.
