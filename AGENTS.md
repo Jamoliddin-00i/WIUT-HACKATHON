@@ -4,12 +4,18 @@ Read `README.md`, `PROJECT_STATE.md`, and the official elimination task before c
 
 ## Canonical workflow / handoff discipline
 
-**Codex is the primary coding agent and this repository is the source of truth for project state.** The user should not have to repeat project context across chats.
+**Codex is the primary coding agent and repository Markdown is the project memory.** The user should not have to repeat project context across chats.
 
-Before starting work:
-1. `git pull` / sync `main`.
-2. Read this file, `README.md`, and `PROJECT_STATE.md`.
-3. Inspect any teammate-generated artifacts already in the repo before recreating them.
+Important repository status:
+- `Jamoliddin-00i/WIUT-HACKATHON` is currently a **handoff / staging repository**, not the final canonical team repository.
+- Hamid has a separate real team repository. When the user has access to it locally, Codex should work there and carry over the relevant project state/code.
+- Do not assume missing teammate artifacts indicate a sync failure. Hamid's detailed EDA files currently remain on Hamid's side; only the facts explicitly handed over in `PROJECT_STATE.md` are available to us right now.
+
+Before starting work in the canonical team repo:
+1. Verify `git remote -v` and make sure `origin` is the real team repository.
+2. `git pull` / sync `main`.
+3. Read this file, `README.md`, and `PROJECT_STATE.md`.
+4. Inspect teammate-generated artifacts that are actually present before recreating them.
 
 After any meaningful discovery, benchmark, implementation decision, changed constraint, teammate handoff, or completed task:
 - update `PROJECT_STATE.md` or the relevant Markdown doc in the same work session;
@@ -17,11 +23,15 @@ After any meaningful discovery, benchmark, implementation decision, changed cons
 - update an existing statement only when the fact actually changed;
 - keep the current-state / next-actions section fresh so another Codex session can resume without chat history.
 
-### Git authorship
+### Git authorship / contributors
 
-Commits made from the user's local machine should use the user's configured Git identity. Do not add `Co-authored-by:` trailers for Codex, ChatGPT, Claude, or other AI assistants, and do not deliberately configure an AI/bot author identity. The human contributor should remain the visible commit author.
+The canonical team repository must show **human contributors only**.
 
-If a teammate has created or moved the canonical team repository, verify the remote before significant work. Do not silently maintain a divergent copy.
+- Commits made from the user's machine must use the user's configured Git identity.
+- Do **not** add `Co-authored-by:` trailers for Codex, ChatGPT, Claude, or other AI assistants.
+- Do **not** configure an AI/bot author identity.
+- Do **not** create commits or PRs in the canonical team repo through an AI/bot GitHub identity when the same change can be made locally and committed by the user.
+- AI tools may generate/edit code locally, but the visible Git author/contributor should remain the human team member who owns and submits the work.
 
 ## Hard requirement: models run locally
 
