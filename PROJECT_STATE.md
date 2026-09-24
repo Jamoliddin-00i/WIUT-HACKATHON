@@ -8,13 +8,16 @@ This is the living handoff file for Codex and other development sessions. Keep i
 
 - **Jamoliddin:** ML Engineer / Model Lead.
 - **Codex is the primary coding agent.** Repository Markdown is the canonical project memory. The user should not need to re-explain context in chat.
-- Before work, sync `main`, read `AGENTS.md`, `README.md`, and this file, then inspect teammate artifacts already present.
 - After a meaningful discovery, benchmark, decision, implementation change, or teammate handoff, update this file or the relevant Markdown doc in the same session.
-- Commits from the user's machine should use the user's configured Git identity. Do not add AI `Co-authored-by:` trailers or intentionally set an AI/bot author.
+- Commits in the final team repository must use a human team member's configured Git identity. Do not add AI `Co-authored-by:` trailers, bot authors, or AI-owned PR/commit identities.
 
-### Repository coordination warning
+### Repository status
 
-Hamid said he is creating/using the project GitHub and has already referenced files under `reports/eda/C3905/`. At the moment this connected repository may not yet show those artifacts. **Before major implementation, verify that the local `origin` is the canonical team repository and that `main` contains Hamid's latest EDA.** Do not build a divergent copy.
+- `Jamoliddin-00i/WIUT-HACKATHON` is currently a **handoff / staging repository**.
+- The real canonical team repository is elsewhere and is managed by the team/Hamid.
+- When Jamoliddin has the real team repo locally, Codex should continue there, not maintain a parallel final implementation here.
+- Before working in the final repo, verify `git remote -v` so `origin` points to the real team repository.
+- AI assistants may edit/generate code locally, but commits pushed to the canonical team repo should be authored by the human contributor, so AI accounts do not appear as contributors.
 
 ## 2. Confirmed organizer / video facts
 
@@ -88,18 +91,16 @@ Optional/secondary benchmark:
 
 ## 4. Hamid's C3905 EDA handoff
 
-Hamid reports EDA is under:
-
-```text
-reports/eda/C3905/
-```
-
-Pull/sync the canonical `main` and consume those artifacts instead of recreating them.
+Important availability note:
+- Hamid's full EDA artifacts are **on Hamid's side only** right now.
+- We do **not** currently have his `reports/eda/C3905/` directory, `signal.png`, or `direction_field.json` locally/in this staging repo.
+- The facts he sent in chat are considered sufficient to guide current rule design. Do not block progress waiting for the full EDA files.
+- If Hamid later shares those artifacts or track CSVs, consume them then.
 
 ### Traffic light
 
 - Readable signal location in original 4K coordinates: approximately **`(2328, 780)`**.
-- Signal state over time is in `signal.png`.
+- Hamid reports signal state over time exists in `signal.png`, but that file is not currently available to us.
 - Reported correlation between signal state and moving cars: **0.88**.
 - Practical `red_light` rule direction: **signal is red + vehicle crosses the relevant stop line**.
 
@@ -109,12 +110,13 @@ For the near carriageway, cars reportedly wait around:
 - **`(1500, 870)`**
 - **`(1764, 985)`**
 
-These are just before the zebra crossing and should inform the initial stop-line geometry. Verify exact line/polygon placement against frames before hard-coding.
+These are just before the zebra crossing and should inform the initial stop-line geometry. Verify exact line/polygon placement against local frames before hard-coding.
 
 ### Wrong-way direction field
 
-- `direction_field.json` contains lane/traffic directions per roughly **80 px cell**.
-- Use this as the baseline geometry for `wrong_way` instead of inventing lane direction manually.
+- Hamid reports a `direction_field.json` with lane/traffic directions per roughly **80 px cell**.
+- The file itself is not currently available to Jamoliddin/Codex.
+- Until it is shared, do not invent detailed per-cell directions from memory. Use only geometry that can be verified from local footage.
 
 ### Stopped-vehicle ignore zones
 
@@ -133,7 +135,8 @@ These zones should become explicit ignore masks/regions in scene configuration, 
 
 - Hamid plans/provides **YOLO11m tracks for all sample videos** on the server.
 - CSV format will be consistent across videos.
-- When available, inspect schema once and integrate/reuse these tracks rather than recomputing identical EDA unnecessarily.
+- These CSVs are not yet available locally.
+- When shared, inspect the schema once and integrate/reuse the tracks rather than recomputing identical EDA unnecessarily.
 
 ## 5. Model / runtime decisions already settled
 
@@ -158,16 +161,22 @@ Local GUI note:
 
 Ground-truth dev annotations should ultimately be saved in the official evaluator-compatible shape, e.g. `dev_labels.json`, then tested with `run_submission.py` and `evaluate.py`.
 
+Manual labeling principle already established:
+- be conservative;
+- use official event start/end conventions;
+- do not label a traffic-law violation unless the relevant signal/lane/crossing rule is actually supported by the footage/scene geometry.
+
 ## 7. Immediate next actions for Codex
 
-1. **Verify repository/remote first.** Pull canonical `main` and confirm Hamid's `reports/eda/C3905/` exists. If it does not, resolve the repo/remote mismatch before significant coding.
+1. Continue local work from the available sample videos; do **not** wait for Hamid's full EDA directory.
 2. Run the **exact OpenCV 600-frame decode benchmark** on C3905 and record fps here.
 3. Repeat with the process limited to ~8 CPU cores and record fps here.
-4. Inspect Hamid's C3905 EDA artifacts and convert stable geometry into a clean scene config, preferably normalized coordinates where practical.
-5. Incorporate `direction_field.json`, signal ROI/state logic, stop-line geometry, and stopped-vehicle ignore regions into rule design.
-6. Get/inspect Hamid's YOLO11m track CSV schema when available.
+4. Use the numerical EDA facts already handed over (signal ROI, stop positions, ignore zones, exposure warning) to shape scene/rule code only where they are sufficient.
+5. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
+6. When Hamid shares `direction_field.json` and YOLO11m track CSVs, inspect and integrate them.
 7. Continue manual dev labeling of the sample videos using official event boundary conventions.
-8. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
+8. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
+9. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
 
 ## 8. Performance principle
 
@@ -184,7 +193,8 @@ The raw-video decode path is now a first-order constraint. Optimize model work *
 Unless new evidence changes them, do not spend time re-deriving these:
 - `camera.md` is gone;
 - C3905 signal ROI around `(2328, 780)` has already been identified by teammate EDA;
-- a direction field already exists for C3905;
+- Hamid has a direction field for C3905, but it is not yet shared locally;
 - known parked/bus-stop zones need to be ignored for stopped-vehicle logic;
 - exposure changes around 52-67s make global brightness unreliable for fire/smoke;
-- raw-video CPU decoding is a material part of the 3x runtime budget.
+- raw-video CPU decoding is a material part of the 3x runtime budget;
+- Hamid's full EDA is not in our repo, and current work should proceed from the facts he already provided.
