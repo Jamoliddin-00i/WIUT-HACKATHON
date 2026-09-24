@@ -1,11 +1,28 @@
+﻿# Huge local sample videos
 videos/
 samples/*.MP4
 samples/*.mp4
-*.MP4
 *.mp4
-.venv/
-__pycache__/
-*.pyc
+*.MP4
+
+# Local debug / extracted frames and generated predictions
+.debug/
 debug/
+outputs/
 predictions_*.json
 dev_labels.json
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Model/framework caches that should not be committed accidentally
+runs/
