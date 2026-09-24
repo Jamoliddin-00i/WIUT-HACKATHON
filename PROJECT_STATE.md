@@ -64,7 +64,25 @@ Observed:
 - ~**3.5x realtime**
 - raw FFmpeg-null decode cost ~**0.285x video duration**
 
-Important: this is **not yet the number that matters most** because `ffmpeg -f null` is cheaper than the actual `cv2.VideoCapture -> BGR ndarray` path used by the harness.
+Important: this is **not** representative of the actual harness path because `ffmpeg -f null` avoids OpenCV's BGR ndarray conversion/copy path.
+
+### Local Windows OpenCV BGR decode benchmark
+
+Measured 2026-09-24 with `scripts/benchmark_decode.py` on the first 600 frames of `C3905.MP4`. This uses `cv2.VideoCapture.read()` and retains the BGR ndarray, matching the organizer harness much more closely.
+
+A CUDA PyTorch wheel download was active during these measurements, so repeat later if a precise final runtime margin is needed.
+
+| CPU affinity / run | Wall time | Decode rate | Wall / source duration |
+|---|---:|---:|---:|
+| 16 logical CPUs (default), first run | 23.78 s | 25.23 fps | 1.19x |
+| first 8 logical CPUs | 27.17 s | 22.09 fps | 1.36x |
+| 16 logical CPUs, user's exact `time.time()` script, later run | 19.82 s | 30.28 fps | 0.99x |
+
+Interpretation:
+- The real OpenCV/BGR path is dramatically slower than the earlier `ffmpeg -f null` result.
+- On this laptop the practical decode rate is roughly **22-30 fps** across current runs, approximately **1.0-1.36x video duration**.
+- The 8-logical-CPU result is **not equivalent to an 8-physical-core judge machine**. The i5-12500H is a hybrid CPU, and Windows affinity numbering may map those logical CPUs unevenly across P/E cores. Treat the 22.09 fps figure as a stress/reference point, not a direct judge prediction.
+- Because the Part B harness must decode every frame, decode alone can plausibly consume around one video-duration unit or more. Model inference and Part A must therefore be aggressively sampled/cached.
 
 ### Kaggle Linux CPU benchmark
 
@@ -97,65 +115,54 @@ Observed:
 - max RSS: ~619 MB
 
 Interpretation:
-- 4-vCPU Kaggle is substantially slower than the local i5-12500H.
+- 4-vCPU Kaggle is substantially slower than the local i5-12500H on raw FFmpeg-null decode.
 - This is useful evidence that CPU decode can dominate runtime on weaker CPUs.
-- Do **not** linearly extrapolate to the judge's 8-core machine; scaling may not be linear. Hamid's rough 45-60 fps expectation is plausible but remains unverified.
+- Do **not** linearly extrapolate to the judge's 8-core machine; scaling may not be linear.
 
-### Kaggle OpenCV result
+### Kaggle OpenCV status
 
-The first `cv2.VideoCapture` benchmark on Kaggle did **not decode any frames**:
+The earlier 0-frame OpenCV run was **not a codec/backend limitation**. A direct diagnostic on the same Kaggle notebook now succeeds:
 
 ```text
-Frames: 0
-Decode FPS: 0.0
+exists: True
+opencv: 4.13.0
+opened: True
+backend: FFMPEG
+first read: True
+shape: (2160, 3840, 3)
 ```
 
-The benchmark then hit a `ZeroDivisionError` only because the script tried to compute decode cost from 0 fps. The zero-frame result is the real issue.
+Therefore Kaggle OpenCV 4.13.0 with its FFMPEG backend can open and BGR-decode this exact 4K 10-bit 4:2:2 H.264 sample. The earlier 0-frame result should be treated as a script/path/transient failure, not a performance result.
 
-Because command-line FFmpeg successfully decodes the exact same path, the file path/data are valid. The current Kaggle OpenCV environment may lack a compatible decoder/backend for this 10-bit 4:2:2 H.264 stream, or `VideoCapture` may be failing for another backend/build reason. Do not treat 0 fps as a performance result.
+**Next required Kaggle benchmark:** run the full 600-frame `cv2.VideoCapture(..., cv2.CAP_FFMPEG)` loop and record wall time/fps. That will be the closest currently available Linux BGR-decode reference, although Kaggle only exposes 4 logical CPUs and therefore still does not match the judge's stated 8-core CPU.
 
-Debug before drawing conclusions:
-
-```python
-import os, cv2
-
-p = "/kaggle/input/datasets/jamoliddintoirov/firstvid/C3905.MP4"
-print("exists:", os.path.exists(p))
-print("cv2:", cv2.__version__)
-
-cap = cv2.VideoCapture(p, cv2.CAP_FFMPEG)
-print("opened:", cap.isOpened())
-if cap.isOpened():
-    print("backend:", cap.getBackendName())
-
-ok, frame = cap.read()
-print("first read:", ok, None if frame is None else frame.shape)
-cap.release()
-```
-
-If this still fails, inspect `cv2.getBuildInformation()` for FFmpeg/video-I/O support. Kaggle then should be considered unsuitable for the exact OpenCV decode-path benchmark unless its OpenCV/FFmpeg environment is replaced with a compatible one.
-
-### Immediate benchmark still required
-
-Run the exact OpenCV path on the **local Windows PC**, where the video is known to open in the labeling tool:
+Suggested robust cell:
 
 ```python
 import cv2, time
-c = cv2.VideoCapture(r"D:\wiut hackathon\videos\C3905.MP4")
+
+p = "/kaggle/input/datasets/jamoliddintoirov/firstvid/C3905.MP4"
+cap = cv2.VideoCapture(p, cv2.CAP_FFMPEG)
+assert cap.isOpened(), "VideoCapture failed to open"
+
 n = 0
-t = time.time()
+t0 = time.perf_counter()
 while n < 600:
-    ok, f = c.read()
+    ok, frame = cap.read()
     if not ok:
+        print("read failed at", n)
         break
     n += 1
-elapsed = time.time() - t
-print(n, "frames")
-print(n / elapsed if n else 0, "fps")
-print("elapsed", elapsed)
-```
+elapsed = time.perf_counter() - t0
+cap.release()
 
-Then repeat while limiting the process to roughly **8 CPU cores** using Windows Task Manager affinity (or another reliable process-affinity method). Record both results here.
+fps = n / elapsed if elapsed > 0 else 0.0
+print("frames:", n)
+print("elapsed:", elapsed)
+print("decode fps:", fps)
+print("realtime factor:", fps / 29.97 if fps else 0.0)
+print("wall/source duration:", elapsed / (n / 29.97) if n else None)
+```
 
 ## 4. Hamid's C3905 EDA handoff
 
@@ -237,15 +244,14 @@ Manual labeling principle already established:
 ## 7. Immediate next actions for Codex
 
 1. Continue local work from the available sample videos; do **not** wait for Hamid's full EDA directory.
-2. Run the **exact local OpenCV 600-frame decode benchmark** on C3905 and record fps here.
-3. Repeat locally with the process limited to ~8 CPU cores and record fps here.
-4. Optionally debug Kaggle OpenCV with `CAP_FFMPEG`, `cap.isOpened()`, and `cv2.getBuildInformation()`, but do not block project progress on Kaggle's current codec/backend issue.
-5. Use the numerical EDA facts already handed over (signal ROI, stop positions, ignore zones, exposure warning) to shape scene/rule code only where they are sufficient.
-6. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
-7. When Hamid shares `direction_field.json` and YOLO11m track CSVs, inspect and integrate them.
-8. Continue manual dev labeling of the sample videos using official event boundary conventions.
-9. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
-10. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
+2. Run the **full 600-frame Kaggle OpenCV/BGR benchmark** now that `CAP_FFMPEG` is confirmed to work, and record the result here.
+3. Later repeat the local Windows OpenCV benchmark when no large download/background load is running, to tighten the runtime estimate.
+4. Use the numerical EDA facts already handed over (signal ROI, stop positions, ignore zones, exposure warning) to shape scene/rule code only where they are sufficient.
+5. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
+6. When Hamid shares `direction_field.json` and YOLO11m track CSVs, inspect and integrate them.
+7. Continue manual dev labeling of the sample videos using official event boundary conventions.
+8. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
+9. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
 
 ## 8. Performance principle
 
@@ -266,6 +272,7 @@ Unless new evidence changes them, do not spend time re-deriving these:
 - known parked/bus-stop zones need to be ignored for stopped-vehicle logic;
 - exposure changes around 52-67s make global brightness unreliable for fire/smoke;
 - raw-video CPU decoding is a material part of the 3x runtime budget;
-- Kaggle 4-vCPU FFmpeg decode measured only ~22 fps / 0.74x realtime on C3905;
-- Kaggle OpenCV currently fails to decode the file and must not be treated as a 0-fps benchmark;
+- local OpenCV/BGR decode currently measures roughly 22-30 fps depending on affinity/system load, around 1.0-1.36x source duration;
+- Kaggle 4-vCPU FFmpeg-null decode measured only ~22 fps / 0.74x realtime on C3905;
+- Kaggle OpenCV 4.13.0 + FFMPEG **can** open and BGR-decode C3905; the earlier 0-frame run was not a codec limitation;
 - Hamid's full EDA is not in our repo, and current work should proceed from the facts he already provided.
