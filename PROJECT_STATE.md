@@ -48,6 +48,18 @@ Organizer/team confirmation received on 2026-09-24:
 - The official Part B harness decodes every frame with `cv2.VideoCapture`, converts to BGR, then calls `RiskEstimator.step()` for every frame. We cannot remove that decode cost simply by sampling detector inference less often.
 - Total time budget remains `<= 3 x video duration` for Part A + Part B. Because decode itself consumes a meaningful fraction, Part A should target comfortably under ~1x video duration rather than spending the entire budget.
 
+Organizer labeling clarifications received 2026-09-24 and incorporated in the
+team's `docs/LABELING_GUIDE.md` v2:
+- A bus stopped for >=10 s in a live lane counts as `stopped_vehicle`, even at
+  a bus stop; kerb-parked vehicles do not.
+- A pedestrian on a zebra on red is not `jaywalking`; a vehicle driving
+  through the pedestrian's carriageway half of that crossing is
+  `failure_to_yield` regardless of the signal.
+- An ordinary red-light queue is not `congestion`; it must fail to clear on
+  green.
+- Scoring uses temporal IoU only, with no separate frame tolerance. Event
+  boundaries should follow the official rules closely.
+
 ## 3. Current decode benchmark
 
 ### Local Windows FFmpeg benchmark
@@ -98,9 +110,10 @@ run-to-run variance; the restricted eight-logical-CPU result is slower. The
 combined 3x budget therefore leaves limited margin for Part A detection and
 Part B processing; sample model inference sparingly and benchmark end to end.
 
-Optional/secondary benchmark:
-- Kaggle/Linux environment for a closer judge-like CPU/T4 setup.
-- Record CPU model/core allocation, FFmpeg result, and OpenCV result.
+Kaggle 4-vCPU Linux FFmpeg-null decode of the first 600 C3905 frames took
+27.072 s (~22 fps, 1.35x source duration). OpenCV 4.13.0 with FFMPEG can open
+and BGR-decode a frame there. A full 600-frame OpenCV loop remains pending.
+Do not linearly extrapolate that 4-vCPU VM to the judge's 8-core CPU.
 
 ## 4. Hamid's EDA handoff
 
@@ -236,16 +249,20 @@ the weights or packaging Ultralytics in the final submission.
    `scene_reference.json`, `registration.json`, and `docs/LABELING_GUIDE.md`
    to replace the staging prototype's unregistered scene geometry.
 2. Use the OpenCV decode numbers above when setting the detector sampling rate.
-3. Extend and validate the automatic event-proposal pass; keep it distinct
+3. Replace the weaker YOLO26n prototype with the strongest feasible local
+   detector, benchmark it, and validate proposals separately from ground truth.
+4. Extend and validate the automatic event-proposal pass; keep it distinct
    from reviewed dev labels and reject sidewalk/island false positives.
-4. Use the calibrated signal timeline and merged direction field in team EDA
+5. Use the calibrated signal timeline and merged direction field in team EDA
    for candidate `red_light` and `wrong_way` rules, with video verification.
-5. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
 6. When Hamid shares the YOLO11m track CSVs, inspect and integrate them;
    reports and direction fields are already available in the team checkout.
-7. Use manual review only where it adds value to automatic proposals, with official event boundary conventions.
-8. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
-9. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
+7. Use manual review only where it adds value to automatic proposals, with
+   official event boundary conventions and no assumed frame tolerance.
+8. Carry over only useful staging code into the canonical repo, using
+   Jamoliddin's Git identity. Do not push to the canonical repo.
+9. Implement Part B TTC/conflict risk logic after detector/runtime and
+   registration geometry are verified.
 
 ## 8. Performance principle
 
@@ -262,9 +279,16 @@ The raw-video decode path is now a first-order constraint. Optimize model work *
 Unless new evidence changes them, do not spend time re-deriving these:
 - `camera.md` is gone;
 - C3905 signal ROI around `(2328, 780)` has already been identified by teammate EDA;
-- Hamid has a direction field for C3905, but it is not yet shared locally;
-- known parked/bus-stop zones need to be ignored for stopped-vehicle logic;
+- Hamid's merged direction field, registration, and four per-video EDA reports
+  are present in the team checkout;
+- kerb-parked vehicles are ignored, but a bus stopped in a live lane for >=10 s
+  counts even at the bus stop;
+- a pedestrian on the zebra is not jaywalking because their signal is red;
+- ordinary red-light queues are not congestion;
+- temporal IoU scoring has no frame tolerance;
 - exposure changes around 52-67s make global brightness unreliable for fire/smoke;
 - raw-video CPU decoding is a material part of the 3x runtime budget;
+- Kaggle 4-vCPU FFmpeg-null decode measured about 22 fps; Kaggle OpenCV can
+  decode the frame to BGR;
 - Hamid's EDA for all four clips and an authenticated team Git checkout are
   available under `code`; YOLO11m track CSVs remain absent.
