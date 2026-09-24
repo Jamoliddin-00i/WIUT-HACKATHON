@@ -35,7 +35,7 @@ Organizer/team confirmation received on 2026-09-24:
 - The official Part B harness decodes every frame with `cv2.VideoCapture`, converts to BGR, then calls `RiskEstimator.step()` for every frame. We cannot remove that decode cost simply by sampling detector inference less often.
 - Total time budget remains `<= 3 x video duration` for Part A + Part B. Because decode itself consumes a meaningful fraction, Part A should target comfortably under ~1x video duration rather than spending the entire budget.
 
-## 3. Current decode benchmark
+## 3. Current decode benchmarks
 
 ### Local Windows FFmpeg benchmark
 
@@ -66,13 +66,82 @@ Observed:
 
 Important: this is **not yet the number that matters most** because `ffmpeg -f null` is cheaper than the actual `cv2.VideoCapture -> BGR ndarray` path used by the harness.
 
+### Kaggle Linux CPU benchmark
+
+Dataset path used:
+
+```text
+/kaggle/input/datasets/jamoliddintoirov/firstvid/C3905.MP4
+```
+
+Kaggle CPU allocation:
+- x86_64 KVM VM
+- `Intel(R) Xeon(R) CPU @ 2.20GHz`
+- **4 logical CPUs total**
+- 2 cores / socket, 2 threads / core
+
+FFmpeg version: Ubuntu FFmpeg 4.4.2.
+
+Command:
+
+```bash
+ffmpeg -benchmark -i "/kaggle/input/datasets/jamoliddintoirov/firstvid/C3905.MP4" -frames:v 600 -f null -
+```
+
+Observed:
+- 600 frames = ~20.02 s source video
+- wall time: **27.072 s**
+- ~**22 fps**
+- reported speed: **0.74x realtime**
+- decode cost: about **1.35x video duration**
+- max RSS: ~619 MB
+
+Interpretation:
+- 4-vCPU Kaggle is substantially slower than the local i5-12500H.
+- This is useful evidence that CPU decode can dominate runtime on weaker CPUs.
+- Do **not** linearly extrapolate to the judge's 8-core machine; scaling may not be linear. Hamid's rough 45-60 fps expectation is plausible but remains unverified.
+
+### Kaggle OpenCV result
+
+The first `cv2.VideoCapture` benchmark on Kaggle did **not decode any frames**:
+
+```text
+Frames: 0
+Decode FPS: 0.0
+```
+
+The benchmark then hit a `ZeroDivisionError` only because the script tried to compute decode cost from 0 fps. The zero-frame result is the real issue.
+
+Because command-line FFmpeg successfully decodes the exact same path, the file path/data are valid. The current Kaggle OpenCV environment may lack a compatible decoder/backend for this 10-bit 4:2:2 H.264 stream, or `VideoCapture` may be failing for another backend/build reason. Do not treat 0 fps as a performance result.
+
+Debug before drawing conclusions:
+
+```python
+import os, cv2
+
+p = "/kaggle/input/datasets/jamoliddintoirov/firstvid/C3905.MP4"
+print("exists:", os.path.exists(p))
+print("cv2:", cv2.__version__)
+
+cap = cv2.VideoCapture(p, cv2.CAP_FFMPEG)
+print("opened:", cap.isOpened())
+if cap.isOpened():
+    print("backend:", cap.getBackendName())
+
+ok, frame = cap.read()
+print("first read:", ok, None if frame is None else frame.shape)
+cap.release()
+```
+
+If this still fails, inspect `cv2.getBuildInformation()` for FFmpeg/video-I/O support. Kaggle then should be considered unsuitable for the exact OpenCV decode-path benchmark unless its OpenCV/FFmpeg environment is replaced with a compatible one.
+
 ### Immediate benchmark still required
 
-Run the exact OpenCV path locally:
+Run the exact OpenCV path on the **local Windows PC**, where the video is known to open in the labeling tool:
 
 ```python
 import cv2, time
-c = cv2.VideoCapture("C3905.MP4")
+c = cv2.VideoCapture(r"D:\wiut hackathon\videos\C3905.MP4")
 n = 0
 t = time.time()
 while n < 600:
@@ -80,14 +149,13 @@ while n < 600:
     if not ok:
         break
     n += 1
-print(n / (time.time() - t), "fps")
+elapsed = time.time() - t
+print(n, "frames")
+print(n / elapsed if n else 0, "fps")
+print("elapsed", elapsed)
 ```
 
 Then repeat while limiting the process to roughly **8 CPU cores** using Windows Task Manager affinity (or another reliable process-affinity method). Record both results here.
-
-Optional/secondary benchmark:
-- Kaggle/Linux environment for a closer judge-like CPU/T4 setup.
-- Record CPU model/core allocation, FFmpeg result, and OpenCV result.
 
 ## 4. Hamid's C3905 EDA handoff
 
@@ -169,14 +237,15 @@ Manual labeling principle already established:
 ## 7. Immediate next actions for Codex
 
 1. Continue local work from the available sample videos; do **not** wait for Hamid's full EDA directory.
-2. Run the **exact OpenCV 600-frame decode benchmark** on C3905 and record fps here.
-3. Repeat with the process limited to ~8 CPU cores and record fps here.
-4. Use the numerical EDA facts already handed over (signal ROI, stop positions, ignore zones, exposure warning) to shape scene/rule code only where they are sufficient.
-5. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
-6. When Hamid shares `direction_field.json` and YOLO11m track CSVs, inspect and integrate them.
-7. Continue manual dev labeling of the sample videos using official event boundary conventions.
-8. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
-9. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
+2. Run the **exact local OpenCV 600-frame decode benchmark** on C3905 and record fps here.
+3. Repeat locally with the process limited to ~8 CPU cores and record fps here.
+4. Optionally debug Kaggle OpenCV with `CAP_FFMPEG`, `cap.isOpened()`, and `cv2.getBuildInformation()`, but do not block project progress on Kaggle's current codec/backend issue.
+5. Use the numerical EDA facts already handed over (signal ROI, stop positions, ignore zones, exposure warning) to shape scene/rule code only where they are sufficient.
+6. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
+7. When Hamid shares `direction_field.json` and YOLO11m track CSVs, inspect and integrate them.
+8. Continue manual dev labeling of the sample videos using official event boundary conventions.
+9. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
+10. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
 
 ## 8. Performance principle
 
@@ -197,4 +266,6 @@ Unless new evidence changes them, do not spend time re-deriving these:
 - known parked/bus-stop zones need to be ignored for stopped-vehicle logic;
 - exposure changes around 52-67s make global brightness unreliable for fire/smoke;
 - raw-video CPU decoding is a material part of the 3x runtime budget;
+- Kaggle 4-vCPU FFmpeg decode measured only ~22 fps / 0.74x realtime on C3905;
+- Kaggle OpenCV currently fails to decode the file and must not be treated as a 0-fps benchmark;
 - Hamid's full EDA is not in our repo, and current work should proceed from the facts he already provided.
