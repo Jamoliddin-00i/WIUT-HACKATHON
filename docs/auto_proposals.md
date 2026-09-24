@@ -42,10 +42,13 @@ used to create the cached track CSV. Outputs are:
 - `config/scene.json`: normalized crossing, roadway, and exclusion polygons.
 
 The scene polygons were traced from `C3905.MP4` and need validation on the
-other clips. Hamid's extracted EDA at
+other clips. The team checkout at
 `D:\wiut hackathon\code\salen-traffic-events-main\reports\eda` now provides
-C3896/C3905 pedestrian crossing maps, signal timelines, and direction fields.
-The underlying YOLO11m track CSVs are not in that folder. The local 2 fps /
+all four clips' crossing maps, signal reports, a merged reference scene, and
+registration homographies. Its v3 summary shows substantial framing shifts
+between clips, so these common polygons are unsuitable for final predictions
+without registration. The underlying YOLO11m track CSVs are not in that
+checkout. The local 2 fps /
 960 px pass produced 23 candidates across four videos (1 C3905, 3 C3896,
 10 C3897, 9 C3902). A midpoint frame review showed several sidewalk and
 island false positives. Review the candidate's whole interval and actor track
@@ -56,6 +59,9 @@ The rules require visible pedestrian motion for `jaywalking` and
 a moving vehicle close to a pedestrian on the same crossing for
 `failure_to_yield`. A car stopped to let a pedestrian cross is not a
 `failure_to_yield` event under the official task definition.
+The team guide clarifies that the pedestrian and vehicle must occupy the same
+carriageway half of the crossing, with event boundaries at vehicle front entry
+and rear exit. The current proximity heuristic does not enforce those details.
 
 Ultralytics publishes its code and models under [AGPL-3.0 or an Enterprise
 license](https://docs.ultralytics.com/help/contributing/#open-sourcing-your-yolo-project-under-agpl-30).
