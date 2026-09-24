@@ -19,6 +19,9 @@ This is the living handoff file for Codex and other development sessions. Keep i
   on 2026-09-24. A clone attempt returned GitHub "Repository not found" and
   `gh auth status` showed no GitHub login on this machine. Access or a local
   checkout is still needed; do not push to that repository.
+- Jamoliddin placed an extracted snapshot at
+  `D:\wiut hackathon\code\salen-traffic-events-main`. It contains Hamid's EDA
+  but no `.git` directory, so it is not a synced Git checkout.
 - When Jamoliddin has the real team repo locally, Codex should continue there, not maintain a parallel final implementation here.
 - Before working in the final repo, verify `git remote -v` so `origin` points to the real team repository.
 - AI assistants may edit/generate code locally, but commits pushed to the canonical team repo should be authored by the human contributor, so AI accounts do not appear as contributors.
@@ -95,16 +98,25 @@ Optional/secondary benchmark:
 
 ## 4. Hamid's C3905 EDA handoff
 
-Important availability note:
-- Hamid's full EDA artifacts are **on Hamid's side only** right now.
-- We do **not** currently have his `reports/eda/C3905/` directory, `signal.png`, or `direction_field.json` locally/in this staging repo.
-- The facts he sent in chat are considered sufficient to guide current rule design. Do not block progress waiting for the full EDA files.
-- If Hamid later shares those artifacts or track CSVs, consume them then.
+Availability as of 2026-09-24:
+- Hamid's `reports/eda/C3896/` and `reports/eda/C3905/` are available in the
+  extracted snapshot `D:\wiut hackathon\code\salen-traffic-events-main`.
+  They include notes, signal timelines/figures, pedestrian crossing maps,
+  direction fields, detector comparisons, and scene samples.
+- The underlying YOLO11m track CSVs are not in that snapshot, nor are EDA
+  directories for C3897 and C3902. Keep using locally cached track CSVs for
+  those clips until the teammate tracks arrive.
+- Hamid's C3905 detector comparison found 31.55 persons per frame for
+  YOLO11m at 1280 px versus 23.03 for YOLO11n at 1280 px. The current local
+  YOLO26n 960 px pass therefore misses some small pedestrians; absence of a
+  proposal is weak evidence of absence of an event.
 
 ### Traffic light
 
 - Readable signal location in original 4K coordinates: approximately **`(2328, 780)`**.
-- Hamid reports signal state over time exists in `signal.png`, but that file is not currently available to us.
+- `signal.png` and `signal_timeline.csv` are now locally available in Hamid's
+  C3905 EDA directory. Its notes report red at 0-34.5 s and 75.5-114.4 s,
+  green at 34.6-70.4 s and from 114.5 s, with amber in between.
 - Reported correlation between signal state and moving cars: **0.88**.
 - Practical `red_light` rule direction: **signal is red + vehicle crosses the relevant stop line**.
 
@@ -118,9 +130,10 @@ These are just before the zebra crossing and should inform the initial stop-line
 
 ### Wrong-way direction field
 
-- Hamid reports a `direction_field.json` with lane/traffic directions per roughly **80 px cell**.
-- The file itself is not currently available to Jamoliddin/Codex.
-- Until it is shared, do not invent detailed per-cell directions from memory. Use only geometry that can be verified from local footage.
+- `direction_field.json` is now available for C3896 and C3905 in the extracted
+  snapshot. It stores vehicle heading and coherence per **80 px cell**.
+- A wrong-way rule should require sustained opposing motion in high-coherence
+  road cells and reject frame-edge ID switches noted by Hamid.
 
 ### Stopped-vehicle ignore zones
 
@@ -137,9 +150,10 @@ These zones should become explicit ignore masks/regions in scene configuration, 
 
 ### YOLO tracks
 
-- Hamid plans/provides **YOLO11m tracks for all sample videos** on the server.
-- CSV format will be consistent across videos.
-- These CSVs are not yet available locally.
+- Hamid generated **YOLO11m tracks** for EDA on the server/Kaggle; the
+  extracted snapshot has reports but no track CSVs.
+- The EDA README describes its CSV schema as
+  `frame,t_sec,track_id,cls,conf,x1,y1,x2,y2` in original 4K coordinates.
 - When shared, inspect the schema once and integrate/reuse the tracks rather than recomputing identical EDA unnecessarily.
 
 ## 5. Model / runtime decisions already settled
@@ -186,7 +200,14 @@ normalized scene geometry in `config/scene.json`. It uses locally stored
 reviewed labels and `debug/*_auto_tracks.csv` for diagnostics. The scene masks
 and thresholds are preliminary and must be checked on footage. The first 20 s
 run at 3 fps / 1280 px produced false positives; a 2 fps / 960 px pass was
-faster, and island/sidewalk/motion filters are being checked on the full clip.
+faster. The full 2 fps / 960 px pass completed on all four sample videos:
+1 proposal on C3905, 3 on C3896, 10 on C3897, and 9 on C3902. A midpoint
+contact-sheet review found clear false positives around sidewalks and islands;
+these 23 events remain unverified candidates, not ground truth. C3902 around
+83-97 s includes people walking diagonally through the junction and is a
+promising jaywalking candidate for focused review. The script now uses
+`VideoCapture.grab()` for unsampled frames; this change needs its own runtime
+measurement before claiming a speed improvement.
 
 Local ML environment: isolated `.venv`, PyTorch `2.14.0+cu130`, CUDA 13.0,
 RTX 3050 Laptop GPU with 4 GB VRAM. Ultralytics `8.4.161` and local YOLO26n
@@ -198,12 +219,16 @@ the weights or packaging Ultralytics in the final submission.
 
 ## 7. Immediate next actions for Codex
 
-1. Continue local work from the available sample videos; do **not** wait for Hamid's full EDA directory.
+1. Use the newly available C3896/C3905 EDA to refine scene geometry and
+   verify proposed events; the extracted snapshot is not a Git checkout.
 2. Use the OpenCV decode numbers above when setting the detector sampling rate.
-3. Build an automatic local event-proposal pass; keep it distinct from reviewed dev labels.
-4. Use the numerical EDA facts already handed over (signal ROI, stop positions, ignore zones, exposure warning) to shape scene/rule code only where they are sufficient.
+3. Extend and validate the automatic event-proposal pass; keep it distinct
+   from reviewed dev labels and reject sidewalk/island false positives.
+4. Use the signal timeline and direction fields now available in EDA for
+   candidate `red_light` and `wrong_way` rules, with video verification.
 5. Build/verify any missing scene geometry directly from local video frames rather than pretending unavailable EDA files exist.
-6. When Hamid shares `direction_field.json` and YOLO11m track CSVs, inspect and integrate them.
+6. When Hamid shares the YOLO11m track CSVs, inspect and integrate them;
+   the direction fields are already available in the extracted snapshot.
 7. Use manual review only where it adds value to automatic proposals, with official event boundary conventions.
 8. When the canonical team repository is available locally, move/sync the current useful code/docs there and continue in that repo using Jamoliddin's Git identity.
 9. Only after runtime/geometry are understood, proceed with detector/tracker/event implementation and Part B TTC/conflict risk logic.
@@ -227,4 +252,5 @@ Unless new evidence changes them, do not spend time re-deriving these:
 - known parked/bus-stop zones need to be ignored for stopped-vehicle logic;
 - exposure changes around 52-67s make global brightness unreliable for fire/smoke;
 - raw-video CPU decoding is a material part of the 3x runtime budget;
-- Hamid's full EDA is not in our repo, and current work should proceed from the facts he already provided.
+- Hamid's C3896/C3905 EDA is in the extracted snapshot under `code`, but the
+  YOLO11m track CSVs and an authenticated team Git checkout are still absent.

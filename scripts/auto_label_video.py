@@ -208,11 +208,13 @@ def propose(video: Path, scene: dict, weights: Path, sample_fps: float,
                 writer.writerow(["t_sec", "track_id", "coco_class", "confidence",
                                  "x1", "y1", "x2", "y2", "speed_norm_per_sec"])
                 for frame_index in range(limit_frames):
+                    if frame_index % stride:
+                        if not capture.grab():
+                            break
+                        continue
                     ok, frame = capture.read()
                     if not ok:
                         break
-                    if frame_index % stride:
-                        continue
                     t_sec = frame_index / fps
                     result = model.track(
                         frame, persist=True, tracker="bytetrack.yaml", device=0,
