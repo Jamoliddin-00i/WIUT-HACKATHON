@@ -262,8 +262,11 @@ organizer's stopped-vehicle definition. The new narrow bus-dwell rule recovers
 five of the six hand-observed stopped-vehicle intervals across the two clips
 at temporal IoU 0.81-0.90; the unmatched interval appears to be a signal queue.
 Two congestion
-observations appear inconsistent with the signal/traffic rule; the C3905
-81-85 s near-miss and failure-to-yield observations also appear unsupported.
+observations appear inconsistent with the signal/traffic rule. The C3905
+81-85 s review was corrected after Jamoliddin identified the moving white
+Cobalt at the right-hand zebra: `failure_to_yield` is likely valid, and
+`near_miss` is plausible if the reported pedestrian jump back is confirmed
+frame by frame. The earlier review looked at the central zebra instead.
 Actor identities and exact boundaries remain unconfirmed. Do not score either
 the manual intervals or the automatic proposals as verified ground truth.
 
