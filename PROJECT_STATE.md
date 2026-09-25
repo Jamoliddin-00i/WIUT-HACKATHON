@@ -118,11 +118,12 @@ Do not linearly extrapolate that 4-vCPU VM to the judge's 8-core CPU.
 
 ## 4. Hamid's EDA handoff
 
-Availability as of 2026-09-24:
+Availability as of 2026-09-25:
 - The current team checkout has EDA directories for all four sample clips,
-  `reports/eda/SUMMARY.md` v3, `scene_reference.json`, `registration.json`,
-  calibrated signal reports, and `docs/LABELING_GUIDE.md` v2. Read those
-  before implementing camera geometry or signal rules.
+  `reports/eda/SUMMARY.md` v4, `tools/scene/CONTRACT.md`,
+  `scene_reference_v2.json`, `registration.json`, v4 signal intervals, and
+  `docs/LABELING_GUIDE.md` v2. Read the contract before implementing rules;
+  it marks older direction maps and signal phases as deprecated.
 - The underlying YOLO11m track CSVs are still absent from the checkout. Keep
   using locally cached track CSVs until the teammate tracks arrive.
 - Hamid's C3905 detector comparison found 31.55 persons per frame for
@@ -134,11 +135,16 @@ Availability as of 2026-09-24:
 ### Traffic light
 
 - Readable signal location in original 4K coordinates: approximately **`(2328, 780)`**.
-- `signal.png` and `signal_timeline.csv` are now locally available in Hamid's
-  C3905 EDA directory. Its notes report red at 0-34.5 s and 75.5-114.4 s,
-  green at 34.6-70.4 s and from 114.5 s, with amber in between.
-- Reported correlation between signal state and moving cars: **0.88**.
-- Practical `red_light` rule direction: **signal is red + vehicle crosses the relevant stop line**.
+- Use `tools/scene/signal.py` and
+  `reports/eda/signals/v4/<STEM>_D_intervals_v4.csv` for head D. C3905 D is red
+  0-31.532 s and 75.475-111.511 s, red+amber 31.532-34.534 s and
+  111.511-114.514 s, and green again from 114.514 s. The 69.469-72.472 s
+  portion is blinking green, followed by amber to 75.475 s.
+- D is a strong timing proxy for the near-carriageway flow, but which movements
+  it physically controls is unverified. Far-carriageway signal state is unknown.
+  The old `C3905/signal_timeline_v1_DEPRECATED.csv` and v3 phase CSVs are not
+  valid rule inputs. A red-light rule also needs the verified stop-line zone,
+  which is still pending.
 
 ### Stop line / zebra region
 
@@ -146,14 +152,15 @@ For the near carriageway, cars reportedly wait around:
 - **`(1500, 870)`**
 - **`(1764, 985)`**
 
-These are just before the zebra crossing and should inform the initial stop-line geometry. Verify exact line/polygon placement against local frames before hard-coding.
+These are descriptive queue estimates only. The v4 contract requires a
+hand-drawn `reports/eda/zones.json` before using stop lines or zebras as final
+rule inputs.
 
 ### Wrong-way direction field
 
-- `direction_field.json` is now available for C3896 and C3905 in the extracted
-  snapshot. It stores vehicle heading and coherence per **80 px cell**.
-- A wrong-way rule should require sustained opposing motion in high-coherence
-  road cells and reject frame-edge ID switches noted by Hamid.
+- The old per-video `direction_field.json` and `scene_reference.json` are
+  deprecated. Use `scene_reference_v2.json` via `tools/scene/scene.py` and call
+  wrong-way only inside `wrong_way_safe` cells, with sustained opposing motion.
 
 ### Stopped-vehicle ignore zones
 
@@ -167,7 +174,9 @@ These zones should become explicit ignore masks/regions in scene configuration, 
 
 ### Exposure jump
 
-- Camera auto-exposure reportedly changes brightness by roughly **35% around 52-67 s**.
+- C3905 brightness rises around 52-67 s, but camera exposure metadata is
+  constant; v3 ruled out an exposure-control change. The remaining cause is
+  unverified.
 - **Do not use raw/global brightness alone for `fire_smoke`.** Any smoke/fire detector should use spatial/temporal/local cues robust to exposure changes.
 
 ### YOLO tracks
@@ -268,9 +277,10 @@ the weights or packaging Ultralytics in the final submission.
 
 ## 7. Immediate next actions for Codex
 
-1. Continue in the team checkout. Use `reports/eda/SUMMARY.md` v3,
-   `scene_reference.json`, `registration.json`, and `docs/LABELING_GUIDE.md`
-   to replace the staging prototype's unregistered scene geometry.
+1. Continue in the team checkout. Use `reports/eda/SUMMARY.md` v4,
+   `tools/scene/CONTRACT.md`, `scene_reference_v2.json`,
+   `registration.json`, and `docs/LABELING_GUIDE.md`. Wait for a verified
+   `reports/eda/zones.json` before treating scene polygons as final rule inputs.
 2. Use the OpenCV decode numbers above when setting the detector sampling rate.
 3. Benchmark the full Part A+Part B harness path on the T4-like environment.
 4. Validate the new bus-dwell proposals and the bus-stop live-lane boundary,
@@ -301,7 +311,7 @@ The raw-video decode path is now a first-order constraint. Optimize model work *
 
 Unless new evidence changes them, do not spend time re-deriving these:
 - `camera.md` is gone;
-- C3905 signal ROI around `(2328, 780)` has already been identified by teammate EDA;
+- Head D's C3905 signal ROI around `(2328, 780)` has already been identified;
 - Hamid's merged direction field, registration, and four per-video EDA reports
   are present in the team checkout;
 - kerb-parked vehicles are ignored, but a bus stopped in a live lane for >=10 s

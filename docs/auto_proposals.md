@@ -49,7 +49,7 @@ The staging scene polygons were traced from `C3905.MP4` and need validation on t
 other clips. The team checkout at
 `D:\wiut hackathon\code\salen-traffic-events-main\reports\eda` now provides
 all four clips' crossing maps, signal reports, a merged reference scene, and
-registration homographies. Its v3 summary shows substantial framing shifts
+registration homographies. Its v4 summary shows substantial framing shifts
 between clips, so these common polygons are unsuitable for final predictions
 without registration. The underlying YOLO11m track CSVs are not in that
 checkout. The local 2 fps /
@@ -70,6 +70,9 @@ The rules require visible pedestrian motion for `jaywalking` and
 a moving vehicle close to a pedestrian on the same crossing for
 `failure_to_yield`. A car stopped to let a pedestrian cross is not a
 `failure_to_yield` event under the official task definition.
+The canonical checkout's v4 `tools/scene/CONTRACT.md` reserves final zebra,
+live-lane, parking, and bus-stop rules for the pending hand-drawn `zones.json`.
+The current polygons and bus-dwell rule are experimental proposals only.
 The team guide clarifies that the pedestrian and vehicle must occupy the same
 carriageway half of the crossing, with event boundaries at vehicle front entry
 and rear exit. The current proximity heuristic does not enforce those details.
