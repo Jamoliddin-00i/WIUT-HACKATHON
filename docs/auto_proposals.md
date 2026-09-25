@@ -18,11 +18,15 @@ the [official PyTorch selector](https://pytorch.org/get-started/locally/), then
 install `ultralytics` and `lap` into an isolated Python environment. The script
 refuses to run heavy detector inference when CUDA is unavailable.
 
-Store the official YOLO26n detector at `weights/yolo26n.pt`. Our local copy came
+The stronger YOLO26x detector is now the default at `weights/yolo26x.pt`.
+Our local copy came
 from [Ultralytics' v8.4.0 release](https://github.com/ultralytics/assets/releases/tag/v8.4.0)
 and has SHA-256
-`9B09CC8BF347F0FC8A5F7657480587F25DB09B34BF33B0652110FB03A8AD4FEF`.
+`9FDD44A31C504547FFB81D2C6D9E6DAC3493C8EAA8B0398D3F43BAE6C7003E92`.
 Model inference loads this local file and makes no weight download request.
+The canonical team checkout at `D:\wiut hackathon\code\salen-traffic-events-main`
+now has this prototype under `tools/auto_label_video.py`, plus the local weight
+file. Use its `docs/AUTO_PROPOSALS.md` for the current run command.
 
 ```powershell
 # From the repository root:
@@ -32,7 +36,7 @@ Model inference loads this local file and makes no weight download request.
 .venv\Scripts\python.exe scripts\auto_label_video.py "D:\wiut hackathon\videos\C3905.MP4" --reuse-tracks
 ```
 
-Defaults: 2 detector samples per second, 960 px inference size, and CUDA device
+Defaults: 2 detector samples per second, 2560 px inference size, and CUDA device
 0. `--sample-fps`, `--image-size`, `--max-seconds`, `--scene`, and `--out` are
 available for experiments. For `--reuse-tracks`, pass the same `--sample-fps`
 used to create the cached track CSV. Outputs are:
@@ -41,7 +45,7 @@ used to create the cached track CSV. Outputs are:
 - `debug/<video>_auto_tracks.csv`: detection and track diagnostics, kept out of Git.
 - `config/scene.json`: normalized crossing, roadway, and exclusion polygons.
 
-The scene polygons were traced from `C3905.MP4` and need validation on the
+The staging scene polygons were traced from `C3905.MP4` and need validation on the
 other clips. The team checkout at
 `D:\wiut hackathon\code\salen-traffic-events-main\reports\eda` now provides
 all four clips' crossing maps, signal reports, a merged reference scene, and
@@ -51,7 +55,14 @@ without registration. The underlying YOLO11m track CSVs are not in that
 checkout. The local 2 fps /
 960 px pass produced 23 candidates across four videos (1 C3905, 3 C3896,
 10 C3897, 9 C3902). A midpoint frame review showed several sidewalk and
-island false positives. Review the candidate's whole interval and actor track
+island false positives. The completed YOLO26x 2560 px detector run produced
+83 initial candidates. The canonical team checkout has since added a narrow
+far-side bus-dwell rule and replayed the same tracks, yielding 100 unverified
+candidates (C3905 13, C3896 38, C3897 22, C3902 27). The detector pass wall
+times were 105.6 s, 268.3 s, 245.2 s, and 260.5 s respectively; this excludes
+Part B. Jamoliddin's later provisional manual observations are
+preserved separately in the canonical checkout, with a focused comparison in
+`docs/PROVISIONAL_LABEL_REVIEW.md`. Review the candidate's whole interval and actor track
 before accepting it as a label. In particular, one frame showing a vehicle
 and a pedestrian near the same crossing cannot establish failure to yield.
 

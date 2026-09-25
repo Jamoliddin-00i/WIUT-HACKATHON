@@ -218,7 +218,8 @@ def propose(video: Path, scene: dict, weights: Path, sample_fps: float,
                     t_sec = frame_index / fps
                     result = model.track(
                         frame, persist=True, tracker="bytetrack.yaml", device=0,
-                        imgsz=image_size, conf=0.25, classes=TRACK_CLASSES,
+                        imgsz=image_size, quantize=16, conf=0.25,
+                        classes=TRACK_CLASSES,
                         verbose=False,
                     )[0]
                     detections = get_detections(result, width, height)
@@ -238,6 +239,9 @@ def propose(video: Path, scene: dict, weights: Path, sample_fps: float,
                               f"{len(detections)} tracks", flush=True)
         finally:
             capture.release()
+        print(f"Peak CUDA memory reserved: "
+              f"{torch.cuda.max_memory_reserved(0) / (1024 ** 3):.2f} GiB",
+              flush=True)
 
     processed_duration = min(duration, limit_frames / fps)
     events = events_from_tracks(track_path, scene, width, height, sample_period,
@@ -252,10 +256,10 @@ def main() -> None:
     parser.add_argument("videos", type=Path, help="one MP4 or a folder of MP4s")
     parser.add_argument("--out", type=Path, default=ROOT / "auto_proposals.json")
     parser.add_argument("--scene", type=Path, default=ROOT / "config" / "scene.json")
-    parser.add_argument("--weights", type=Path, default=ROOT / "weights" / "yolo26n.pt")
+    parser.add_argument("--weights", type=Path, default=ROOT / "weights" / "yolo26x.pt")
     parser.add_argument("--tracks-dir", type=Path, default=ROOT / "debug")
     parser.add_argument("--sample-fps", type=float, default=2.0)
-    parser.add_argument("--image-size", type=int, default=960)
+    parser.add_argument("--image-size", type=int, default=2560)
     parser.add_argument("--max-seconds", type=float, help="process only this many seconds")
     parser.add_argument("--reuse-tracks", action="store_true",
                         help="reapply scene rules to the cached track CSV without model inference")

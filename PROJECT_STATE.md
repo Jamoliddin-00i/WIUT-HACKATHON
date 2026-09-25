@@ -1,6 +1,6 @@
 # WIUT Hackathon 2026 — Project State
 
-_Last updated: 2026-09-24, Tashkent time_
+_Last updated: 2026-09-25, Tashkent time_
 
 This is the living handoff file for Codex and other development sessions. Keep it current. Do not duplicate facts that are already documented and still correct.
 
@@ -19,8 +19,9 @@ This is the living handoff file for Codex and other development sessions. Keep i
   on 2026-09-24. GitHub authentication is now available as `Jamoliddin-00i`.
 - Jamoliddin placed an extracted snapshot at
   `D:\wiut hackathon\code\salen-traffic-events-main`. It is now a Git checkout
-  of the real team repository, clean at `main` commit `46a4c8f` (2026-09-24).
-  `origin` points to Hamid's repository. A pull reports "Already up to date."
+  of the real team repository, updated to `main` commit `9db54ec` (2026-09-24).
+  `origin` points to Hamid's repository. Local model and review work is in
+  progress; no changes were pushed.
   The old extracted `tools/eda/README.md` is backed up inside that checkout's
   `.git` directory. No changes were pushed.
 - Continue final implementation in the team checkout rather than maintaining
@@ -125,9 +126,10 @@ Availability as of 2026-09-24:
 - The underlying YOLO11m track CSVs are still absent from the checkout. Keep
   using locally cached track CSVs until the teammate tracks arrive.
 - Hamid's C3905 detector comparison found 31.55 persons per frame for
-  YOLO11m at 1280 px versus 23.03 for YOLO11n at 1280 px. The current local
-  YOLO26n 960 px pass therefore misses some small pedestrians; absence of a
-  proposal is weak evidence of absence of an event.
+  YOLO11m at 1280 px versus 23.03 for YOLO11n at 1280 px. The older local
+  YOLO26n 960 px pass missed some small pedestrians. The current YOLO26x
+  2560 px detector sees more, but absence of a proposal is still weak evidence
+  of absence of an event.
 
 ### Traffic light
 
@@ -215,7 +217,7 @@ yield is not that event.
 
 Initial local automatic pass now exists in `scripts/auto_label_video.py` with
 normalized scene geometry in `config/scene.json`. It uses locally stored
-`weights/yolo26n.pt` and CUDA YOLO tracking to propose `jaywalking` and
+`weights/yolo26x.pt` and CUDA YOLO tracking to propose `jaywalking` and
 `failure_to_yield` segments, writing `auto_proposals.json` separately from
 reviewed labels and `debug/*_auto_tracks.csv` for diagnostics. The scene masks
 and thresholds are preliminary and must be checked on footage. The first 20 s
@@ -226,18 +228,39 @@ contact-sheet review found clear false positives around sidewalks and islands;
 these 23 events remain unverified candidates, not ground truth. C3902 around
 83-97 s includes people walking diagonally through the junction and is a
 promising jaywalking candidate for focused review. The script now uses
-`VideoCapture.grab()` for unsampled frames; this change needs its own runtime
-measurement before claiming a speed improvement.
-This YOLO26n 960 px pipeline is a local GPU prototype. Hamid's EDA instead
-used YOLO11m at 1280 px, which found more small pedestrians. The prototype
-does not call a hosted model/API and is not yet wired into `solution.py` or
-the final team repository. The rough `failure_to_yield` proximity rule must
+`VideoCapture.grab()` for unsampled frames.
+The current YOLO26x 2560 px pipeline is a local GPU prototype. Full detector
+passes finished on all four clips: C3905 105.6 s, C3896 268.3 s,
+C3897 245.2 s, and C3902 260.5 s. The initial two-class rules produced
+83 candidates. Replaying the cached tracks through a far-side bus-dwell rule
+added 17 stopped-vehicle candidates, for 100 unverified candidates total
+(C3905 13, C3896 38, C3897 22, C3902 27).
+Peak reserved GPU memory was 1.30-1.34 GiB. Each Part A pass took less wall time
+than its source duration, but the full Part A + B budget remains untested.
+The canonical team checkout now has the script under `tools/auto_label_video.py`
+and a local copy of the weight. Its scene polygons are mapped between the four
+clips using Hamid's registration homographies; the zones remain unverified.
+The prototype does not call a hosted model/API and is not yet wired into
+`solution.py`. The rough `failure_to_yield` proximity rule must
 be replaced with same-carriageway occupancy and front/rear crossing boundaries
 from the team labeling guide before it can be treated as a reliable label.
 
+Jamoliddin supplied 12 provisional hand-observed events across C3905 and C3896
+on 2026-09-25. They are preserved unchanged in the canonical checkout's
+`labels/user_observations_2026-09-25.json`. Frame/signal-phase triage is in
+`docs/PROVISIONAL_LABEL_REVIEW.md`. Several far-side buses plausibly meet the
+organizer's stopped-vehicle definition. The new narrow bus-dwell rule recovers
+five of the six hand-observed stopped-vehicle intervals across the two clips
+at temporal IoU 0.81-0.90; the unmatched interval appears to be a signal queue.
+Two congestion
+observations appear inconsistent with the signal/traffic rule; the C3905
+81-85 s near-miss and failure-to-yield observations also appear unsupported.
+Actor identities and exact boundaries remain unconfirmed. Do not score either
+the manual intervals or the automatic proposals as verified ground truth.
+
 Local ML environment: isolated `.venv`, PyTorch `2.14.0+cu130`, CUDA 13.0,
-RTX 3050 Laptop GPU with 4 GB VRAM. Ultralytics `8.4.161` and local YOLO26n
-weights (~5.5 MB) are present. The final judge dependency recipe is not yet
+RTX 3050 Laptop GPU with 4 GB VRAM. Ultralytics `8.4.161` and local YOLO26x
+weights (~118.7 MB) are present. The final judge dependency recipe is not yet
 settled; do not assume this minimal dev environment is the final package.
 Ultralytics states that its code and models use AGPL-3.0 or an Enterprise
 license; check the canonical team's license/attribution plan before committing
@@ -245,14 +268,14 @@ the weights or packaging Ultralytics in the final submission.
 
 ## 7. Immediate next actions for Codex
 
-1. Continue in the clean team checkout. Use `reports/eda/SUMMARY.md` v3,
+1. Continue in the team checkout. Use `reports/eda/SUMMARY.md` v3,
    `scene_reference.json`, `registration.json`, and `docs/LABELING_GUIDE.md`
    to replace the staging prototype's unregistered scene geometry.
 2. Use the OpenCV decode numbers above when setting the detector sampling rate.
-3. Replace the weaker YOLO26n prototype with the strongest feasible local
-   detector, benchmark it, and validate proposals separately from ground truth.
-4. Extend and validate the automatic event-proposal pass; keep it distinct
-   from reviewed dev labels and reject sidewalk/island false positives.
+3. Benchmark the full Part A+Part B harness path on the T4-like environment.
+4. Validate the new bus-dwell proposals and the bus-stop live-lane boundary,
+   then extend stopped-vehicle proposals beyond buses. Keep all proposals
+   distinct from reviewed dev labels and reject sidewalk/island false positives.
 5. Use the calibrated signal timeline and merged direction field in team EDA
    for candidate `red_light` and `wrong_way` rules, with video verification.
 6. When Hamid shares the YOLO11m track CSVs, inspect and integrate them;
