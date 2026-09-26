@@ -2,6 +2,65 @@
 
 Updated 2026-09-26. This is the primary handoff file for the next session.
 
+## Claude / next coding agent: start here
+
+### Latest division of work (user clarification)
+
+- The user's partner handles reviews of labeled videos and EDA.
+- The user is focusing on Part B engineering. Do not send the user back to
+  manually label videos or make accident collection a prerequisite to coding.
+- Part B can be implemented without accident labels: the current approach uses
+  pretrained detections plus causal motion rules, with no supervised training.
+  Accident labels are needed to measure accident anticipation accuracy and to
+  calibrate risk reliably; that is a validation limitation, not a coding blocker.
+- Part A tuning is paused for this workstream. Keep its integration functional.
+- About 30 hours remained when the user switched priorities on 2026-09-26;
+  this is historical, not a live countdown. The recorded deadline is
+  2026-09-27 23:59 Asia/Tashkent. Conserve coding-assistant usage and avoid
+  repeating completed investigations or asking the user to manage the workflow.
+
+### What exists and what to read
+
+1. Read `AGENTS.md`, this file and the official task PDF in `docs/`.
+   Older README/AGENTS routing notes are superseded: work in WIUT-HACKATHON.
+2. `solution.py` is the organizer interface. `src/risk.py` is the Part B code;
+   `src/pipeline.py` is Part A. `src/__init__.py` disables Ultralytics network
+   checks/automatic installs. Weights are local `weights/yolo26x.pt`.
+3. `tools/tests/test_risk.py` tests the causal motion logic. Run focused tests:
+   `.\.venv\Scripts\python.exe -m unittest discover -s tools/tests -v`.
+4. `evaluate.py` and `run_submission.py` are unchanged organizer files. Read
+   their Part B logic; do not modify them to improve scores or runtime accounting.
+5. `tools/verify_offline.py` runs the full official harness while blocking and
+   counting DNS/socket attempts. A failing wrapper is not a passing offline test.
+
+### Concrete next work that does not require new manual labels
+
+1. Add optional local diagnostics for Part B alarms: timestamp, involved track
+   IDs/classes, ground anchors, fitted motion, estimated time-to-contact, and
+   boxes on the corresponding frame. Current output has scores, but does not
+   persist the evidence needed to explain which pair caused each alarm.
+2. Inspect the five known C3905 alarm times listed below. Determine whether
+   perspective/footprint overlap, occlusion, jitter or ID switches caused them.
+   Make general fixes supported by evidence; do not blacklist sample timestamps
+   or merely lower every score below the alarm threshold.
+3. Verify causality, video-state reset, bounded memory and offline initialization.
+   Rerun the strict full-video offline check after the network-setting fix, then
+   validate the remaining videos with the new Part B under the combined budget.
+4. Prepare a reproducible install/package and a T4-class test if available.
+   Keep useful work moving while the partner handles annotations/EDA. Ask for
+   specific missing geometry or reviewed examples only when they affect a fix.
+5. If labeled accidents become available, evaluate early warnings and calibrate
+   on separate tuning/test clips. Until then, report synthetic logic checks,
+   observed alarms and runtime honestly; real accident accuracy is unknown.
+
+Part B contract: return a score in [0, 1] for an accident starting in the next
+5 seconds, using only frames received so far. Alarm threshold is 0.5; an alarm
+can match an accident up to 10 seconds before onset. The metric combines
+chance-normalized average precision, alarm F1 and warning time. Near misses are
+ignored around their event windows, not treated as positive accident examples.
+No model weights have been trained/fine-tuned in this project. YOLO26x identifies
+objects; our Python motion rules produce the risk score.
+
 User instruction (2026-09-26): commit our work in `Jamoliddin-00i/WIUT-HACKATHON`, not Hamid's Salen repo. This working snapshot was copied from local Salen commit `6a3b92e`. Source implementation and supporting EDA JSON/CSV metadata are included; large generated EDA images, raw tracks, debug outputs and model weights remain local in the original checkout. Earlier benchmark paths below refer to that checkout; rerunning here creates new local outputs.
 
 Transfer verification: all 23 focused tests passed from WIUT-HACKATHON after
@@ -49,13 +108,10 @@ connected because the official runtime budget covers both parts.
   resolution and socket connections blocked and zero attempts. The full video
   has NOT been rerun after this environment-only fix. `tools/verify_offline.py`
   now checks DNS attempts too. Do not claim the stricter full-video check passed.
-- Asked whether the user has accident clips with impact timestamps; no answer
-  yet. Current four clips have no accident labels, so they assess false alarms
-  and runtime only. Near-miss windows are ignored in the official Part B metric.
-- Next: obtain labeled accident positives and non-accident controls, separate
-  clips for tuning/evaluation, measure warning time and false alarms. Use data
-  to decide whether a trained temporal head is justified in the remaining time.
-  Preserve the existing working baseline while doing this.
+- Current four clips have no accident labels, so they assess observed false
+  alarms against those labels and runtime, not accident recall. The user clarified
+  that their partner handles label review/EDA; do not block Part B engineering on
+  the user collecting accident videos. Follow the next-work sequence above.
 
 Readiness: functional prototype, not submission-ready. Part A currently emits
 3 of 14 classes; development Score A is 0.1521. Part B accuracy is unmeasured.
@@ -73,8 +129,9 @@ or synthetic tests as a percentage of competitive accuracy.
   do not push changes to its Hamid/Salen origin.
 - Working Python here: `.venv\Scripts\python.exe`.
 - Videos: `D:\wiut hackathon\videos`. All four originals are local.
-- Do not push to the team repository. Local commits use the user's configured
-  human Git identity. Never add AI co-author trailers.
+- Push only to `Jamoliddin-00i/WIUT-HACKATHON` when authorized; the user explicitly
+  authorized pushing this work there. Never push to Hamid's Salen repository.
+  Commits use the user's configured human Git identity, without AI co-authors.
 - User wants implementation to continue without repeated offers or permission
   questions. Explain results in simple words; do not make reports the answer.
 - Use the large local model; no downgrade to a weaker detector. Traffic model
@@ -180,7 +237,9 @@ samples, **418.4 s total versus 953.5 s budget**, no harness errors. Part A took
 Output: `debug/offline_submission_C3897.json`. Both tests used the ignored
 `debug/run_offline_harness.py` socket blocker. The tracked replacement
 `tools/verify_offline.py` additionally counts attempted connections (including
-ones swallowed by libraries); that stricter wrapper has not had a full run yet.
+ones swallowed by libraries). Its later full run with the new Part B exposed
+background connection attempts; see the current Part B section for the fix and
+the remaining full-run verification.
 
 16 focused unit tests passed: pedestrian geometry/trajectories, crossing
 entry/exit, opposite carriageways, stationary vehicles, occupants, public entry
