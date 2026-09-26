@@ -1,330 +1,258 @@
-# WIUT Hackathon 2026 — Project State
+# Current project state
 
-_Last updated: 2026-09-25, Tashkent time_
+Updated 2026-09-26. This is the primary handoff file for the next session.
 
-This is the living handoff file for Codex and other development sessions. Keep it current. Do not duplicate facts that are already documented and still correct.
+User instruction (2026-09-26): commit our work in `Jamoliddin-00i/WIUT-HACKATHON`, not Hamid's Salen repo. This working snapshot was copied from local Salen commit `6a3b92e`. Source implementation and supporting EDA JSON/CSV metadata are included; large generated EDA images, raw tracks, debug outputs and model weights remain local in the original checkout. Earlier benchmark paths below refer to that checkout; rerunning here creates new local outputs.
 
-## 1. Ownership and working model
+Transfer verification: all 23 focused tests passed from WIUT-HACKATHON after
+copying. Organizer `evaluate.py` and `run_submission.py` were preserved; their
+normalized source matches the tested Salen copies. No heavy inference rerun was
+needed for this file transfer. The existing empty local `asd` file is unrelated
+and is left untracked. Model weights are available locally but excluded from Git.
 
-- **Jamoliddin:** ML Engineer / Model Lead.
-- **Codex is the primary coding agent.** Repository Markdown is the canonical project memory. The user should not need to re-explain context in chat.
-- After a meaningful discovery, benchmark, decision, implementation change, or teammate handoff, update this file or the relevant Markdown doc in the same session.
-- Commits in the final team repository must use a human team member's configured Git identity. Do not add AI `Co-authored-by:` trailers, bot authors, or AI-owned PR/commit identities.
+## Active priority: Part B (user changed scope)
 
-### Repository status
+The user paused Part A development with about 30 hours left, and asked to
+conserve limited Codex usage. Keep work in focused implementation/test batches;
+do not resume Part A tuning unless requested. Its existing detector remains
+connected because the official runtime budget covers both parts.
 
-- `Jamoliddin-00i/WIUT-HACKATHON` is currently a **handoff / staging repository**.
-- The real canonical team repository is elsewhere and is managed by the team/Hamid.
-- Jamoliddin supplied `https://github.com/abdulhamid-n/salen-traffic-events.git`
-  on 2026-09-24. GitHub authentication is now available as `Jamoliddin-00i`.
-- Jamoliddin placed an extracted snapshot at
-  `D:\wiut hackathon\code\salen-traffic-events-main`. It is now a Git checkout
-  of the real team repository, updated to `main` commit `9db54ec` (2026-09-24).
-  `origin` points to Hamid's repository. Local model and review work is in
-  progress; no changes were pushed.
-  The old extracted `tools/eda/README.md` is backed up inside that checkout's
-  `.git` directory. No changes were pushed.
-- Continue final implementation in the team checkout rather than maintaining
-  a parallel final implementation here. Review the team repo's current EDA,
-  labeling guide, and tools before carrying over prototype code.
-- AI assistants may edit/generate code locally, but commits pushed to the canonical team repo should be authored by the human contributor, so AI accounts do not appear as contributors.
+- `src/risk.py` now implements the Part B baseline; `solution.RiskEstimator`
+  delegates to it. It no longer returns constant zero.
+- Uses the SAME local YOLO26x at 2560 px / 2 Hz with a separate causal ByteTrack
+  state. Every input frame gets a score; scores are held between sampled frames.
+- Fits motion from the preceding 1.6 seconds (at least 3 observations), estimates
+  contact within 5 seconds using approximate ground-footprint ellipses, requires
+  persistent pair evidence, and smooths risk. Discard implausible ID jumps,
+  clipped objects, person-in-car detections and already-overlapping footprints.
+- Reads no video file, future frame, Part A result, saved sample tracks, manual
+  labels, stored per-video homography, or sample signal timeline. State resets
+  between videos. Shared camera translation cancels in relative velocity;
+  rotation, perspective, occlusion and detector jitter remain limitations.
+- This is a motion heuristic, NOT an accident-trained model or calibrated
+  probability. It misses fixed-object crashes and can confuse close passing
+  with collision risk. Do not advertise accident accuracy from synthetic tests.
+- 23 focused tests pass, including 7 new risk tests: approaching vs separating/
+  parallel traffic, future contact, history-only prefix consistency, ID jumps,
+  missing-track decay, sampling and reset.
+- Full C3905 run with the NEW Part B: 14 Part A events, 3,825 risk samples;
+  A=109.1 s, B=146.4 s, total **255.5 s / 382.9 s budget**, no harness errors.
+  Output: `debug/part_b_baseline_C3905.json`. Risk ranged 0-0.9386. Alarm starts
+  at 3.5035, 11.011, 55.055, 97.097 and 121.6215 s: five false alarms relative
+  to the current labels, all outside the ignored near-miss window. This confirms
+  execution and exposes calibration problems; it does not establish accuracy.
+- The stricter full-run wrapper FAILED because nine background socket attempts
+  were blocked, although inference completed successfully without connections.
+  Subsequently `src/__init__.py` sets YOLO_OFFLINE=true and
+  YOLO_AUTOINSTALL=false before Ultralytics import. A fresh-process smoke test
+  of public Part B initialization and real GPU inference passed with both DNS
+  resolution and socket connections blocked and zero attempts. The full video
+  has NOT been rerun after this environment-only fix. `tools/verify_offline.py`
+  now checks DNS attempts too. Do not claim the stricter full-video check passed.
+- Asked whether the user has accident clips with impact timestamps; no answer
+  yet. Current four clips have no accident labels, so they assess false alarms
+  and runtime only. Near-miss windows are ignored in the official Part B metric.
+- Next: obtain labeled accident positives and non-accident controls, separate
+  clips for tuning/evaluation, measure warning time and false alarms. Use data
+  to decide whether a trained temporal head is justified in the remaining time.
+  Preserve the existing working baseline while doing this.
 
-## 2. Confirmed organizer / video facts
+Readiness: functional prototype, not submission-ready. Part A currently emits
+3 of 14 classes; development Score A is 0.1521. Part B accuracy is unmeasured.
+README's elimination weighting is 60% model / 25% website / 15% code; the
+official evaluator weights A/B 70%/30% when accidents are present, giving
+42%/18% of the overall score. With no test accidents the model score is A alone.
+Website readiness has not been audited here. Do not present checklist completion
+or synthetic tests as a percentage of competitive accuracy.
 
-Organizer/team confirmation received on 2026-09-24:
+## Workspace and user preferences
 
-- `camera.md` has been removed. We infer lanes, stop lines, crossings, and directions ourselves from the sample footage/EDA.
-- Hidden test footage uses the **same raw camera format/view** as the sample videos.
-  Hamid's latest EDA shows that even these sample clips have different framing:
-  C3902 landmarks shift 64-144 px against C3897, while C3905 shifts up to
-  70 px. The camera also settles after recording starts. A single unregistered
-  polygon map is not accurate enough for final inference.
-- Raw video format:
-  - `3840x2160`
-  - H.264 High 4:2:2
-  - 10-bit
-  - about `140 Mbps`
-  - `29.97 fps`
-- The judge GPU is T4-class, but this 4:2:2 H.264 stream should be treated as a **CPU-decode workload** rather than relying on GPU hardware decode.
-- The official Part B harness decodes every frame with `cv2.VideoCapture`, converts to BGR, then calls `RiskEstimator.step()` for every frame. We cannot remove that decode cost simply by sampling detector inference less often.
-- Total time budget remains `<= 3 x video duration` for Part A + Part B. Because decode itself consumes a meaningful fraction, Part A should target comfortably under ~1x video duration rather than spending the entire budget.
+- Active work/commit repo: `D:\wiut hackathon\code\WIUT-HACKATHON`, origin
+  `https://github.com/Jamoliddin-00i/WIUT-HACKATHON.git`.
+- Team source checkout: `D:\wiut hackathon\code\salen-traffic-events-main`;
+  do not push changes to its Hamid/Salen origin.
+- Working Python here: `.venv\Scripts\python.exe`.
+- Videos: `D:\wiut hackathon\videos`. All four originals are local.
+- Do not push to the team repository. Local commits use the user's configured
+  human Git identity. Never add AI co-author trailers.
+- User wants implementation to continue without repeated offers or permission
+  questions. Explain results in simple words; do not make reports the answer.
+- Use the large local model; no downgrade to a weaker detector. Traffic model
+  inference must run locally on CUDA and work offline for the judges.
+- Update this file at the end of every working session. Keep facts current.
 
-Organizer labeling clarifications received 2026-09-24 and incorporated in the
-team's `docs/LABELING_GUIDE.md` v2:
-- A bus stopped for >=10 s in a live lane counts as `stopped_vehicle`, even at
-  a bus stop; kerb-parked vehicles do not.
-- A pedestrian on a zebra on red is not `jaywalking`; a vehicle driving
-  through the pedestrian's carriageway half of that crossing is
-  `failure_to_yield` regardless of the signal.
-- An ordinary red-light queue is not `congestion`; it must fail to clear on
-  green.
-- Scoring uses temporal IoU only, with no separate frame tolerance. Event
-  boundaries should follow the official rules closely.
+## Task and constraints
 
-## 3. Current decode benchmark
+- Part A: temporal traffic event intervals. Part B: causal accident risk.
+- Judges: T4-class GPU, about 16 GB VRAM, <=5 GB weights, total wall time
+  <=3 times video duration. Local GPU is an RTX 3050 Laptop with 4 GB VRAM.
+- Original videos are 4K H.264 4:2:2 10-bit, approximately 29.97 fps. CPU decode
+  is a significant cost; the harness also decodes every frame for Part B.
+- Read `tools/scene/CONTRACT.md` before using EDA inputs. The known vehicle
+  signal head D is readable, but which movement it controls remains UNKNOWN.
+  Its correlation with traffic flow does not prove legal signal applicability.
+- Manual zebra-edge convention: a person slightly beside the zebra while
+  following it is exempt. Judge feet/path, not upper-body projection.
 
-### Local Windows FFmpeg benchmark
+## Labels and models
 
-Machine:
-- CPU: **Intel Core i5-12500H**
-- 12 physical cores
-- 16 logical processors
+- `labels/user_truth_2026-09-26.json`: the user's complete 40 annotations,
+  preserved as supplied: C3905=10, C3896=14, C3897=8, C3902=8.
+- Class counts: 16 stopped vehicles, 13 jaywalking, 6 congestion, 2 solid-line
+  crossings, 1 red light, 1 near miss, 1 failure to yield.
+- These are manual development labels, not independently adjudicated or held
+  out from tuning. Do not overwrite them with predictions or hard-code their
+  timestamps in inference. No accidents are labeled, so Part B cannot be scored.
+- `labels/user_proposal_review_2026-09-26.json` preserves the user's latest
+  review of 20 OLD C3905 proposals: 12 rejected, 7 confirmed with better manual
+  timing, and 1 fragment to merge. The other three pasted videos were unreviewed.
+  Comparing with current `auto_proposals.json`, 7 rejected intervals have no
+  same-class overlap; 5 still overlap: yielding around 11, 40 and 110 seconds,
+  jaywalking around 34 and 84 seconds. This is temporal matching, not proof of
+  actor identity or that the current output has no new false alarms. Comparison
+  details are in `debug/user_review_comparison.json`. Do not overwrite truth.
+- Detector: official `weights/yolo26x.pt`, 118,667,365 bytes. Verified SHA-256:
+  `9fdd44a31c504547ffb81d2c6d9e6dac3493c8eaa8b0398d3f43bae6c7003e92`.
+- Optional diagnostic `weights/yolo26x-pose.pt` is local. The ankle experiment
+  found ankles on pedestrians AND a motorcycle rider. Pose is not in runtime.
+- No weights were retrained. Improvements so far are geometry/tracking rules.
+- Observed environment: PyTorch 2.14.0+cu130, CUDA 13.0, Ultralytics 8.4.161,
+  OpenCV 5.0.0. The base environment lacks pandas and requests; core inference
+  currently avoids the pandas-dependent offline signal accessor.
 
-Input tested:
-- `C3905.MP4`
-- 3840x2160
-- H.264 High 4:2:2 10-bit
-- ~140 Mbps
-- 29.97 fps
+## Working implementation
 
-Command:
+- `solution.detect_events` calls `src/pipeline.py`; it no longer returns
+  the empty stub. `RiskEstimator` runs the causal baseline described above.
+- Runtime runs YOLO26x/ByteTrack, saves fresh tracks to a temporary directory,
+  and estimates registration from input frames using Hamid's SIFT registration.
+  Late frames reduce initial camera shake; short clips use their first frame.
+- Runtime never reads user labels, sample predictions, cached sample tracks,
+  stored per-video registration, or sample signal timelines. It uses the shared
+  reference image and provisional hand-drawn zones.
+- `tools/auto_label_video.py` remains the development/replay CLI; its default
+  sample-video geometry uses the stored homographies for fair comparisons.
+- Pedestrians: vehicle-occupant suppression, box-bottom foot approximation,
+  clipped-box rejection, motion over a two-second window, small allowance when
+  following crossing/kerb edges, and protection against jitter/track jumps.
+  Adjacent lane polygons are combined before finding kerbs. Rider and boundary
+  errors remain. This is not actual ankle detection.
+- Yielding: `tools/crossing_rules.py` checks moving vehicles and pedestrians
+  sharing a road section of a crossing. A bottom-of-box contact region estimates
+  vehicle entry/exit. C3905's annotated Cobalt event is recovered at
+  81.582-85.085 s with the current cached tracks (user: 81.782-84.718).
+- Bus dwell: >=10 seconds at the far-side bus stop, including buses whose bottom
+  edge overlaps the stop while the bottom-center point falls just outside it.
+  General stopped vehicles and signal-queue separation remain unfinished.
+- `tools/download_weights.py` is setup-only and verifies the checksum.
+- Comparison: `tools/evaluate_proposals.py` wraps the unchanged official metric.
+
+## Measured results
+
+Four-video comparison on the cached 2 fps tracks, after crossing and bus-edge
+changes (`debug/bus_footprint_proposals.json`): 84 proposals; Part A **0.1521**.
+At temporal IoU 0.5:
+
+| Class | Matches | Extra predictions | Missed labels |
+| --- | ---: | ---: | ---: |
+| Jaywalking | 8 | 39 | 5 |
+| Stopped vehicle | 12 | 5 | 4 |
+| Failure to yield | 1 | 19 | 0 |
+
+Congestion, red light, solid-line crossing, and near miss have no active rule.
+The old occupant-only baseline scored 0.1263, with jaywalking 5/57/8.
+Extras include wrong events and events with insufficient timing overlap; these
+counts do not mean every unmatched actor was visually adjudicated.
+
+Historical tests BEFORE the Part B implementation (zero-risk stub):
+
+Full official harness test on C3905 with socket connections explicitly blocked:
+14 events, 3,825 risk samples, **173.8 s total versus 382.9 s budget**, no harness
+errors. Part A was approximately 104 s; peak CUDA reserve 1.30 GiB. Runtime
+registration found 264 inliers, p90 error 1.9 reference pixels. Output:
+`debug/offline_submission_C3905.json`. This used the crossing update before the
+bus-edge change. Part B outputs were all zero; this verifies execution, not
+accident prediction. No T4 measurement or fresh end-to-end four-video test yet.
+
+The second full offline harness test, C3897, also finished: 26 events, 9,525 risk
+samples, **418.4 s total versus 953.5 s budget**, no harness errors. Part A took
+243.3 s and Part B 175.1 s; registration had 3,219 inliers, p90 error 1.2 pixels.
+Output: `debug/offline_submission_C3897.json`. Both tests used the ignored
+`debug/run_offline_harness.py` socket blocker. The tracked replacement
+`tools/verify_offline.py` additionally counts attempted connections (including
+ones swallowed by libraries); that stricter wrapper has not had a full run yet.
+
+16 focused unit tests passed: pedestrian geometry/trajectories, crossing
+entry/exit, opposite carriageways, stationary vehicles, occupants, public entry
+point, and weak/short-clip registration. The Windows sandbox denied access to
+Python TemporaryDirectory folders even inside the workspace; the full offline
+test succeeded outside the sandbox with user approval.
+
+## Running locally
+
+From WIUT-HACKATHON in PowerShell:
 
 ```powershell
-ffmpeg -benchmark -i "D:\wiut hackathon\videos\C3905.MP4" -frames:v 600 -f null -
+$env:SALEN_WORK_DIR = "$PWD\debug\runtime"
+.\.venv\Scripts\python.exe tools\download_weights.py
+.\.venv\Scripts\python.exe run_submission.py --videos "D:\wiut hackathon\videos\C3905.MP4" --out predictions.json --team Salen
+.\.venv\Scripts\python.exe evaluate.py --pred predictions.json --validate-only
 ```
 
-Observed:
-- 600 frames = ~20.02 s source video
-- wall time: **5.713 s**
-- ~**105 fps**
-- ~**3.5x realtime**
-- raw FFmpeg-null decode cost ~**0.285x video duration**
+Fast rule replay and tests:
 
-Important: this is **not yet the number that matters most** because `ffmpeg -f null` is cheaper than the actual `cv2.VideoCapture -> BGR ndarray` path used by the harness.
+```powershell
+.\.venv\Scripts\python.exe tools\auto_label_video.py "D:\wiut hackathon\videos" --reuse-tracks
+.\.venv\Scripts\python.exe tools\evaluate_proposals.py
+.\.venv\Scripts\python.exe -m unittest discover -s tools/tests -v
+```
 
-### Local Windows OpenCV BGR decode benchmark
+`--legacy-pedestrians` reproduces the earlier pedestrian rule;
+`--legacy-crossings` reproduces the earlier yielding fragments. Models, tracks,
+predictions, diagnostic images, and temporary output are ignored by Git.
 
-Measured 2026-09-24 with `scripts/benchmark_decode.py` on the first 600 frames of
-`C3905.MP4`. This uses `cv2.VideoCapture.read()` and retains the BGR ndarray, as
-the organizer harness does. A CUDA PyTorch wheel download was also active during
-these measurements, so repeat if a precise final runtime margin is needed.
+## Part A backlog (paused) and eventual packaging
 
-| CPU affinity | Wall time | Decode rate | Wall / source duration |
-| --- | ---: | ---: | ---: |
-| 16 logical CPUs (default), first run | 23.78 s | 25.23 fps | 1.19x |
-| first 8 logical CPUs | 27.17 s | 22.09 fps | 1.36x |
-| 16 logical CPUs, user's exact `time.time()` script, later run | 19.82 s | 30.28 fps | 0.99x |
-
-The OpenCV BGR path is much slower than the FFmpeg-null benchmark above. It
-costs roughly one video-duration of wall time on this machine, with meaningful
-run-to-run variance; the restricted eight-logical-CPU result is slower. The
-combined 3x budget therefore leaves limited margin for Part A detection and
-Part B processing; sample model inference sparingly and benchmark end to end.
-
-Kaggle 4-vCPU Linux FFmpeg-null decode of the first 600 C3905 frames took
-27.072 s (~22 fps, 1.35x source duration). OpenCV 4.13.0 with FFMPEG can open
-and BGR-decode a frame there. A full 600-frame OpenCV loop remains pending.
-Do not linearly extrapolate that 4-vCPU VM to the judge's 8-core CPU.
-
-## 4. Hamid's EDA handoff
-
-Availability as of 2026-09-25:
-- The current team checkout has EDA directories for all four sample clips,
-  `reports/eda/SUMMARY.md` v4, `tools/scene/CONTRACT.md`,
-  `scene_reference_v2.json`, `registration.json`, v4 signal intervals, and
-  `docs/LABELING_GUIDE.md` v2. Read the contract before implementing rules;
-  it marks older direction maps and signal phases as deprecated.
-- The underlying YOLO11m track CSVs are still absent from the checkout. Keep
-  using locally cached track CSVs until the teammate tracks arrive.
-- Hamid's C3905 detector comparison found 31.55 persons per frame for
-  YOLO11m at 1280 px versus 23.03 for YOLO11n at 1280 px. The older local
-  YOLO26n 960 px pass missed some small pedestrians. The current YOLO26x
-  2560 px detector sees more, but absence of a proposal is still weak evidence
-  of absence of an event.
-
-### Traffic light
-
-- Readable signal location in original 4K coordinates: approximately **`(2328, 780)`**.
-- Use `tools/scene/signal.py` and
-  `reports/eda/signals/v4/<STEM>_D_intervals_v4.csv` for head D. C3905 D is red
-  0-31.532 s and 75.475-111.511 s, red+amber 31.532-34.534 s and
-  111.511-114.514 s, and green again from 114.514 s. The 69.469-72.472 s
-  portion is blinking green, followed by amber to 75.475 s.
-- D is a strong timing proxy for the near-carriageway flow, but which movements
-  it physically controls is unverified. Far-carriageway signal state is unknown.
-  The old `C3905/signal_timeline_v1_DEPRECATED.csv` and v3 phase CSVs are not
-  valid rule inputs. A red-light rule also needs the verified stop-line zone,
-  which is still pending.
-
-### Stop line / zebra region
-
-For the near carriageway, cars reportedly wait around:
-- **`(1500, 870)`**
-- **`(1764, 985)`**
-
-These are descriptive queue estimates only. The v4 contract requires a
-hand-drawn `reports/eda/zones.json` before using stop lines or zebras as final
-rule inputs.
-
-### Wrong-way direction field
-
-- The old per-video `direction_field.json` and `scene_reference.json` are
-  deprecated. Use `scene_reference_v2.json` via `tools/scene/scene.py` and call
-  wrong-way only inside `wrong_way_safe` cells, with sustained opposing motion.
-
-### Stopped-vehicle ignore zones
-
-Do not treat cars parked at the **left kerb** as `stopped_vehicle` anomalies.
-The team labeling guide incorporates the organizer's answer that a bus at a
-bus stop **does count** if it stands in a live carriageway lane for >=10 s.
-Do not blanket-exclude the far-kerb bus-stop region x=1350..1700,
-y=380..520; first distinguish bay/kerb parking from a live lane.
-
-These zones should become explicit ignore masks/regions in scene configuration, not scattered conditionals.
-
-### Exposure jump
-
-- C3905 brightness rises around 52-67 s, but camera exposure metadata is
-  constant; v3 ruled out an exposure-control change. The remaining cause is
-  unverified.
-- **Do not use raw/global brightness alone for `fire_smoke`.** Any smoke/fire detector should use spatial/temporal/local cues robust to exposure changes.
-
-### YOLO tracks
-
-- Hamid generated **YOLO11m tracks** for EDA on the server/Kaggle; the
-  extracted snapshot has reports but no track CSVs.
-- The EDA README describes its CSV schema as
-  `frame,t_sec,track_id,cls,conf,x1,y1,x2,y2` in original 4K coordinates.
-- When shared, inspect the schema once and integrate/reuse the tracks rather than recomputing identical EDA unnecessarily.
-
-## 5. Model / runtime decisions already settled
-
-- Final inference must be offline and reproducible.
-- No OpenAI/Gemini/Anthropic/hosted inference APIs in the traffic pipeline.
-- Download/install open weights locally and run on the user's GPU with CUDA when available.
-- Final implementation must also run on a T4-class 16 GB GPU and stay within the total weight/runtime limits.
-- Kaggle may be used for T4-like testing or fine-tuning.
-- A local Linux VM is **not currently required**.
-- GitHub Actions are not required and should not be a dependency.
-- Never modify organizer `run_submission.py` or `evaluate.py`.
-- Do not commit the raw multi-GB sample videos.
-
-## 6. Annotation/dev-label state
-
-A local annotation script exists at `scripts/label_video.py` / is being used for sample-video labeling.
-
-Local GUI note:
-- `opencv-python-headless` cannot use `cv2.imshow()`.
-- The labeler now uses Tkinter and Pillow for its GUI while OpenCV only decodes
-  frames; `requirements-labeler.txt` adds Pillow without changing judge deps.
-- A desktop smoke test opened and closed successfully on 2026-09-24.
-
-Ground-truth dev annotations should ultimately be saved in the official evaluator-compatible shape, e.g. `dev_labels.json`, then tested with `run_submission.py` and `evaluate.py`.
-
-Manual labeling principle already established:
-- be conservative;
-- use official event start/end conventions;
-- do not label a traffic-law violation unless the relevant signal/lane/crossing rule is actually supported by the footage/scene geometry.
-
-Jamoliddin has asked for automatic event labeling because manually identifying
-traffic violations is impractical. Build an automatic first pass from local
-detector/tracker tracks and scene rules. Keep its proposals separate from
-`dev_labels.json`; pseudo-labels should not be treated as ground truth when
-evaluating the model. For `failure_to_yield`, the event is a vehicle **driving
-through** the crossing while a pedestrian is on or entering it; stopping to
-yield is not that event.
-
-Initial local automatic pass now exists in `scripts/auto_label_video.py` with
-normalized scene geometry in `config/scene.json`. It uses locally stored
-`weights/yolo26x.pt` and CUDA YOLO tracking to propose `jaywalking` and
-`failure_to_yield` segments, writing `auto_proposals.json` separately from
-reviewed labels and `debug/*_auto_tracks.csv` for diagnostics. The scene masks
-and thresholds are preliminary and must be checked on footage. The first 20 s
-run at 3 fps / 1280 px produced false positives; a 2 fps / 960 px pass was
-faster. The full 2 fps / 960 px pass completed on all four sample videos:
-1 proposal on C3905, 3 on C3896, 10 on C3897, and 9 on C3902. A midpoint
-contact-sheet review found clear false positives around sidewalks and islands;
-these 23 events remain unverified candidates, not ground truth. C3902 around
-83-97 s includes people walking diagonally through the junction and is a
-promising jaywalking candidate for focused review. The script now uses
-`VideoCapture.grab()` for unsampled frames.
-The current YOLO26x 2560 px pipeline is a local GPU prototype. Full detector
-passes finished on all four clips: C3905 105.6 s, C3896 268.3 s,
-C3897 245.2 s, and C3902 260.5 s. The initial two-class rules produced
-83 candidates. Replaying the cached tracks through a far-side bus-dwell rule
-added 17 stopped-vehicle candidates, for 100 unverified candidates total
-(C3905 13, C3896 38, C3897 22, C3902 27).
-Peak reserved GPU memory was 1.30-1.34 GiB. Each Part A pass took less wall time
-than its source duration, but the full Part A + B budget remains untested.
-The canonical team checkout now has the script under `tools/auto_label_video.py`
-and a local copy of the weight. Its scene polygons are mapped between the four
-clips using Hamid's registration homographies; the zones remain unverified.
-The prototype does not call a hosted model/API and is not yet wired into
-`solution.py`. The rough `failure_to_yield` proximity rule must
-be replaced with same-carriageway occupancy and front/rear crossing boundaries
-from the team labeling guide before it can be treated as a reliable label.
-
-Jamoliddin supplied 12 provisional hand-observed events across C3905 and C3896
-on 2026-09-25. They are preserved unchanged in the canonical checkout's
-`labels/user_observations_2026-09-25.json`. Frame/signal-phase triage is in
-`docs/PROVISIONAL_LABEL_REVIEW.md`. Several far-side buses plausibly meet the
-organizer's stopped-vehicle definition. The new narrow bus-dwell rule recovers
-five of the six hand-observed stopped-vehicle intervals across the two clips
-at temporal IoU 0.81-0.90; the unmatched interval appears to be a signal queue.
-Two congestion
-observations appear inconsistent with the signal/traffic rule. The C3905
-81-85 s review was corrected after Jamoliddin identified the moving white
-Cobalt at the right-hand zebra: `failure_to_yield` is likely valid, and
-`near_miss` is plausible if the reported pedestrian jump back is confirmed
-frame by frame. The earlier review looked at the central zebra instead.
-Actor identities and exact boundaries remain unconfirmed. Do not score either
-the manual intervals or the automatic proposals as verified ground truth.
-
-Local ML environment: isolated `.venv`, PyTorch `2.14.0+cu130`, CUDA 13.0,
-RTX 3050 Laptop GPU with 4 GB VRAM. Ultralytics `8.4.161` and local YOLO26x
-weights (~118.7 MB) are present. The final judge dependency recipe is not yet
-settled; do not assume this minimal dev environment is the final package.
-Ultralytics states that its code and models use AGPL-3.0 or an Enterprise
-license; check the canonical team's license/attribution plan before committing
-the weights or packaging Ultralytics in the final submission.
-
-## 7. Immediate next actions for Codex
-
-1. Continue in the team checkout. Use `reports/eda/SUMMARY.md` v4,
-   `tools/scene/CONTRACT.md`, `scene_reference_v2.json`,
-   `registration.json`, and `docs/LABELING_GUIDE.md`. Wait for a verified
-   `reports/eda/zones.json` before treating scene polygons as final rule inputs.
-2. Use the OpenCV decode numbers above when setting the detector sampling rate.
-3. Benchmark the full Part A+Part B harness path on the T4-like environment.
-4. Validate the new bus-dwell proposals and the bus-stop live-lane boundary,
-   then extend stopped-vehicle proposals beyond buses. Keep all proposals
-   distinct from reviewed dev labels and reject sidewalk/island false positives.
-5. Use the calibrated signal timeline and merged direction field in team EDA
-   for candidate `red_light` and `wrong_way` rules, with video verification.
-6. When Hamid shares the YOLO11m track CSVs, inspect and integrate them;
-   reports and direction fields are already available in the team checkout.
-7. Use manual review only where it adds value to automatic proposals, with
-   official event boundary conventions and no assumed frame tolerance.
-8. Carry over only useful staging code into the canonical repo, using
-   Jamoliddin's Git identity. Do not push to the canonical repo.
-9. Implement Part B TTC/conflict risk logic after detector/runtime and
-   registration geometry are verified.
-
-## 8. Performance principle
-
-The raw-video decode path is now a first-order constraint. Optimize model work **around** unavoidable decode cost:
-
-- do not run YOLO on every 29.97-fps frame unless benchmarks justify it;
-- sample detector inference and reuse/interpolate tracks;
-- avoid independently decoding the same video multiple times inside Part A;
-- keep Part B causal and light per frame;
-- benchmark the real `run_submission.py` path early, not just isolated model inference.
-
-## 9. Things not to rediscover
-
-Unless new evidence changes them, do not spend time re-deriving these:
-- `camera.md` is gone;
-- Head D's C3905 signal ROI around `(2328, 780)` has already been identified;
-- Hamid's merged direction field, registration, and four per-video EDA reports
-  are present in the team checkout;
-- kerb-parked vehicles are ignored, but a bus stopped in a live lane for >=10 s
-  counts even at the bus stop;
-- a pedestrian on the zebra is not jaywalking because their signal is red;
-- ordinary red-light queues are not congestion;
-- temporal IoU scoring has no frame tolerance;
-- exposure changes around 52-67s make global brightness unreliable for fire/smoke;
-- raw-video CPU decoding is a material part of the 3x runtime budget;
-- Kaggle 4-vCPU FFmpeg-null decode measured about 22 fps; Kaggle OpenCV can
-  decode the frame to BGR;
-- Hamid's EDA for all four clips and an authenticated team Git checkout are
-  available under `code`; YOLO11m track CSVs remain absent.
+1. The 4 fps C3905 experiment finished (`debug/tracks4/`, `debug/proposals4.json`):
+   196.6 s for Part A, 21 candidates instead of 14. The C3905-only Part A score
+   fell from 0.3619 to 0.2892 with no additional matches at tIoU 0.5. Keep 2 fps;
+   more frames alone did not solve tracking or geometry errors.
+2. User clarification was requested asynchronously: identify the vehicles in
+   C3902 red light 95.295-123.156, C3896 solid line 122.889-132.532, and C3897
+   solid line 128.328-173.740. Frames are in `debug/missing_rules_review.jpg`.
+   These labels lack actor IDs; some intervals are much longer than one crossing.
+3. Red-light/congestion rules need a justified signal-to-movement association
+   and a reader for NEW input video. Do not use sample signal timelines as
+   predictions for new videos. Unknown signal applicability must stay unknown.
+   A second user clarification is pending: C3905 congestion 72.139-111.612 is
+   almost entirely amber/red in the D timeline (red 75.475-111.511; green begins
+   114.514). Ask whether the relevant queue persisted after green; ordinary red
+   queues are excluded by the organizer. Do not edit the label silently.
+4. Solid-line rules need the actual prohibited line(s) mapped. The user's current
+   zones contain a STOP line, not solid lane-divider annotations. Do not confuse
+   those two markings.
+5. Near miss needs visible evasive action and clearance, not proximity alone.
+   The one user event is C3905 81.448-84.017; 2 fps and tracking breaks may miss
+   the reported pedestrian jump-back. `debug/check_near_miss_evidence.py` tried
+   abrupt pedestrian turning/braking plus predicted approach/clearance on both
+   sampling rates. It missed the annotated event and produced unrelated samples
+   at 4 fps, so it was NOT enabled. Cobalt track 2757 conflicts with pedestrians
+   near x=3300-3700, y=800-1050 (C3905 4K coordinates); inspect ankles/occlusion
+   around 81-84 s before promoting any near-miss heuristic.
+6. Further reduce far-kerb, rider, and zebra-boundary false positives; improve
+   track continuity/timing and missed stopped vehicles. Do not silently relabel
+   the user's examples to make metrics look better.
+   Prioritize the five remaining overlaps from the latest C3905 review above.
+   User says the pedestrian let the car pass around 40 s, and had not entered
+   the second crossing section around 110 s. Proximity/shared broad road polygon
+   alone is insufficient. Do not blindly suppress all stationary pedestrians:
+   stopping may itself be an evasive response. Inspect the actual actor/path.
+   `debug/check_rider_crops.py` tested the SAME YOLO26x on close crops: at
+   C3905 34.535 s, person track 1004, it detects a motorcycle (confidence .40),
+   missed by whole-frame inference. A true walking child at 75.576 s did not
+   produce a motorcycle. This is promising diagnostic evidence, not a verified
+   general fix, and crop refinement is NOT integrated into runtime. Example
+   image: `debug/rider_crop_check.jpg`.
+7. Validate the final pipeline on all four videos, then a T4-like environment.
+   Complete licensing/attribution, environment reproducibility, packaging,
+   and optional causal risk model. The project is not submission-ready yet.

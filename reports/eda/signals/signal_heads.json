@@ -1,0 +1,621 @@
+{
+ "note": "appearance, facing and controlled approach are read by eye from 4K crops of the reference video; cycle_corr is automatic (see module docstring). Crop boxes carry a 20 px margin, so a head's own box is its crop box shrunk by 20 px.",
+ "heads": {
+  "A": {
+   "box_ref": [
+    517,
+    964,
+    554,
+    1038
+   ],
+   "type": "pedestrian",
+   "lamps": 2,
+   "appearance": "front visible: red standing figure (top), green walking figure (bottom)",
+   "mount": "left gantry pole, lower head",
+   "faces": "towards the camera (down-right in the image)",
+   "controls": "pedestrians on the lower-left zebra (across the side road at the lower left)",
+   "controls_confidence": "MEDIUM: from facing direction only; its green is synchronous with D",
+   "cycle_corr": {
+    "C3897": {
+     "pixels": 4659,
+     "red": {
+      "max_abs_corr": 0.925,
+      "null_p95": 0.721
+     },
+     "green": {
+      "max_abs_corr": 0.926,
+      "null_p95": 0.718
+     }
+    },
+    "C3896": {
+     "pixels": 4659,
+     "red": {
+      "max_abs_corr": 0.875,
+      "null_p95": 0.525
+     },
+     "green": {
+      "max_abs_corr": 0.875,
+      "null_p95": 0.535
+     }
+    },
+    "C3902": {
+     "pixels": 4878,
+     "red": {
+      "max_abs_corr": 0.945,
+      "null_p95": 0.824
+     },
+     "green": {
+      "max_abs_corr": 0.945,
+      "null_p95": 0.818
+     }
+    },
+    "C3905": {
+     "pixels": 4932,
+     "red": {
+      "max_abs_corr": 0.963,
+      "null_p95": 0.746
+     },
+     "green": {
+      "max_abs_corr": 0.963,
+      "null_p95": 0.759
+     }
+    }
+   },
+   "crop_box_4k": {
+    "C3897": [
+     484,
+     929,
+     590,
+     1065
+    ],
+    "C3896": [
+     484,
+     930,
+     590,
+     1066
+    ],
+    "C3902": [
+     383,
+     1009,
+     491,
+     1147
+    ],
+    "C3905": [
+     477,
+     976,
+     586,
+     1115
+    ]
+   },
+   "readable_from_camera": true
+  },
+  "B": {
+   "box_ref": [
+    549,
+    957,
+    594,
+    1034
+   ],
+   "type": "pedestrian (likely)",
+   "lamps": 2,
+   "appearance": "side / back view, two visors, no lit face visible",
+   "mount": "left gantry pole, next to A",
+   "faces": "right, along the zebra across the near carriageway",
+   "controls": "pedestrians crossing the near carriageway from the median nose",
+   "controls_confidence": "LOW",
+   "cycle_corr": {
+    "C3897": {
+     "pixels": 2760,
+     "red": {
+      "max_abs_corr": 0.342,
+      "null_p95": 0.48
+     },
+     "green": {
+      "max_abs_corr": 0.332,
+      "null_p95": 0.461
+     }
+    },
+    "C3896": {
+     "pixels": 2760,
+     "red": {
+      "max_abs_corr": 0.307,
+      "null_p95": 0.411
+     },
+     "green": {
+      "max_abs_corr": 0.34,
+      "null_p95": 0.45
+     }
+    },
+    "C3902": {
+     "pixels": 2841,
+     "red": {
+      "max_abs_corr": 0.503,
+      "null_p95": 0.605
+     },
+     "green": {
+      "max_abs_corr": 0.434,
+      "null_p95": 0.518
+     }
+    },
+    "C3905": {
+     "pixels": 2820,
+     "red": {
+      "max_abs_corr": 0.579,
+      "null_p95": 0.736
+     },
+     "green": {
+      "max_abs_corr": 0.584,
+      "null_p95": 0.671
+     }
+    }
+   },
+   "crop_box_4k": {
+    "C3897": [
+     531,
+     929,
+     620,
+     1060
+    ],
+    "C3896": [
+     531,
+     930,
+     620,
+     1061
+    ],
+    "C3902": [
+     431,
+     1008,
+     521,
+     1141
+    ],
+    "C3905": [
+     525,
+     976,
+     616,
+     1109
+    ]
+   },
+   "readable_from_camera": false
+  },
+  "C": {
+   "box_ref": [
+    2244,
+    719,
+    2281,
+    779
+   ],
+   "type": "pedestrian (likely)",
+   "lamps": 2,
+   "appearance": "side / back view, two visors pointing left, no lit face visible",
+   "mount": "median-nose pole, left of D",
+   "faces": "left, along the zebra across the near carriageway",
+   "controls": "pedestrians crossing the near carriageway from the left corner",
+   "controls_confidence": "LOW",
+   "cycle_corr": {
+    "C3897": {
+     "pixels": 3450,
+     "red": {
+      "max_abs_corr": 0.17,
+      "null_p95": 0.189
+     },
+     "green": {
+      "max_abs_corr": 0.172,
+      "null_p95": 0.19
+     }
+    },
+    "C3896": {
+     "pixels": 3450,
+     "red": {
+      "max_abs_corr": 0.196,
+      "null_p95": 0.21
+     },
+     "green": {
+      "max_abs_corr": 0.156,
+      "null_p95": 0.187
+     }
+    },
+    "C3902": {
+     "pixels": 3542,
+     "red": {
+      "max_abs_corr": 0.375,
+      "null_p95": 0.444
+     },
+     "green": {
+      "max_abs_corr": 0.494,
+      "null_p95": 0.587
+     }
+    },
+    "C3905": {
+     "pixels": 3619,
+     "red": {
+      "max_abs_corr": 0.549,
+      "null_p95": 0.49
+     },
+     "green": {
+      "max_abs_corr": 0.563,
+      "null_p95": 0.55
+     }
+    }
+   },
+   "crop_box_4k": {
+    "C3897": [
+     2217,
+     691,
+     2310,
+     805
+    ],
+    "C3896": [
+     2217,
+     692,
+     2310,
+     806
+    ],
+    "C3902": [
+     2135,
+     738,
+     2229,
+     854
+    ],
+    "C3905": [
+     2228,
+     698,
+     2323,
+     814
+    ]
+   },
+   "readable_from_camera": false
+  },
+  "D": {
+   "box_ref": [
+    2291,
+    719,
+    2340,
+    827
+   ],
+   "type": "vehicle",
+   "lamps": 3,
+   "appearance": "front visible: three round lamps, red top, amber middle, green bottom",
+   "mount": "median-nose pole",
+   "faces": "towards the camera",
+   "controls": "UNKNOWN which movements D physically controls. D is a strong timing proxy for the near-carriageway flow: held-out, near-carriageway crossings rise by +1.10 (daylight) and +1.27 (evening) per s after D green onset (p <= 0.011 under the most conservative periodicity-preserving null), and only 2.5 to 6.3% of them happen while D is red (red is 45 to 53% of the time). The far carriageway is also cycle-locked, with a different phase: its flow drops to a low-rate stretch about 47 to 61-65 s after D green onset, inside D red (signal_validation_v2.json). Coordinated signals or upstream platoons could explain either. See reports/eda/SUMMARY.md, finding 3.",
+   "controls_confidence": "HIGH as a timing proxy for the near-carriageway flow; UNKNOWN for the movements it controls; v4 timeline coverage only, no human-verified lamp labels yet",
+   "cycle_corr": {
+    "C3897": {
+     "pixels": 7592,
+     "red": {
+      "max_abs_corr": 0.965,
+      "null_p95": 0.722
+     },
+     "green": {
+      "max_abs_corr": 0.966,
+      "null_p95": 0.701
+     }
+    },
+    "C3896": {
+     "pixels": 7592,
+     "red": {
+      "max_abs_corr": 0.954,
+      "null_p95": 0.578
+     },
+     "green": {
+      "max_abs_corr": 0.954,
+      "null_p95": 0.519
+     }
+    },
+    "C3902": {
+     "pixels": 7953,
+     "red": {
+      "max_abs_corr": 0.97,
+      "null_p95": 0.843
+     },
+     "green": {
+      "max_abs_corr": 0.974,
+      "null_p95": 0.835
+     }
+    },
+    "C3905": {
+     "pixels": 8084,
+     "red": {
+      "max_abs_corr": 0.988,
+      "null_p95": 0.704
+     },
+     "green": {
+      "max_abs_corr": 0.988,
+      "null_p95": 0.729
+     }
+    }
+   },
+   "crop_box_4k": {
+    "C3897": [
+     2263,
+     689,
+     2366,
+     856
+    ],
+    "C3896": [
+     2263,
+     690,
+     2366,
+     857
+    ],
+    "C3902": [
+     2181,
+     735,
+     2286,
+     905
+    ],
+    "C3905": [
+     2275,
+     695,
+     2381,
+     865
+    ]
+   },
+   "readable_from_camera": true
+  },
+  "E": {
+   "box_ref": [
+    1442,
+    493,
+    1502,
+    615
+   ],
+   "type": "vehicle (likely)",
+   "lamps": null,
+   "appearance": "back of a tall housing hanging from the gantry (similar height to D), lamps not visible",
+   "mount": "gantry over the near carriageway, right end",
+   "faces": "away from the camera, up-left",
+   "controls": "near carriageway (towards camera): drivers approaching the gantry face it",
+   "controls_confidence": "MEDIUM: position over the near lanes and facing direction; not readable",
+   "cycle_corr": {
+    "C3897": {
+     "pixels": 10764,
+     "red": {
+      "max_abs_corr": 0.196,
+      "null_p95": 0.239
+     },
+     "green": {
+      "max_abs_corr": 0.172,
+      "null_p95": 0.237
+     }
+    },
+    "C3896": {
+     "pixels": 10764,
+     "red": {
+      "max_abs_corr": 0.314,
+      "null_p95": 0.349
+     },
+     "green": {
+      "max_abs_corr": 0.289,
+      "null_p95": 0.348
+     }
+    },
+    "C3902": {
+     "pixels": 11280,
+     "red": {
+      "max_abs_corr": 0.29,
+      "null_p95": 0.332
+     },
+     "green": {
+      "max_abs_corr": 0.415,
+      "null_p95": 0.407
+     }
+    },
+    "C3905": {
+     "pixels": 11421,
+     "red": {
+      "max_abs_corr": 0.446,
+      "null_p95": 0.536
+     },
+     "green": {
+      "max_abs_corr": 0.546,
+      "null_p95": 0.518
+     }
+    }
+   },
+   "crop_box_4k": {
+    "C3897": [
+     1415,
+     465,
+     1532,
+     642
+    ],
+    "C3896": [
+     1415,
+     466,
+     1532,
+     643
+    ],
+    "C3902": [
+     1322,
+     523,
+     1441,
+     703
+    ],
+    "C3905": [
+     1412,
+     486,
+     1532,
+     666
+    ]
+   },
+   "readable_from_camera": false
+  },
+  "F": {
+   "box_ref": [
+    799,
+    530,
+    835,
+    640
+   ],
+   "type": "vehicle (likely)",
+   "lamps": null,
+   "appearance": "back of a tall housing hanging from the gantry, lamps not visible",
+   "mount": "gantry over the near carriageway, left part",
+   "faces": "away from the camera, up-left",
+   "controls": "near carriageway (towards camera)",
+   "controls_confidence": "MEDIUM: as E",
+   "cycle_corr": {
+    "C3897": {
+     "pixels": 8820,
+     "red": {
+      "max_abs_corr": 0.313,
+      "null_p95": 0.433
+     },
+     "green": {
+      "max_abs_corr": 0.285,
+      "null_p95": 0.419
+     }
+    },
+    "C3896": {
+     "pixels": 8820,
+     "red": {
+      "max_abs_corr": 0.265,
+      "null_p95": 0.394
+     },
+     "green": {
+      "max_abs_corr": 0.243,
+      "null_p95": 0.372
+     }
+    },
+    "C3902": {
+     "pixels": 9230,
+     "red": {
+      "max_abs_corr": 0.421,
+      "null_p95": 0.571
+     },
+     "green": {
+      "max_abs_corr": 0.427,
+      "null_p95": 0.537
+     }
+    },
+    "C3905": {
+     "pixels": 9438,
+     "red": {
+      "max_abs_corr": 0.448,
+      "null_p95": 0.559
+     },
+     "green": {
+      "max_abs_corr": 0.344,
+      "null_p95": 0.52
+     }
+    }
+   },
+   "crop_box_4k": {
+    "C3897": [
+     774,
+     501,
+     876,
+     680
+    ],
+    "C3896": [
+     774,
+     502,
+     876,
+     681
+    ],
+    "C3902": [
+     673,
+     571,
+     777,
+     752
+    ],
+    "C3905": [
+     763,
+     537,
+     868,
+     719
+    ]
+   },
+   "readable_from_camera": false
+  },
+  "G": {
+   "box_ref": [
+    3782,
+    708,
+    3816,
+    753
+   ],
+   "type": "pedestrian (likely)",
+   "lamps": 2,
+   "appearance": "side view at the right frame edge, two visors pointing left",
+   "mount": "right kerb pole",
+   "faces": "left, along the right-hand zebra",
+   "controls": "pedestrians on the right-hand zebra",
+   "controls_confidence": "LOW",
+   "cycle_corr": {
+    "C3897": {
+     "pixels": 2880,
+     "red": {
+      "max_abs_corr": 0.166,
+      "null_p95": 0.241
+     },
+     "green": {
+      "max_abs_corr": 0.151,
+      "null_p95": 0.218
+     }
+    },
+    "C3896": {
+     "pixels": 2944,
+     "red": {
+      "max_abs_corr": 0.292,
+      "null_p95": 0.311
+     },
+     "green": {
+      "max_abs_corr": 0.207,
+      "null_p95": 0.277
+     }
+    },
+    "C3902": {
+     "pixels": 3055,
+     "red": {
+      "max_abs_corr": 0.362,
+      "null_p95": 0.402
+     },
+     "green": {
+      "max_abs_corr": 0.447,
+      "null_p95": 0.503
+     }
+    },
+    "C3905": {
+     "pixels": 792,
+     "red": {
+      "max_abs_corr": 0.405,
+      "null_p95": 0.41
+     },
+     "green": {
+      "max_abs_corr": 0.518,
+      "null_p95": 0.382
+     }
+    }
+   },
+   "crop_box_4k": {
+    "C3897": [
+     3756,
+     678,
+     3840,
+     781
+    ],
+    "C3896": [
+     3755,
+     678,
+     3840,
+     781
+    ],
+    "C3902": [
+     3682,
+     698,
+     3768,
+     802
+    ],
+    "C3905": [
+     3789,
+     650,
+     3840,
+     755
+    ]
+   },
+   "readable_from_camera": false
+  }
+ }
+}

@@ -1,0 +1,19 @@
+{
+  "model": "models/yolo11n.pt",
+  "imgsz": 1280,
+  "stride": 3,
+  "processed_frames": 1275,
+  "wall_s": 722.2,
+  "fps_wall": 1.765,
+  "fps_infer_only": 1.859,
+  "rows": 63873,
+  "video": "proxies/C3905_1080p.mp4",
+  "video_fps": 29.97002997002997,
+  "video_frames": 3825,
+  "proxy_size": [
+    1920,
+    1080
+  ],
+  "scale_to_orig": 2.0,
+  "fps_steady": 1.771
+}

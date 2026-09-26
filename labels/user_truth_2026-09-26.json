@@ -1,0 +1,66 @@
+{
+  "C3905.MP4": {
+    "duration": 127.63,
+    "fps": 29.97,
+    "events": [
+      [1.268, 24.191, "stopped_vehicle"],
+      [11.211, 16.95, "jaywalking"],
+      [36.77, 62.729, "stopped_vehicle"],
+      [72.139, 79.746, "jaywalking"],
+      [72.139, 111.612, "congestion"],
+      [75.609, 92.192, "stopped_vehicle"],
+      [81.448, 84.017, "near_miss"],
+      [81.782, 84.718, "failure_to_yield"],
+      [100.667, 115.716, "jaywalking"],
+      [107.007, 117.918, "stopped_vehicle"]
+    ]
+  },
+  "C3896.MP4": {
+    "duration": 340.34,
+    "fps": 29.97,
+    "events": [
+      [5.672, 25.993, "congestion"],
+      [8.542, 26.059, "stopped_vehicle"],
+      [53.82, 71.705, "congestion"],
+      [80.414, 98.832, "stopped_vehicle"],
+      [85.686, 109.576, "congestion"],
+      [122.889, 132.532, "solid_line_crossing"],
+      [142.442, 146.246, "congestion"],
+      [159.559, 172.005, "jaywalking"],
+      [170.904, 187.02, "stopped_vehicle"],
+      [203.804, 226.493, "stopped_vehicle"],
+      [237.404, 258.225, "jaywalking"],
+      [274.04, 296.763, "stopped_vehicle"],
+      [279.045, 299.166, "congestion"],
+      [299.8, 328.228, "stopped_vehicle"]
+    ]
+  },
+  "C3897.MP4": {
+    "duration": 317.82,
+    "fps": 29.97,
+    "events": [
+      [0.0, 16.984, "jaywalking"],
+      [0.0, 26.059, "stopped_vehicle"],
+      [75.976, 87.054, "jaywalking"],
+      [102.803, 120.253, "stopped_vehicle"],
+      [128.328, 173.74, "solid_line_crossing"],
+      [218.418, 246.413, "stopped_vehicle"],
+      [291.391, 299.199, "jaywalking"],
+      [304.971, 317.818, "jaywalking"]
+    ]
+  },
+  "C3902.MP4": {
+    "duration": 317.82,
+    "fps": 29.97,
+    "events": [
+      [13.413, 33.534, "stopped_vehicle"],
+      [21.488, 32.032, "jaywalking"],
+      [81.248, 102.202, "jaywalking"],
+      [95.295, 123.156, "red_light"],
+      [167.3, 198.899, "jaywalking"],
+      [204.004, 215.98, "stopped_vehicle"],
+      [226.193, 244.811, "stopped_vehicle"],
+      [256.389, 269.503, "jaywalking"]
+    ]
+  }
+}

@@ -64,8 +64,8 @@ def detect_events(video_path: str) -> list[list]:
         5. optionally re-score `accident` / `near_miss` candidates with a
            learned clip classifier.
     """
-    # TODO: replace this stub with your pipeline.
-    return []
+    from src.pipeline import detect_events as run_detector
+    return run_detector(video_path)
 
 
 class RiskEstimator:
@@ -85,6 +85,9 @@ class RiskEstimator:
         """
         self.meta = meta
         self.last_score = 0.0
+        from src.risk import CausalRiskEstimator
+        self.estimator = CausalRiskEstimator()
+        self.estimator.reset(meta)
 
     def step(self, frame: np.ndarray, t_sec: float) -> float:
         """Return P(accident starts within the next RISK_HORIZON_SEC s).
@@ -98,6 +101,6 @@ class RiskEstimator:
             previous score is fine; the harness still expects a value for
             every call.
         """
-        # TODO: replace this stub. A simple strong baseline: track vehicles,
-        # estimate time-to-collision between pairs, map min TTC -> risk.
+        # Motion baseline; scores need calibration on real accident examples.
+        self.last_score = self.estimator.step(frame, t_sec)
         return self.last_score

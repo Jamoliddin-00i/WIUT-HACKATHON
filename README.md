@@ -1,5 +1,26 @@
 # WIUT Hackathon 2026 — Toyota Traffic Event Detection
 
+## Current implementation checkpoint (2026-09-26)
+
+The user requested that our work be committed in **WIUT-HACKATHON**. This repo
+now includes Part A, the causal Part B baseline, all four manual labels, review
+notes, tests, and the supporting scene code/data from the local Salen checkout
+at `6a3b92e`. Read [PROJECT_STATE.md](PROJECT_STATE.md) for current results and
+limitations. The older chronological setup notes below include superseded
+statements about empty stubs and which checkout to use.
+
+```powershell
+.\.venv\Scripts\python.exe tools\download_weights.py
+.\.venv\Scripts\python.exe run_submission.py --videos "D:\wiut hackathon\videos\C3905.MP4" --out predictions.json --team Salen
+.\.venv\Scripts\python.exe -m unittest discover -s tools/tests -v
+```
+
+The model downloader is setup-only; final inference runs offline. Weights and
+raw videos are not committed. Hamid's supporting EDA scripts and metadata are
+preserved with their original descriptions; generated EDA image reports remain
+in the original team checkout. Both organizer entry points are preserved here.
+
+
 > **Codex / AI agent handoff:** read this README completely before changing code. This repository is the official hackathon workspace. The goal is a strong, reproducible, offline submission, not a toy demo.
 
 ## 0. Current project state

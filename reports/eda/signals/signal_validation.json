@@ -1,0 +1,2168 @@
+{
+ "status": "SUPERSEDED by signal_validation_v2.json (EDA v4). Its conclusion 'far carriageway: no effect' is wrong (only [-20, +40) s around green onset was examined); test_onsets counts onsets available, not used (8 daylight / 6 evening were used, not 9 / 6); the random-onset null ignores the periodicity of traffic. Kept unchanged below for traceability.",
+ "superseded_by": "signal_validation_v2.json",
+ "gates_ref_px": {
+  "far_carriageway_at_median_nose": {
+   "seg": [
+    [
+     2560,
+     720
+    ],
+    [
+     2560,
+     1140
+    ]
+   ],
+   "dir": [
+    -1,
+    0
+   ],
+   "desc": "far carriageway (right to left, away from camera) passing the median nose, just downstream of the right-hand zebra"
+  },
+  "near_carriageway_below_gantry": {
+   "seg": [
+    [
+     1400,
+     660
+    ],
+    [
+     1120,
+     1200
+    ]
+   ],
+   "dir": [
+    1,
+    0
+   ],
+   "desc": "near carriageway (towards camera) between the gantry and the zebra below it"
+  },
+  "far_approach_from_right": {
+   "seg": [
+    [
+     3400,
+     1000
+    ],
+    [
+     3400,
+     1500
+    ]
+   ],
+   "dir": [
+    -1,
+    0
+   ],
+   "desc": "vehicles entering from the right edge, heading up-left towards the far carriageway, upstream of the right-hand zebra"
+  },
+  "lower_left_exit": {
+   "seg": [
+    [
+     300,
+     1600
+    ],
+    [
+     1000,
+     1600
+    ]
+   ],
+   "dir": [
+    0,
+    1
+   ],
+   "desc": "vehicles turning down-left into the lower-left road"
+  }
+ },
+ "videos": {
+  "C3905": {
+   "grammar": {
+    "transitions": {
+     "red->red_amber": 2,
+     "red_amber->green": 2,
+     "green->amber": 1,
+     "amber->red": 1
+    },
+    "illegal": {},
+    "durations_s_complete_phases": {
+     "red_amber": [
+      2.9,
+      2.9
+     ],
+     "green": [
+      37.8
+     ],
+     "amber": [
+      2.9
+     ],
+     "red": [
+      35.9
+     ]
+    },
+    "cycle_s_from_green_onsets": [
+     80.0
+    ]
+   },
+   "ped_vs_vehicle": {
+    "crosstab_samples": {
+     "green": {
+      "amber": 0,
+      "green": 465,
+      "green_flash": 0,
+      "occluded": 0,
+      "red": 0,
+      "red_amber": 0
+     },
+     "green_flash": {
+      "amber": 0,
+      "green": 15,
+      "green_flash": 0,
+      "occluded": 0,
+      "red": 0,
+      "red_amber": 0
+     },
+     "red": {
+      "amber": 30,
+      "green": 15,
+      "green_flash": 8,
+      "occluded": 15,
+      "red": 675,
+      "red_amber": 52
+     }
+    },
+    "p_vehicle_green_given_ped_green": 1.0,
+    "p_vehicle_red_given_ped_red": 0.914,
+    "ped_green_onset_minus_vehicle_green_onset_s": [
+     0.0,
+     0.0
+    ],
+    "ped_red_onset_minus_vehicle_amber_onset_s": [
+     -3.0
+    ]
+   },
+   "gate_crossings": {
+    "far_carriageway_at_median_nose": 58,
+    "near_carriageway_below_gantry": 56,
+    "far_approach_from_right": 54,
+    "lower_left_exit": 4
+   },
+   "crossings_by_vehicle_head_state": {
+    "far_carriageway_at_median_nose": {
+     "green": {
+      "crossings": 0.5,
+      "time": 0.4
+     },
+     "amber": {
+      "crossings": 0.017,
+      "time": 0.024
+     },
+     "red": {
+      "crossings": 0.362,
+      "time": 0.529
+     },
+     "red_amber": {
+      "crossings": 0.121,
+      "time": 0.047
+     }
+    },
+    "near_carriageway_below_gantry": {
+     "green": {
+      "crossings": 0.911,
+      "time": 0.4
+     },
+     "amber": {
+      "crossings": 0.036,
+      "time": 0.024
+     },
+     "red": {
+      "crossings": 0.036,
+      "time": 0.529
+     },
+     "red_amber": {
+      "crossings": 0.018,
+      "time": 0.047
+     }
+    },
+    "far_approach_from_right": {
+     "green": {
+      "crossings": 0.481,
+      "time": 0.4
+     },
+     "amber": {
+      "crossings": 0.019,
+      "time": 0.024
+     },
+     "red": {
+      "crossings": 0.407,
+      "time": 0.529
+     },
+     "red_amber": {
+      "crossings": 0.093,
+      "time": 0.047
+     }
+    },
+    "lower_left_exit": {
+     "green": {
+      "crossings": 1.0,
+      "time": 0.4
+     },
+     "amber": {
+      "crossings": 0.0,
+      "time": 0.024
+     },
+     "red": {
+      "crossings": 0.0,
+      "time": 0.529
+     },
+     "red_amber": {
+      "crossings": 0.0,
+      "time": 0.047
+     }
+    }
+   }
+  },
+  "C3896": {
+   "grammar": {
+    "transitions": {
+     "red->red_amber": 5,
+     "red_amber->green": 5,
+     "green->amber": 4,
+     "amber->red": 4,
+     "green->unclear": 2,
+     "unclear->green": 2,
+     "green->dark": 1,
+     "dark->green": 1
+    },
+    "illegal": {
+     "green->unclear": 2,
+     "unclear->green": 2,
+     "green->dark": 1,
+     "dark->green": 1
+    },
+    "durations_s_complete_phases": {
+     "red_amber": [
+      2.9,
+      2.9,
+      2.9,
+      2.9,
+      2.9
+     ],
+     "green": [
+      35.8,
+      21.3,
+      10.5,
+      7.2,
+      3.5,
+      20.5,
+      36.0
+     ],
+     "amber": [
+      2.9,
+      2.9,
+      2.9,
+      2.9
+     ],
+     "red": [
+      32.9,
+      32.9,
+      32.9,
+      32.9
+     ],
+     "unclear": [
+      3.9,
+      1.2
+     ],
+     "dark": [
+      3.0
+     ]
+    },
+    "cycle_s_from_green_onsets": [
+     75.0,
+     75.1,
+     75.0,
+     75.2
+    ]
+   },
+   "ped_vs_vehicle": {
+    "crosstab_samples": {
+     "green": {
+      "amber": 12,
+      "dark": 2,
+      "green": 1290,
+      "green_flash": 0,
+      "occluded": 56,
+      "red": 0,
+      "red_amber": 0,
+      "unclear": 30
+     },
+     "green_flash": {
+      "amber": 0,
+      "dark": 0,
+      "green": 59,
+      "green_flash": 0,
+      "occluded": 0,
+      "red": 0,
+      "red_amber": 0,
+      "unclear": 1
+     },
+     "occluded": {
+      "amber": 0,
+      "dark": 0,
+      "green": 0,
+      "green_flash": 0,
+      "occluded": 0,
+      "red": 1,
+      "red_amber": 0,
+      "unclear": 0
+     },
+     "red": {
+      "amber": 117,
+      "dark": 0,
+      "green": 59,
+      "green_flash": 44,
+      "occluded": 51,
+      "red": 1560,
+      "red_amber": 118,
+      "unclear": 0
+     }
+    },
+    "p_vehicle_green_given_ped_green": 0.93,
+    "p_vehicle_red_given_ped_red": 0.861,
+    "ped_green_onset_minus_vehicle_green_onset_s": [
+     0.0,
+     0.0,
+     -0.1,
+     0.0,
+     0.0
+    ],
+    "ped_red_onset_minus_vehicle_amber_onset_s": [
+     -3.0,
+     -3.01,
+     -3.0,
+     -3.0
+    ]
+   },
+   "gate_crossings": {
+    "far_carriageway_at_median_nose": 169,
+    "near_carriageway_below_gantry": 126,
+    "far_approach_from_right": 166,
+    "lower_left_exit": 5
+   },
+   "crossings_by_vehicle_head_state": {
+    "far_carriageway_at_median_nose": {
+     "green": {
+      "crossings": 0.527,
+      "time": 0.433
+     },
+     "amber": {
+      "crossings": 0.03,
+      "time": 0.04
+     },
+     "red": {
+      "crossings": 0.361,
+      "time": 0.459
+     },
+     "red_amber": {
+      "crossings": 0.047,
+      "time": 0.044
+     }
+    },
+    "near_carriageway_below_gantry": {
+     "green": {
+      "crossings": 0.865,
+      "time": 0.433
+     },
+     "amber": {
+      "crossings": 0.008,
+      "time": 0.04
+     },
+     "red": {
+      "crossings": 0.063,
+      "time": 0.459
+     },
+     "red_amber": {
+      "crossings": 0.0,
+      "time": 0.044
+     }
+    },
+    "far_approach_from_right": {
+     "green": {
+      "crossings": 0.524,
+      "time": 0.433
+     },
+     "amber": {
+      "crossings": 0.048,
+      "time": 0.04
+     },
+     "red": {
+      "crossings": 0.355,
+      "time": 0.459
+     },
+     "red_amber": {
+      "crossings": 0.048,
+      "time": 0.044
+     }
+    },
+    "lower_left_exit": {
+     "green": {
+      "crossings": 0.8,
+      "time": 0.433
+     },
+     "amber": {
+      "crossings": 0.2,
+      "time": 0.04
+     },
+     "red": {
+      "crossings": 0.0,
+      "time": 0.459
+     },
+     "red_amber": {
+      "crossings": 0.0,
+      "time": 0.044
+     }
+    }
+   }
+  },
+  "C3897": {
+   "grammar": {
+    "transitions": {
+     "red->red_amber": 5,
+     "red_amber->green": 4,
+     "green->amber": 4,
+     "amber->red": 4
+    },
+    "illegal": {},
+    "durations_s_complete_phases": {
+     "red_amber": [
+      2.9,
+      2.9,
+      2.9,
+      2.9
+     ],
+     "green": [
+      35.7,
+      35.9,
+      36.0,
+      35.9
+     ],
+     "amber": [
+      2.9,
+      2.9,
+      2.9,
+      2.9
+     ],
+     "red": [
+      32.8,
+      32.9,
+      32.9,
+      32.6
+     ]
+    },
+    "cycle_s_from_green_onsets": [
+     74.8,
+     75.1,
+     75.2
+    ]
+   },
+   "ped_vs_vehicle": {
+    "crosstab_samples": {
+     "green": {
+      "amber": 0,
+      "green": 1257,
+      "green_flash": 0,
+      "occluded": 1,
+      "red": 0,
+      "red_amber": 0
+     },
+     "green_flash": {
+      "amber": 0,
+      "green": 61,
+      "green_flash": 0,
+      "occluded": 0,
+      "red": 0,
+      "red_amber": 0
+     },
+     "red": {
+      "amber": 119,
+      "green": 60,
+      "green_flash": 56,
+      "occluded": 18,
+      "red": 1486,
+      "red_amber": 117
+     }
+    },
+    "p_vehicle_green_given_ped_green": 0.999,
+    "p_vehicle_red_given_ped_red": 0.864,
+    "ped_green_onset_minus_vehicle_green_onset_s": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "ped_red_onset_minus_vehicle_amber_onset_s": [
+     -3.01,
+     -3.0,
+     -3.01,
+     -3.0
+    ]
+   },
+   "gate_crossings": {
+    "far_carriageway_at_median_nose": 154,
+    "near_carriageway_below_gantry": 115,
+    "far_approach_from_right": 146,
+    "lower_left_exit": 8
+   },
+   "crossings_by_vehicle_head_state": {
+    "far_carriageway_at_median_nose": {
+     "green": {
+      "crossings": 0.545,
+      "time": 0.453
+     },
+     "amber": {
+      "crossings": 0.039,
+      "time": 0.038
+     },
+     "red": {
+      "crossings": 0.344,
+      "time": 0.468
+     },
+     "red_amber": {
+      "crossings": 0.071,
+      "time": 0.041
+     }
+    },
+    "near_carriageway_below_gantry": {
+     "green": {
+      "crossings": 0.904,
+      "time": 0.453
+     },
+     "amber": {
+      "crossings": 0.043,
+      "time": 0.038
+     },
+     "red": {
+      "crossings": 0.052,
+      "time": 0.468
+     },
+     "red_amber": {
+      "crossings": 0.0,
+      "time": 0.041
+     }
+    },
+    "far_approach_from_right": {
+     "green": {
+      "crossings": 0.527,
+      "time": 0.453
+     },
+     "amber": {
+      "crossings": 0.048,
+      "time": 0.038
+     },
+     "red": {
+      "crossings": 0.342,
+      "time": 0.468
+     },
+     "red_amber": {
+      "crossings": 0.082,
+      "time": 0.041
+     }
+    },
+    "lower_left_exit": {
+     "green": {
+      "crossings": 0.875,
+      "time": 0.453
+     },
+     "amber": {
+      "crossings": 0.0,
+      "time": 0.038
+     },
+     "red": {
+      "crossings": 0.125,
+      "time": 0.468
+     },
+     "red_amber": {
+      "crossings": 0.0,
+      "time": 0.041
+     }
+    }
+   }
+  },
+  "C3902": {
+   "grammar": {
+    "transitions": {
+     "red->red_amber": 4,
+     "red_amber->green": 4,
+     "green->amber": 4,
+     "amber->red": 3
+    },
+    "illegal": {},
+    "durations_s_complete_phases": {
+     "red_amber": [
+      2.9,
+      2.8,
+      2.9,
+      2.9
+     ],
+     "green": [
+      37.9,
+      37.9,
+      37.8,
+      37.9
+     ],
+     "amber": [
+      2.9,
+      2.9,
+      2.9
+     ],
+     "red": [
+      35.9,
+      35.9,
+      35.9
+     ]
+    },
+    "cycle_s_from_green_onsets": [
+     80.0,
+     80.1,
+     80.0
+    ]
+   },
+   "ped_vs_vehicle": {
+    "crosstab_samples": {
+     "green": {
+      "amber": 0,
+      "green": 1268,
+      "green_flash": 2,
+      "occluded": 70,
+      "red": 0,
+      "red_amber": 0
+     },
+     "green_flash": {
+      "amber": 0,
+      "green": 43,
+      "green_flash": 0,
+      "occluded": 15,
+      "red": 0,
+      "red_amber": 0
+     },
+     "red": {
+      "amber": 116,
+      "green": 45,
+      "green_flash": 39,
+      "occluded": 57,
+      "red": 1421,
+      "red_amber": 98
+     },
+     "unclear": {
+      "amber": 0,
+      "green": 1,
+      "green_flash": 0,
+      "occluded": 0,
+      "red": 0,
+      "red_amber": 0
+     }
+    },
+    "p_vehicle_green_given_ped_green": 0.939,
+    "p_vehicle_red_given_ped_red": 0.855,
+    "ped_green_onset_minus_vehicle_green_onset_s": [
+     0.0,
+     0.1,
+     0.0,
+     0.0
+    ],
+    "ped_red_onset_minus_vehicle_amber_onset_s": [
+     -3.01,
+     -3.01,
+     -3.0,
+     -3.0
+    ]
+   },
+   "gate_crossings": {
+    "far_carriageway_at_median_nose": 176,
+    "near_carriageway_below_gantry": 158,
+    "far_approach_from_right": 171,
+    "lower_left_exit": 9
+   },
+   "crossings_by_vehicle_head_state": {
+    "far_carriageway_at_median_nose": {
+     "green": {
+      "crossings": 0.602,
+      "time": 0.478
+     },
+     "amber": {
+      "crossings": 0.045,
+      "time": 0.037
+     },
+     "red": {
+      "crossings": 0.273,
+      "time": 0.448
+     },
+     "red_amber": {
+      "crossings": 0.08,
+      "time": 0.037
+     }
+    },
+    "near_carriageway_below_gantry": {
+     "green": {
+      "crossings": 0.962,
+      "time": 0.478
+     },
+     "amber": {
+      "crossings": 0.013,
+      "time": 0.037
+     },
+     "red": {
+      "crossings": 0.025,
+      "time": 0.448
+     },
+     "red_amber": {
+      "crossings": 0.0,
+      "time": 0.037
+     }
+    },
+    "far_approach_from_right": {
+     "green": {
+      "crossings": 0.579,
+      "time": 0.478
+     },
+     "amber": {
+      "crossings": 0.047,
+      "time": 0.037
+     },
+     "red": {
+      "crossings": 0.31,
+      "time": 0.448
+     },
+     "red_amber": {
+      "crossings": 0.064,
+      "time": 0.037
+     }
+    },
+    "lower_left_exit": {
+     "green": {
+      "crossings": 0.889,
+      "time": 0.478
+     },
+     "amber": {
+      "crossings": 0.0,
+      "time": 0.037
+     },
+     "red": {
+      "crossings": 0.111,
+      "time": 0.448
+     },
+     "red_amber": {
+      "crossings": 0.0,
+      "time": 0.037
+     }
+    }
+   }
+  }
+ },
+ "discharge": {
+  "far_carriageway_at_median_nose": {
+   "train_evening_test_daylight": {
+    "window_s_after_green_onset": [
+     0,
+     5
+    ],
+    "train_effect_per_s": 0.23,
+    "test_effect_per_s": -0.14,
+    "null_effect_median": 0.01,
+    "null_effect_p95": 0.23,
+    "p_value": 0.847,
+    "test_onsets": 9
+   },
+   "train_daylight_test_evening": {
+    "window_s_after_green_onset": [
+     10,
+     25
+    ],
+    "train_effect_per_s": 0.07,
+    "test_effect_per_s": 0.03,
+    "null_effect_median": 0.02,
+    "null_effect_p95": 0.29,
+    "p_value": 0.486,
+    "test_onsets": 6
+   },
+   "event_triggered_rate": {
+    "t_rel_s": [
+     -20,
+     -19,
+     -18,
+     -17,
+     -16,
+     -15,
+     -14,
+     -13,
+     -12,
+     -11,
+     -10,
+     -9,
+     -8,
+     -7,
+     -6,
+     -5,
+     -4,
+     -3,
+     -2,
+     -1,
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31,
+     32,
+     33,
+     34,
+     35,
+     36,
+     37,
+     38,
+     39
+    ],
+    "per_video": {
+     "C3905": {
+      "onsets_used": 1,
+      "rate_per_s": [
+       1.0,
+       0.0,
+       0.0,
+       1.0,
+       1.0,
+       0.0,
+       1.0,
+       2.0,
+       1.0,
+       0.0,
+       0.0,
+       1.0,
+       1.0,
+       2.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       2.0,
+       1.0,
+       1.0,
+       0.0,
+       0.0,
+       1.0,
+       2.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       1.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       1.0,
+       0.0,
+       2.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       1.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       1.0,
+       1.0,
+       2.0,
+       0.0,
+       0.0,
+       1.0
+      ]
+     },
+     "C3896": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.0,
+       0.25,
+       0.0,
+       0.5,
+       0.0,
+       0.25,
+       0.25,
+       0.5,
+       0.25,
+       0.25,
+       0.5,
+       1.0,
+       1.25,
+       1.0,
+       1.25,
+       0.5,
+       1.0,
+       0.25,
+       0.25,
+       0.75,
+       0.25,
+       0.5,
+       0.25,
+       0.0,
+       0.5,
+       0.5,
+       0.25,
+       0.0,
+       1.0,
+       0.5,
+       0.5,
+       0.5,
+       1.0,
+       0.5,
+       0.5,
+       0.75,
+       0.25,
+       0.5,
+       1.0,
+       1.0,
+       0.75,
+       0.25,
+       1.0,
+       0.5,
+       1.0,
+       1.0,
+       1.0,
+       1.25,
+       0.5,
+       1.0,
+       0.25,
+       0.25,
+       0.5,
+       1.25,
+       0.5,
+       1.0,
+       0.5,
+       0.25,
+       0.75,
+       0.75
+      ]
+     },
+     "C3897": {
+      "onsets_used": 3,
+      "rate_per_s": [
+       0.0,
+       0.333,
+       0.0,
+       0.0,
+       0.333,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.333,
+       0.333,
+       0.667,
+       0.333,
+       1.333,
+       0.667,
+       1.333,
+       1.333,
+       0.667,
+       1.0,
+       1.0,
+       1.667,
+       0.333,
+       0.667,
+       0.667,
+       0.667,
+       0.333,
+       0.667,
+       0.0,
+       0.333,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       1.667,
+       0.667,
+       0.667,
+       0.333,
+       0.667,
+       1.333,
+       0.667,
+       1.0,
+       1.667,
+       0.0,
+       1.0,
+       0.667,
+       0.667,
+       0.667,
+       0.667,
+       0.667,
+       1.0,
+       0.0,
+       0.333,
+       0.0,
+       0.667,
+       0.333,
+       0.333,
+       0.667,
+       0.667,
+       0.333,
+       0.667
+      ]
+     },
+     "C3902": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.25,
+       0.25,
+       0.5,
+       0.25,
+       0.5,
+       0.25,
+       0.25,
+       1.25,
+       0.75,
+       1.5,
+       0.5,
+       1.25,
+       1.25,
+       1.0,
+       0.75,
+       1.0,
+       0.25,
+       1.0,
+       0.75,
+       0.75,
+       0.25,
+       0.5,
+       0.75,
+       0.0,
+       0.5,
+       0.25,
+       0.5,
+       0.75,
+       1.0,
+       1.25,
+       0.5,
+       1.0,
+       0.5,
+       1.0,
+       1.0,
+       0.25,
+       0.75,
+       0.5,
+       1.5,
+       0.75,
+       1.25,
+       0.25,
+       1.25,
+       0.75,
+       0.25,
+       0.75,
+       1.0,
+       0.5,
+       0.25,
+       1.0,
+       0.75,
+       0.5,
+       0.75,
+       0.25
+      ]
+     }
+    }
+   }
+  },
+  "near_carriageway_below_gantry": {
+   "train_evening_test_daylight": {
+    "window_s_after_green_onset": [
+     5,
+     15
+    ],
+    "train_effect_per_s": 1.44,
+    "test_effect_per_s": 1.1,
+    "null_effect_median": -0.01,
+    "null_effect_p95": 0.32,
+    "p_value": 0.0,
+    "test_onsets": 9
+   },
+   "train_daylight_test_evening": {
+    "window_s_after_green_onset": [
+     6,
+     11
+    ],
+    "train_effect_per_s": 1.19,
+    "test_effect_per_s": 1.27,
+    "null_effect_median": 0.03,
+    "null_effect_p95": 0.52,
+    "p_value": 0.0,
+    "test_onsets": 6
+   },
+   "event_triggered_rate": {
+    "t_rel_s": [
+     -20,
+     -19,
+     -18,
+     -17,
+     -16,
+     -15,
+     -14,
+     -13,
+     -12,
+     -11,
+     -10,
+     -9,
+     -8,
+     -7,
+     -6,
+     -5,
+     -4,
+     -3,
+     -2,
+     -1,
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31,
+     32,
+     33,
+     34,
+     35,
+     36,
+     37,
+     38,
+     39
+    ],
+    "per_video": {
+     "C3905": {
+      "onsets_used": 1,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       3.0,
+       2.0,
+       2.0,
+       2.0,
+       1.0,
+       2.0,
+       1.0,
+       2.0,
+       2.0,
+       1.0,
+       1.0,
+       1.0,
+       2.0,
+       0.0,
+       2.0,
+       1.0,
+       2.0,
+       1.0,
+       1.0,
+       1.0,
+       2.0,
+       0.0,
+       1.0,
+       1.0,
+       1.0,
+       2.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       2.0,
+       1.0,
+       1.0,
+       1.0,
+       1.0,
+       0.0
+      ]
+     },
+     "C3896": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.5,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.25,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.5,
+       0.25,
+       0.75,
+       1.0,
+       0.5,
+       1.0,
+       1.0,
+       1.25,
+       1.75,
+       1.25,
+       1.5,
+       1.25,
+       1.5,
+       0.25,
+       1.5,
+       0.5,
+       0.75,
+       1.25,
+       0.5,
+       0.75,
+       1.25,
+       0.5,
+       0.75,
+       0.25,
+       0.5,
+       0.5,
+       0.5,
+       0.5,
+       0.5,
+       0.0,
+       0.75,
+       0.25,
+       0.0,
+       0.25,
+       0.25,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "C3897": {
+      "onsets_used": 3,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.667,
+       2.0,
+       0.333,
+       1.0,
+       1.667,
+       1.333,
+       1.0,
+       0.333,
+       1.0,
+       0.333,
+       1.0,
+       1.0,
+       0.333,
+       1.0,
+       0.667,
+       0.667,
+       0.667,
+       0.0,
+       0.667,
+       0.667,
+       0.333,
+       0.667,
+       0.667,
+       0.667,
+       0.0,
+       0.0,
+       0.667,
+       0.667,
+       0.0,
+       0.333,
+       1.333,
+       0.333,
+       0.333,
+       0.667,
+       1.0,
+       0.0,
+       0.333,
+       0.0
+      ]
+     },
+     "C3902": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.75,
+       0.75,
+       0.75,
+       1.0,
+       2.25,
+       0.5,
+       1.75,
+       1.75,
+       1.5,
+       1.5,
+       1.25,
+       1.5,
+       0.75,
+       2.0,
+       1.75,
+       1.0,
+       1.0,
+       1.5,
+       0.75,
+       0.75,
+       1.25,
+       1.25,
+       0.0,
+       1.5,
+       0.5,
+       1.0,
+       0.75,
+       0.25,
+       0.75,
+       1.5,
+       0.5,
+       0.25,
+       0.75,
+       0.75,
+       0.5,
+       0.25,
+       0.5,
+       0.5,
+       0.0
+      ]
+     }
+    }
+   }
+  },
+  "far_approach_from_right": {
+   "train_evening_test_daylight": {
+    "window_s_after_green_onset": [
+     1,
+     6
+    ],
+    "train_effect_per_s": 0.06,
+    "test_effect_per_s": -0.33,
+    "null_effect_median": -0.01,
+    "null_effect_p95": 0.21,
+    "p_value": 0.997,
+    "test_onsets": 9
+   },
+   "train_daylight_test_evening": {
+    "window_s_after_green_onset": [
+     10,
+     25
+    ],
+    "train_effect_per_s": 0.14,
+    "test_effect_per_s": 0.0,
+    "null_effect_median": 0.02,
+    "null_effect_p95": 0.28,
+    "p_value": 0.533,
+    "test_onsets": 6
+   },
+   "event_triggered_rate": {
+    "t_rel_s": [
+     -20,
+     -19,
+     -18,
+     -17,
+     -16,
+     -15,
+     -14,
+     -13,
+     -12,
+     -11,
+     -10,
+     -9,
+     -8,
+     -7,
+     -6,
+     -5,
+     -4,
+     -3,
+     -2,
+     -1,
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31,
+     32,
+     33,
+     34,
+     35,
+     36,
+     37,
+     38,
+     39
+    ],
+    "per_video": {
+     "C3905": {
+      "onsets_used": 1,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       1.0,
+       1.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       2.0,
+       1.0,
+       0.0,
+       0.0,
+       2.0,
+       0.0,
+       2.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       3.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       1.0,
+       0.0,
+       2.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       2.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       1.0,
+       0.0,
+       1.0,
+       0.0,
+       1.0,
+       1.0,
+       1.0,
+       2.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0
+      ]
+     },
+     "C3896": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.5,
+       0.25,
+       0.25,
+       0.25,
+       0.25,
+       0.0,
+       0.25,
+       0.75,
+       0.5,
+       1.0,
+       0.5,
+       1.25,
+       0.5,
+       0.75,
+       0.75,
+       0.5,
+       0.25,
+       0.5,
+       0.75,
+       0.25,
+       0.5,
+       0.25,
+       0.5,
+       0.0,
+       0.5,
+       0.0,
+       0.25,
+       0.5,
+       0.5,
+       0.75,
+       0.5,
+       0.75,
+       0.5,
+       0.5,
+       0.75,
+       0.25,
+       0.75,
+       0.75,
+       1.5,
+       0.25,
+       0.25,
+       1.5,
+       0.5,
+       0.75,
+       1.0,
+       1.5,
+       0.75,
+       0.75,
+       0.25,
+       0.25,
+       0.25,
+       0.75,
+       1.25,
+       0.5,
+       0.75,
+       0.5,
+       0.5,
+       0.75,
+       0.5,
+       0.25
+      ]
+     },
+     "C3897": {
+      "onsets_used": 3,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.333,
+       0.0,
+       0.0,
+       0.0,
+       0.333,
+       1.0,
+       0.333,
+       0.667,
+       1.333,
+       1.0,
+       0.667,
+       0.333,
+       1.0,
+       1.333,
+       0.667,
+       0.667,
+       0.667,
+       0.333,
+       0.333,
+       0.333,
+       0.333,
+       0.333,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.667,
+       1.667,
+       0.667,
+       0.667,
+       0.333,
+       1.0,
+       0.667,
+       0.667,
+       1.0,
+       1.667,
+       0.0,
+       1.0,
+       0.667,
+       1.0,
+       0.333,
+       0.667,
+       0.667,
+       1.0,
+       0.0,
+       0.0,
+       0.333,
+       0.333,
+       0.667,
+       0.333,
+       0.333,
+       0.667,
+       0.667,
+       0.667,
+       0.0
+      ]
+     },
+     "C3902": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.0,
+       0.5,
+       0.25,
+       0.0,
+       0.0,
+       0.75,
+       0.0,
+       0.0,
+       0.5,
+       0.5,
+       0.5,
+       0.75,
+       1.25,
+       0.75,
+       0.75,
+       1.5,
+       0.5,
+       1.0,
+       0.75,
+       1.0,
+       0.0,
+       1.75,
+       0.5,
+       0.25,
+       0.75,
+       0.5,
+       0.0,
+       0.25,
+       0.0,
+       0.5,
+       0.25,
+       0.5,
+       0.75,
+       1.0,
+       1.0,
+       0.5,
+       0.5,
+       1.0,
+       0.75,
+       1.25,
+       0.0,
+       1.0,
+       0.5,
+       1.5,
+       0.75,
+       0.75,
+       0.5,
+       1.0,
+       1.0,
+       0.25,
+       0.75,
+       1.0,
+       0.5,
+       0.5,
+       1.0,
+       0.75,
+       0.25,
+       0.75,
+       0.75,
+       0.5
+      ]
+     }
+    }
+   }
+  },
+  "lower_left_exit": {
+   "train_evening_test_daylight": {
+    "window_s_after_green_onset": [
+     8,
+     13
+    ],
+    "train_effect_per_s": 0.22,
+    "test_effect_per_s": 0.1,
+    "null_effect_median": 0.0,
+    "null_effect_p95": 0.05,
+    "p_value": 0.006,
+    "test_onsets": 9
+   },
+   "train_daylight_test_evening": {
+    "window_s_after_green_onset": [
+     5,
+     10
+    ],
+    "train_effect_per_s": 0.13,
+    "test_effect_per_s": 0.12,
+    "null_effect_median": -0.01,
+    "null_effect_p95": 0.09,
+    "p_value": 0.022,
+    "test_onsets": 6
+   },
+   "event_triggered_rate": {
+    "t_rel_s": [
+     -20,
+     -19,
+     -18,
+     -17,
+     -16,
+     -15,
+     -14,
+     -13,
+     -12,
+     -11,
+     -10,
+     -9,
+     -8,
+     -7,
+     -6,
+     -5,
+     -4,
+     -3,
+     -2,
+     -1,
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31,
+     32,
+     33,
+     34,
+     35,
+     36,
+     37,
+     38,
+     39
+    ],
+    "per_video": {
+     "C3905": {
+      "onsets_used": 1,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       2.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       1.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "C3896": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.5,
+       0.0,
+       0.25,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.25,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.25,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "C3897": {
+      "onsets_used": 3,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.333,
+       0.0,
+       0.333,
+       0.333,
+       0.0,
+       0.0,
+       0.333,
+       0.333,
+       0.333,
+       0.0,
+       0.333,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     },
+     "C3902": {
+      "onsets_used": 4,
+      "rate_per_s": [
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.25,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.25,
+       0.0,
+       0.0,
+       0.25,
+       0.25,
+       0.0,
+       0.25,
+       0.25,
+       0.0,
+       0.0,
+       0.0,
+       0.5,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.25,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0,
+       0.0
+      ]
+     }
+    }
+   }
+  }
+ }
+}

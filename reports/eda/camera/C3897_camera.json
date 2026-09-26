@@ -1,0 +1,72 @@
+{
+ "camera": {
+  "CreateDate": "2026:09:18 06:24:47",
+  "Duration": 317.8175,
+  "ImageWidth": 3840,
+  "ImageHeight": 2160,
+  "TimeZone": 360,
+  "DurationValue": 9525,
+  "CreationDateValue": "2026:09:18 12:24:47+06:00",
+  "VideoFormatVideoFrameVideoCodec": "AVC140_3840_2160_H422P@L51",
+  "VideoFormatVideoFrameCaptureFps": "29.97p",
+  "DeviceManufacturer": "Sony",
+  "DeviceModelName": "ILCE-6700",
+  "AcquisitionRecordGroupItemValue": "rec709"
+ },
+ "n_frame_samples": 9525,
+ "settings": [
+  {
+   "setting": "f_number",
+   "distinct_values": [
+    17.9771301063679
+   ],
+   "change_frames": [],
+   "n_changes": 0
+  },
+  {
+   "setting": "exposure_s",
+   "distinct_values": [
+    0.015625
+   ],
+   "change_frames": [],
+   "n_changes": 0
+  },
+  {
+   "setting": "iso",
+   "distinct_values": [
+    100
+   ],
+   "change_frames": [],
+   "n_changes": 0
+  },
+  {
+   "setting": "master_gain_db",
+   "distinct_values": [
+    0
+   ],
+   "change_frames": [],
+   "n_changes": 0
+  },
+  {
+   "setting": "white_balance_raw",
+   "distinct_values": [
+    33
+   ],
+   "change_frames": [],
+   "n_changes": 0
+  },
+  {
+   "setting": "ext_magnification_pct",
+   "distinct_values": [
+    100
+   ],
+   "change_frames": [],
+   "n_changes": 0
+  }
+ ],
+ "gyro_abs_mean": {
+  "median": 74.1,
+  "p99": 75.9
+ },
+ "exiftool_cmd": "exiftool -api LargeFileSupport=1 -ee -G3 -n -j VIDEO"
+}

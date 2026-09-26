@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Salen Zone Editor</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%231b8a3a%22/%3E%3Cpath d=%22M3 12 L6 4 L13 6 L11 13 Z%22 fill=%22none%22 stroke=%22white%22 stroke-width=%221.6%22/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --panel2: #eef1f5; --text: #16181d; --muted: #5d6573;
+  --border: #d5dae2; --accent: #2457d6; --accent-text: #ffffff; --ok: #1b8a3a; --warn: #b26a00;
+  --bad: #c62828; --focus: #2457d6; --stage: #1d2026;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317; --panel: #1a1d23; --panel2: #232730; --text: #e8eaee; --muted: #9aa3b2;
+    --border: #333844; --accent: #6b95ff; --accent-text: #0b0d12; --ok: #4cc26d; --warn: #f0a93b;
+    --bad: #ff6b6b; --focus: #8fb0ff; --stage: #0b0c0f;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+body { display: flex; flex-direction: column; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); }
+button { background: var(--panel2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 9px; cursor: pointer; white-space: nowrap; }
+button:hover { border-color: var(--accent); }
+button:disabled { opacity: .45; cursor: default; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button.small { padding: 1px 6px; font-size: 12px; }
+button.on { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+button.danger:hover { border-color: var(--bad); color: var(--bad); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+input, select { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px; }
+kbd { display: inline-block; min-width: 1.4em; text-align: center; padding: 0 4px; border: 1px solid var(--border);
+  border-bottom-width: 2px; border-radius: 4px; background: var(--panel2); font: 11.5px/1.5 ui-monospace, Menlo, monospace; }
+.muted { color: var(--muted); }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; }
+
+header.top { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 8px 16px;
+  background: var(--panel); border-bottom: 1px solid var(--border); }
+.brand { font-weight: 700; }
+.modes { display: flex; gap: 4px; }
+.spacer { flex: 1; }
+.links { font-size: 13px; display: flex; gap: 10px; flex-wrap: wrap; }
+.who-field { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.who-field input { width: 120px; }
+.who-field input.missing { border-color: var(--bad); }
+.status { font-weight: 600; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; }
+.status.ok { color: var(--ok); } .status.busy { color: var(--muted); }
+.status.bad { color: #fff; background: var(--bad); border-color: var(--bad); }
+
+.layout { flex: 1; display: grid; grid-template-columns: 340px minmax(0, 1fr); min-height: 0; }
+aside { overflow-y: auto; border-right: 1px solid var(--border); background: var(--panel); padding: 10px 12px 30px;
+  display: flex; flex-direction: column; gap: 14px; }
+aside h3 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+  display: flex; align-items: center; gap: 8px; }
+.addgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.addgrid button { display: flex; align-items: center; gap: 6px; text-align: left; font-size: 13px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; flex: none; border: 1px solid rgba(0,0,0,.3); }
+.typehelp { font-size: 12.5px; background: var(--panel2); border-radius: 6px; padding: 7px 9px; margin-top: 6px; border-left: 5px solid var(--border); }
+.typehelp b { font-size: 13px; }
+.drawbox { border: 2px solid var(--accent); border-radius: 8px; padding: 8px 10px; background: color-mix(in srgb, var(--accent) 8%, var(--panel)); font-size: 13px; }
+.drawbox .row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+.zgroup { border: 1px solid var(--border); border-radius: 7px; margin-bottom: 6px; }
+.zghead { display: flex; align-items: center; gap: 6px; padding: 4px 8px; background: var(--panel2); border-radius: 7px 7px 0 0; font-size: 13px; font-weight: 600; }
+.zghead .cnt { color: var(--muted); font-weight: 400; }
+.zghead label { margin-left: auto; font-weight: 400; font-size: 12px; display: flex; gap: 4px; align-items: center; cursor: pointer; }
+.zrow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 4px; align-items: center; padding: 4px 6px; border-top: 1px solid var(--border); font-size: 13px; }
+.zrow.sel { background: color-mix(in srgb, var(--accent) 14%, var(--panel)); }
+.zrow .zname { width: 100%; }
+.zrow .zmeta { grid-column: 1 / -1; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.zrow select { font-size: 12px; padding: 1px 4px; }
+.zrow select.need { border-color: var(--bad); }
+.zempty { padding: 6px 8px; font-size: 12.5px; color: var(--muted); }
+.toggles { display: grid; gap: 3px; font-size: 13px; }
+.toggles label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.evnote { font-size: 12px; color: var(--warn); font-weight: 600; margin-bottom: 4px; }
+.problems { list-style: none; padding: 0; margin: 0; font-size: 12.5px; }
+.problems li { padding: 3px 5px; border-radius: 5px; display: flex; gap: 6px; cursor: pointer; }
+.problems li:hover { background: var(--panel2); }
+.sev { font-weight: 700; flex: none; } .sev.err { color: var(--bad); } .sev.wrn { color: var(--warn); } .sev.ok { color: var(--ok); }
+.btnrow { display: flex; gap: 5px; flex-wrap: wrap; }
+.hist { font-size: 12.5px; max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; margin-top: 6px; }
+.hist div { display: flex; gap: 6px; align-items: center; padding: 3px 6px; border-top: 1px solid var(--border); }
+.hist div:first-child { border-top: 0; }
+.hist span { flex: 1; }
+
+.stage { position: relative; min-width: 0; min-height: 0; background: var(--stage); overflow: hidden; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.stagebar { position: absolute; top: 8px; left: 8px; right: 8px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; pointer-events: none; z-index: 3; }
+.stagebar > * { pointer-events: auto; }
+.stagebar button { background: rgba(20,22,27,.85); color: #eee; border-color: #444; }
+.stagebar button.on { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.pill { background: rgba(20,22,27,.85); color: #eee; border-radius: 6px; padding: 3px 8px; font-size: 12.5px; border: 1px solid #444; }
+.loupe { position: absolute; right: 10px; bottom: 34px; width: 180px; height: 180px; border: 2px solid #fff; border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.5); display: none; z-index: 4; pointer-events: none; background: #000; }
+.keyhint { position: absolute; left: 8px; right: 8px; bottom: 6px; color: #cfd3da; font-size: 12px; z-index: 3; pointer-events: none;
+  text-shadow: 0 1px 2px #000; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.loading { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); color: #ddd; z-index: 2; }
+
+.vgrid { position: absolute; inset: 0; display: grid; gap: 4px; padding: 44px 4px 26px; }
+.vgrid.g4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.vgrid.g1 { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+.vpanel { position: relative; background: #000; border-radius: 4px; overflow: hidden; min-height: 0; }
+.vpanel canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.vtitle { position: absolute; left: 6px; top: 6px; z-index: 2; background: rgba(20,22,27,.85); color: #eee; font-size: 12px;
+  border-radius: 5px; padding: 2px 7px; pointer-events: none; max-width: calc(100% - 12px); }
+.vtitle b { color: #fff; }
+.vinfo { font-size: 12.5px; background: var(--panel2); border-radius: 6px; padding: 7px 9px; }
+
+#toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 50; display: none; gap: 10px;
+  align-items: center; background: var(--text); color: var(--bg); padding: 8px 14px; border-radius: 8px; max-width: 92vw; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; align-items: center; justify-content: center; z-index: 60; padding: 16px; }
+.modal .box { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; max-width: 560px; width: 100%; }
+.modal .box p { margin: 0 0 12px; white-space: pre-line; }
+.modal .btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; grid-template-rows: auto 70vh; }
+  aside { border-right: 0; border-bottom: 1px solid var(--border); max-height: 45vh; }
+  .layout.verify aside { max-height: 30vh; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Zone editor</div>
+  <div class="modes">
+    <button id="modeDraw" class="on" title="Draw zones on the reference frame">Draw zones</button>
+    <button id="modeVerify" title="See the zones warped into all 4 videos (V)">Verify in 4 videos</button>
+  </div>
+  <div class="spacer"></div>
+  <label class="who-field">Your name <input id="nameInput" placeholder="type your name" maxlength="60" autocomplete="off"></label>
+  <nav class="links">
+    <a href="index.html">labeling tool</a>
+    <a href="spotcheck.html">signal spot-check</a>
+    <a href="tools.html">all tools</a>
+    <a href="guide.html" target="_blank" rel="noopener">labeling guide</a>
+  </nav>
+  <div id="saveStatus" class="status busy">loading...</div>
+</header>
+
+<div class="layout" id="layout">
+<aside>
+  <section id="addSec">
+    <h3>Add a zone</h3>
+    <div class="addgrid" id="addGrid"></div>
+    <div class="typehelp" id="typeHelp"></div>
+  </section>
+
+  <section id="drawSec" style="display:none">
+    <div class="drawbox" id="drawBox"></div>
+  </section>
+
+  <section>
+    <h3>Zones <span class="muted" id="zCount" style="text-transform:none;letter-spacing:0"></span></h3>
+    <div id="zoneList"></div>
+    <div class="btnrow" style="margin-top:4px">
+      <button id="undoBtn" title="Ctrl+Z">Undo</button>
+      <button id="redoBtn" title="Ctrl+Shift+Z">Redo</button>
+    </div>
+  </section>
+
+  <section>
+    <h3>Show</h3>
+    <div class="toggles">
+      <label><input type="checkbox" id="tNames" checked> zone names</label>
+      <label><input type="checkbox" id="tHeads" checked> signal heads (read-only, from signal_heads.json)</label>
+      <label><input type="checkbox" id="tLandmarks"> registration landmarks</label>
+    </div>
+    <div style="margin-top:8px" class="evnote">Evidence from the detector, verify by eye</div>
+    <div class="toggles">
+      <label><input type="checkbox" id="tLanes"> lane-direction arrows (merged, gated cells)</label>
+      <label><input type="checkbox" id="tLanesBad"> ...also cells that failed the gates (grey)</label>
+      <label><input type="checkbox" id="tStops"> vehicle stop points (2 s or more; buses orange)</label>
+      <label><input type="checkbox" id="tPeds"> pedestrian density (people per 40 px cell)</label>
+    </div>
+    <div id="evLegend" class="muted" style="font-size:12px;margin-top:4px"></div>
+  </section>
+
+  <section>
+    <h3>Check <span id="probBadge"></span></h3>
+    <ul class="problems" id="problems"></ul>
+  </section>
+
+  <section>
+    <h3>Save and export</h3>
+    <div class="muted" style="font-size:12.5px" id="savedInfo">Saved to the server about 2 s after every change, and kept in this browser too.</div>
+    <div class="btnrow" style="margin-top:6px">
+      <button id="exportBtn" class="primary" title="Download the current zones as JSON">Export JSON</button>
+      <button id="serverCopyBtn" title="Open the copy stored on the server">Server copy</button>
+      <button id="histBtn">History</button>
+    </div>
+    <div id="histBox" class="hist" style="display:none"></div>
+  </section>
+</aside>
+
+<section class="stage" id="stage">
+  <canvas id="cv"></canvas>
+  <div class="loading" id="loadingMsg">loading reference frame...</div>
+  <div class="stagebar" id="drawBar">
+    <button id="zoomOut" title="Zoom out (-)">-</button>
+    <button id="zoomIn" title="Zoom in (+)">+</button>
+    <button id="zoomFit" title="Fit the whole frame (F)">Fit</button>
+    <button id="zoom1" title="1 screen pixel = 1 4K pixel (1)">1:1</button>
+    <span class="pill" id="zoomPill">zoom</span>
+    <span class="pill mono" id="coordPill">x -, y -</span>
+    <span class="pill" id="resPill">1080p</span>
+  </div>
+  <div class="stagebar" id="verifyBar" style="display:none">
+    <button id="lay4" class="on" title="All four videos">2 x 2</button>
+    <button id="lay1" title="One video, large">One</button>
+    <span id="vtabs" style="display:flex;gap:4px"></span>
+    <button id="vFit">Fit</button>
+    <button id="vZoomOut">-</button>
+    <button id="vZoomIn">+</button>
+    <span class="pill mono" id="vCoordPill">x -, y -</span>
+  </div>
+  <div class="vgrid g4" id="vgrid" style="display:none"></div>
+  <canvas class="loupe" id="loupe" width="180" height="180"></canvas>
+  <div class="keyhint" id="keyHint"></div>
+</section>
+</div>
+
+<div id="toast"><span id="toastMsg"></span><button id="toastBtn" class="small"></button></div>
+<div class="modal" id="modal"><div class="box"><p id="modalMsg"></p><div class="btns" id="modalBtns"></div></div></div>
+
+<script>
+"use strict";
+// ================================================================ constants
+const IMG_W = 3840, IMG_H = 2160;
+const TYPES = [
+  // key, label, geometry, min points, colour, attr (name, options), help
+  { key: "stop_line", label: "stop line", geom: "polyline", min: 2, color: "#ff1744",
+    attr: ["approach", [["", "choose approach"], ["near_carriageway", "near carriageway"], ["far_carriageway", "far carriageway"], ["side_road", "side road"]]],
+    help: "Polyline along the painted stop line, 2 or more points, left to right. Choose the approach it belongs to. Rules: <b>red_light</b> (front crosses this line on red) and <b>stop_line</b> (vehicle stops past it on red). The near carriageway is the approach controlled by signal head D." },
+  { key: "zebra_crossing", label: "zebra crossing", geom: "polygon", min: 3, color: "#00e5ff",
+    help: "Polygon around the painted stripes of one crossing (4 corners are usually enough). Rules: <b>jaywalking</b> (a person on the carriageway outside a crossing) and <b>failure_to_yield</b> (a vehicle drives through while a pedestrian is on it, organizers' answer 3)." },
+  { key: "parking_bay", label: "parking bay", geom: "polygon", min: 3, color: "#d05ce3",
+    help: "Polygon around kerb parking, e.g. the parked cars at the far left edge. Vehicles standing here are <b>ignored</b> for <b>stopped_vehicle</b> (organizers' answer 4)." },
+  { key: "live_lane", label: "live lane", geom: "polygon", min: 3, color: "#00c853",
+    attr: ["direction", [["", "choose direction"], ["near_carriageway", "near carriageway, towards camera"], ["far_carriageway", "far carriageway, away from camera"], ["turn", "turn"]]],
+    help: "Polygon over asphalt where traffic moves, with its direction. <b>stopped_vehicle</b> only counts inside live lanes (answer 4); the direction supports <b>wrong_way</b>. One polygon per direction is enough." },
+  { key: "bus_stop", label: "bus stop", geom: "polygon", min: 3, color: "#ff9100",
+    help: "Polygon over the carriageway part of a bus stop. A bus standing here in a live lane for 10 s or more <b>counts</b> as <b>stopped_vehicle</b> (answer 2). Draw the live lane under it too." },
+  { key: "non_carriageway", label: "not carriageway", geom: "polygon", min: 3, color: "#ffd600",
+    attr: ["kind", [["", "kind (optional)"], ["median", "median"], ["island", "island"], ["sidewalk", "sidewalk"], ["other", "other"]]],
+    help: "Polygon over the raised median, traffic islands, kerbs and sidewalks. People here are <b>not jaywalking</b>; it bounds the carriageway for jaywalking and wrong_way." },
+];
+const T = {}; TYPES.forEach(t => T[t.key] = t);
+const HEAD_COLOR = "#448aff";
+const FLOW_COLORS = ["#ff80ab", "#40c4ff", "#b2ff59", "#ffab40"];
+const STOP_COLORS = { car: "#ff5252", bus: "#ffab00", truck: "#e040fb", motorcycle: "#18ffff" };
+const SAVE_DELAY = 2000;
+const TOKEN = location.pathname.split("/").filter(Boolean)[0] || "";
+const LKEY = "salen-zones:v1";
+const LS = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+};
+const $ = id => document.getElementById(id);
+
+// ================================================================ state
+const S = {
+  data: null, zones: [], sel: null, selV: null, drawing: null, hoverType: null,
+  vis: {}, serverVersion: 0, dirty: false, editSeq: 0, saving: false, saveAgain: false,
+  saveTimer: null, retryTimer: null, retryDelay: 3000, conflict: false, rejected: null,
+  undo: [], redo: [], mode: "draw", layout: 4, vsel: "C3897",
+  view: { cx: IMG_W / 2, cy: IMG_H / 2, s: 0.3 }, fitted: false,
+  imgRef: null, img4k: null, bgs: {}, needDraw: true, space: false,
+  drag: null, mouse: null,
+};
+TYPES.forEach(t => S.vis[t.key] = true);
+
+// ================================================================ helpers
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function hhmmss(iso) { const d = iso ? new Date(iso) : new Date(); return isNaN(d) ? "" : d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }); }
+function api(path, opts = {}) { opts.headers = Object.assign({ "X-Token": TOKEN }, opts.headers || {}); opts.cache = "no-store"; return fetch(path, opts); }
+function toast(msg, ms = 3500) { const t = $("toast"); $("toastMsg").textContent = msg; $("toastBtn").style.display = "none"; t.style.display = "flex"; clearTimeout(toast._t); toast._t = setTimeout(() => t.style.display = "none", ms); }
+function ask(msg, buttons) {
+  return new Promise(res => {
+    $("modalMsg").textContent = msg;
+    const box = $("modalBtns"); box.innerHTML = "";
+    buttons.forEach(([label, val, primary]) => {
+      const b = document.createElement("button"); b.textContent = label; if (primary) b.className = "primary";
+      b.onclick = () => { $("modal").style.display = "none"; res(val); };
+      box.appendChild(b);
+    });
+    $("modal").style.display = "flex";
+  });
+}
+function modalOpen() { return $("modal").style.display === "flex"; }
+function name() { return $("nameInput").value.trim(); }
+function newId() { return "z" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+const r1 = v => Math.round(v * 10) / 10;
+const clampX = x => Math.min(IMG_W, Math.max(0, x)), clampY = y => Math.min(IMG_H, Math.max(0, y));
+function zoneById(id) { return S.zones.find(z => z.id === id) || null; }
+function plainZones(zs) { return zs.map(z => ({ id: z.id, type: z.type, name: z.name, points: z.points.map(p => [p[0], p[1]]), attrs: Object.assign({}, z.attrs) })); }
+function sameZones(a, b) { return JSON.stringify(plainZones(a)) === JSON.stringify(plainZones(b)); }
+
+// geometry
+function applyH(H, x, y) { const w = H[2][0] * x + H[2][1] * y + H[2][2]; return [(H[0][0] * x + H[0][1] * y + H[0][2]) / w, (H[1][0] * x + H[1][1] * y + H[1][2]) / w]; }
+function invH(m) {
+  const [a, b, c] = m[0], [d, e, f] = m[1], [g, h, i] = m[2];
+  const A = e * i - f * h, B = -(d * i - f * g), C = d * h - e * g;
+  const det = a * A + b * B + c * C;
+  return [[A / det, -(b * i - c * h) / det, (b * f - c * e) / det],
+          [B / det, (a * i - c * g) / det, -(a * f - c * d) / det],
+          [C / det, -(a * h - b * g) / det, (a * e - b * d) / det]];
+}
+const I3 = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+function segDist(p, a, b) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], L = dx * dx + dy * dy;
+  let t = L ? ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / L : 0; t = Math.max(0, Math.min(1, t));
+  const x = a[0] + t * dx, y = a[1] + t * dy; return [Math.hypot(p[0] - x, p[1] - y), t];
+}
+function inPoly(p, poly) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if ((yi > p[1]) !== (yj > p[1]) && p[0] < (xj - xi) * (p[1] - yi) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
+}
+function segX(a, b, c, d) {
+  const o = (p, q, r) => Math.sign((q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]));
+  return o(a, b, c) * o(a, b, d) < 0 && o(c, d, a) * o(c, d, b) < 0;
+}
+function edges(pts, closed) { const e = []; for (let i = 0; i < pts.length - 1; i++) e.push([pts[i], pts[i + 1]]); if (closed && pts.length > 2) e.push([pts[pts.length - 1], pts[0]]); return e; }
+function polysOverlap(P, Q) {
+  if (P.length < 3 || Q.length < 3) return false;
+  for (const [a, b] of edges(P, true)) for (const [c, d] of edges(Q, true)) if (segX(a, b, c, d)) return true;
+  return inPoly(P[0], Q) || inPoly(Q[0], P);
+}
+function selfIntersects(P) {
+  const E = edges(P, true), n = E.length;
+  if (n < 4) return false;
+  for (let i = 0; i < n; i++) for (let j = i + 2; j < n; j++) { if (i === 0 && j === n - 1) continue; if (segX(E[i][0], E[i][1], E[j][0], E[j][1])) return true; }
+  return false;
+}
+function centroid(z) {
+  const p = z.points; if (!p.length) return null;
+  if (T[z.type].geom === "polyline") { if (p.length === 1) return p[0]; return [(p[0][0] + p[1][0]) / 2, (p[0][1] + p[1][1]) / 2]; }
+  let x = 0, y = 0; p.forEach(q => { x += q[0]; y += q[1]; }); return [x / p.length, y / p.length];
+}
+
+// ================================================================ undo, change tracking
+function snap() { return JSON.stringify(plainZones(S.zones)); }
+function commit(fn) { const before = snap(); fn(); if (snap() === before) { render(); return; } S.undo.push(before); if (S.undo.length > 300) S.undo.shift(); S.redo = []; changed(); }
+function pushUndo(before) { S.undo.push(before); if (S.undo.length > 300) S.undo.shift(); S.redo = []; }
+function restore(s) { S.zones = JSON.parse(s); if (S.sel && !zoneById(S.sel)) S.sel = null; if (S.drawing && !zoneById(S.drawing)) S.drawing = null; S.selV = null; }
+function undo() { if (!S.undo.length) return toast("Nothing to undo"); S.redo.push(snap()); restore(S.undo.pop()); changed(); toast("Undone"); }
+function redo() { if (!S.redo.length) return toast("Nothing to redo"); S.undo.push(snap()); restore(S.redo.pop()); changed(); toast("Redone"); }
+function changed() {
+  S.dirty = true; S.editSeq++; S.rejected = null;
+  mirrorLocal(); render(); scheduleSave(SAVE_DELAY);
+  if (!name()) $("nameInput").classList.add("missing");
+}
+
+// ================================================================ local mirror and saving
+function mirrorLocal() {
+  const ok = LS.set(LKEY, { zones: plainZones(S.zones), dirty: S.dirty, editedAt: new Date().toISOString(), baseVersion: S.serverVersion });
+  if (!ok && S.dirty) setStatus("bad", "browser storage full, keep this tab open");
+}
+function setStatus(kind, text) { const el = $("saveStatus"); el.className = "status " + kind; el.textContent = text; }
+function scheduleSave(delay) {
+  clearTimeout(S.saveTimer); clearTimeout(S.retryTimer);
+  if (!S.saving && !S.conflict) setStatus("busy", "unsaved changes");
+  S.saveTimer = setTimeout(doSave, delay);
+}
+async function doSave(force = false) {
+  if (!S.dirty || S.conflict) return;
+  if (S.saving) { S.saveAgain = true; return; }
+  S.saving = true; S.saveAgain = false;
+  const seq = S.editSeq;
+  setStatus("busy", "saving...");
+  let res = null, body = {};
+  try {
+    res = await api("/api/zones", { method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ zones: plainZones(S.zones), base_version: S.serverVersion, edited_by: name(), force }) });
+    body = await res.json().catch(() => ({}));
+  } catch (e) { res = null; }
+  S.saving = false;
+  if (res && res.ok) {
+    S.serverVersion = body.version; S.retryDelay = 3000;
+    if (S.editSeq === seq) S.dirty = false;
+    mirrorLocal();
+    if (S.dirty || S.saveAgain) scheduleSave(300);
+    else setStatus("ok", "saved at " + hhmmss());
+    $("savedInfo").textContent = "Server version " + S.serverVersion + ". Saved about 2 s after every change; every version is kept in the history.";
+    return;
+  }
+  if (res && res.status === 409) {
+    const srv = body.server || {};
+    S.conflict = true; setStatus("bad", "CONFLICT, choose a version");
+    const choice = await ask("The zones were saved from another tab or computer (server version " + srv.version + ", " +
+      (srv.zones || []).length + " zones, by " + ((srv._meta || {}).edited_by || "unknown") + " at " + hhmmss((srv._meta || {}).saved_at) + ").\n\n" +
+      "This tab has " + S.zones.length + " zones. Both versions stay in the server history either way.",
+      [["Load server version", "server"], ["Keep mine (save over it)", "mine", true]]);
+    S.conflict = false;
+    if (choice === "mine") return doSave(true);
+    LS.set(LKEY + ":backup", { zones: plainZones(S.zones), savedAt: new Date().toISOString(), reason: "conflict" });
+    applyServer(srv); toast("Loaded the server version. This tab's copy is kept as a browser backup.");
+    return;
+  }
+  if (res && res.status === 400) {
+    S.rejected = body.problems || [body.error || "rejected"];
+    setStatus("bad", "SAVE REJECTED, see Check"); render(); return;
+  }
+  setStatus("bad", res && res.status === 404 ? "OFFLINE (bad link?), retrying" : "OFFLINE, retrying (work kept in browser)");
+  clearTimeout(S.retryTimer); S.retryTimer = setTimeout(() => doSave(), S.retryDelay);
+  S.retryDelay = Math.min(S.retryDelay * 2, 20000);
+}
+window.addEventListener("beforeunload", e => { if (S.dirty) { mirrorLocal(); e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("online", () => { if (S.dirty) doSave(); });
+
+function applyServer(doc) {
+  S.zones = plainZones(doc.zones || []); S.serverVersion = doc.version || 0;
+  S.dirty = false; S.undo = []; S.redo = []; S.sel = null; S.selV = null; S.drawing = null; S.rejected = null;
+  mirrorLocal(); render();
+  setStatus("ok", S.serverVersion ? "loaded version " + S.serverVersion : "no zones yet");
+}
+
+// ================================================================ loading
+async function loadAll() {
+  let doc = null;
+  try {
+    const [d, z] = await Promise.all([fetch("scene/scene_data.json", { cache: "no-cache" }), api("/api/zones")]);
+    if (!d.ok || !z.ok) throw new Error("load");
+    S.data = await d.json(); doc = await z.json();
+  } catch (e) { setStatus("bad", "cannot load (bad link or offline)"); $("loadingMsg").textContent = "Cannot load. Check the link and reload."; return; }
+  S.data.videos.forEach(v => { v.H = v.H_ref_to_video; v.Hinv = invH(v.H); });
+  loadImages();
+  const local = LS.get(LKEY);
+  applyServer(doc);
+  if (local && local.dirty && !sameZones(local.zones || [], S.zones)) {
+    const c = await ask("This browser has zone changes that did not reach the server (edited " + hhmmss(local.editedAt) + ", " +
+      (local.zones || []).length + " zones). The server has version " + S.serverVersion + " with " + S.zones.length + " zones.",
+      [["Use the server version", "server"], ["Restore this browser's changes", "local", true]]);
+    if (c === "local") { commit(() => { S.zones = plainZones(local.zones); }); toast("Restored; saving it as a new server version."); }
+    else LS.set(LKEY + ":backup", { zones: local.zones, savedAt: new Date().toISOString(), reason: "discarded at load" });
+  }
+  buildVerifyPanels(); renderEvLegend(); render();
+}
+function loadImages() {
+  const a = new Image();
+  a.onload = () => { S.imgRef = a; $("loadingMsg").style.display = "none"; if (!S.fitted) fit(); S.needDraw = true; };
+  a.onerror = () => { $("loadingMsg").textContent = "reference image missing"; };
+  a.src = S.data.reference.img_1080;
+  const b = new Image();
+  b.onload = () => { S.img4k = b; $("resPill").textContent = "4K"; S.needDraw = true; };
+  b.src = S.data.reference.img_4k;
+  $("resPill").textContent = "1080p (4K loading)";
+}
+function bgImage(stem) {
+  if (S.bgs[stem]) return S.bgs[stem].complete && S.bgs[stem].naturalWidth ? S.bgs[stem] : null;
+  const v = S.data.videos.find(x => x.stem === stem);
+  const im = new Image(); im.onload = () => { S.needDraw = true; }; im.src = v.bg; S.bgs[stem] = im; return null;
+}
+
+// ================================================================ view (shared, in reference coords)
+function stageRect() { return $("stage").getBoundingClientRect(); }
+function fit() {
+  let r = stageRect(), padW = 20, padH = 60;
+  if (S.mode === "verify") { const P = VPANELS.find(p => p.canvas.offsetParent !== null); if (P) { r = P.canvas.getBoundingClientRect(); padW = 8; padH = 8; } }
+  if (!r.width) return;
+  S.view.s = Math.min((r.width - padW) / IMG_W, (r.height - padH) / IMG_H);
+  S.view.cx = IMG_W / 2; S.view.cy = IMG_H / 2; S.fitted = true; S.needDraw = true; updateZoomPill();
+}
+function zoomBy(f, sx, sy, panel) {
+  // keep the world point under (sx, sy) of `panel` fixed
+  const s0 = S.view.s, s1 = Math.min(40, Math.max(0.05, s0 * f));
+  const P = panel || mainPanel();
+  if (sx == null) { sx = P.w / 2; sy = P.h / 2; }
+  const wpt = P.toWorld(sx, sy);
+  S.view.s = s1; S.userMoved = true;
+  const cw = [wpt[0] - (sx - P.w / 2) / s1, wpt[1] - (sy - P.h / 2) / s1];
+  const cr = applyH(P.Hinv, cw[0], cw[1]); S.view.cx = cr[0]; S.view.cy = cr[1];
+  S.needDraw = true; updateZoomPill();
+}
+function updateZoomPill() { $("zoomPill").textContent = "zoom " + (S.view.s >= 1 ? S.view.s.toFixed(1) + "x" : Math.round(S.view.s * 100) + "%") + " of 4K"; }
+
+// A panel draws one image in its own "world" coords (reference or one video), mapped from reference by H.
+function makePanel(canvas, stem) {
+  const P = { canvas, stem, H: I3, Hinv: I3, w: 0, h: 0 };
+  if (stem) { const v = S.data.videos.find(x => x.stem === stem); P.H = v.H; P.Hinv = v.Hinv; P.video = v; }
+  P.origin = () => { const c = applyH(P.H, S.view.cx, S.view.cy); return [P.w / 2 - c[0] * S.view.s, P.h / 2 - c[1] * S.view.s]; };
+  P.toScreen = (x, y) => { const o = P.origin(); return [o[0] + x * S.view.s, o[1] + y * S.view.s]; };
+  P.toWorld = (sx, sy) => { const o = P.origin(); return [(sx - o[0]) / S.view.s, (sy - o[1]) / S.view.s]; };
+  P.refToScreen = (x, y) => { const w = applyH(P.H, x, y); return P.toScreen(w[0], w[1]); };
+  P.screenToRef = (sx, sy) => { const w = P.toWorld(sx, sy); return applyH(P.Hinv, w[0], w[1]); };
+  return P;
+}
+let MAIN = null;
+function mainPanel() { if (!MAIN) MAIN = makePanel($("cv"), null); return MAIN; }
+function sizeCanvas(P) {
+  const r = P.canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  if (P.w !== r.width || P.h !== r.height || P.dpr !== dpr) {
+    P.w = r.width; P.h = r.height; P.dpr = dpr;
+    P.canvas.width = Math.max(1, Math.round(r.width * dpr)); P.canvas.height = Math.max(1, Math.round(r.height * dpr));
+  }
+  const ctx = P.canvas.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); return ctx;
+}
+
+// ================================================================ drawing
+function drawPanel(P, img, opts) {
+  const ctx = sizeCanvas(P);
+  ctx.fillStyle = "#15171b"; ctx.fillRect(0, 0, P.w, P.h);
+  const o = P.origin(), s = S.view.s;
+  if (img) {
+    const k = s * IMG_W / img.naturalWidth;
+    ctx.imageSmoothingEnabled = k < 2.5; ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, o[0], o[1], IMG_W * s, IMG_H * s);
+  }
+  ctx.strokeStyle = "rgba(255,255,255,.25)"; ctx.lineWidth = 1; ctx.strokeRect(o[0], o[1], IMG_W * s, IMG_H * s);
+  if (opts.evidence) drawEvidence(ctx, P);
+  if ($("tHeads").checked) drawHeads(ctx, P);
+  if ($("tLandmarks").checked) drawLandmarks(ctx, P);
+  drawZones(ctx, P, opts.editable);
+}
+function drawEvidence(ctx, P) {
+  const s = S.view.s, ev = S.data.evidence;
+  if ($("tPeds").checked && ev) {
+    const c = ev.ped_density_cell_px;
+    for (const [x0, y0, n] of ev.ped_density) {
+      const a = Math.min(0.55, 0.06 + Math.log2(n) * 0.07);
+      ctx.fillStyle = `rgba(255,64,200,${a})`;
+      const p = P.refToScreen(x0, y0); ctx.fillRect(p[0], p[1], c * s, c * s);
+    }
+  }
+  if ($("tLanes").checked) {
+    const L = S.data.lanes, len = L.cell_px[0] * 0.42;
+    ctx.lineWidth = Math.max(1, Math.min(3, s * 5));
+    for (const [cx, cy, dx, dy, fi, ok] of L.cells) {
+      if (!ok && !$("tLanesBad").checked) continue;
+      ctx.strokeStyle = ok ? FLOW_COLORS[fi] || "#fff" : "rgba(170,170,170,.8)"; ctx.fillStyle = ctx.strokeStyle;
+      const a = P.refToScreen(cx - dx * len, cy - dy * len), b = P.refToScreen(cx + dx * len, cy + dy * len);
+      ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+      const ang = Math.atan2(b[1] - a[1], b[0] - a[0]), h = Math.max(4, Math.min(12, len * s * 0.5));
+      ctx.beginPath(); ctx.moveTo(b[0], b[1]);
+      ctx.lineTo(b[0] - h * Math.cos(ang - 0.5), b[1] - h * Math.sin(ang - 0.5));
+      ctx.lineTo(b[0] - h * Math.cos(ang + 0.5), b[1] - h * Math.sin(ang + 0.5)); ctx.closePath(); ctx.fill();
+    }
+  }
+  if ($("tStops").checked && ev) {
+    for (const [x, y, sec, cls] of ev.stop_points) {
+      const p = P.refToScreen(x, y), r = Math.max(1.5, Math.min(9, (1.2 + Math.sqrt(sec) * 0.7) * Math.min(1, s / 0.6)));
+      ctx.fillStyle = STOP_COLORS[cls] || "#fff"; ctx.globalAlpha = cls === "bus" ? 0.95 : 0.6;
+      ctx.beginPath(); ctx.arc(p[0], p[1], r, 0, 7); ctx.fill();
+      ctx.globalAlpha = 1; ctx.strokeStyle = "rgba(0,0,0,.6)"; ctx.lineWidth = 1; ctx.stroke();
+    }
+  }
+}
+function drawHeads(ctx, P) {
+  ctx.font = "600 12px system-ui, sans-serif";
+  for (const [h, d] of Object.entries(S.data.heads)) {
+    const [x1, y1, x2, y2] = d.box, q = [[x1, y1], [x2, y1], [x2, y2], [x1, y2]].map(p => P.refToScreen(p[0], p[1]));
+    ctx.strokeStyle = HEAD_COLOR; ctx.lineWidth = 2; ctx.setLineDash([5, 3]);
+    ctx.beginPath(); q.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
+    label(ctx, q[0][0], q[0][1] - 3, "head " + h, HEAD_COLOR, "bottom");
+  }
+}
+function drawLandmarks(ctx, P) {
+  ctx.font = "11px system-ui, sans-serif";
+  for (const [n, [x, y]] of Object.entries(S.data.landmarks)) {
+    const p = P.refToScreen(x, y);
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = 3; cross(ctx, p, 7); ctx.strokeStyle = "#e91e63"; ctx.lineWidth = 1.5; cross(ctx, p, 7);
+    label(ctx, p[0] + 8, p[1] - 8, n.replace(/_/g, " "), "#e91e63", "bottom");
+  }
+}
+function cross(ctx, p, r) { ctx.beginPath(); ctx.moveTo(p[0] - r, p[1]); ctx.lineTo(p[0] + r, p[1]); ctx.moveTo(p[0], p[1] - r); ctx.lineTo(p[0], p[1] + r); ctx.stroke(); }
+function label(ctx, x, y, text, color, base) {
+  const w = ctx.measureText(text).width + 8, h = 16, yy = base === "bottom" ? y - h : y;
+  ctx.fillStyle = "rgba(15,16,20,.82)"; ctx.fillRect(x, yy, w, h);
+  ctx.fillStyle = color; ctx.fillRect(x, yy, 3, h);
+  ctx.fillStyle = "#fff"; ctx.textBaseline = "middle"; ctx.fillText(text, x + 5, yy + h / 2);
+}
+function zoneLabelText(z) {
+  const t = T[z.type]; let s = z.name || t.label;
+  if (t.attr && z.attrs[t.attr[0]]) s += " (" + z.attrs[t.attr[0]].replace(/_/g, " ") + ")";
+  return s;
+}
+function drawZones(ctx, P, editable) {
+  ctx.font = "600 12px system-ui, sans-serif";
+  const order = S.zones.filter(z => S.vis[z.type]);
+  // selected zone drawn last
+  order.sort((a, b) => (a.id === S.sel) - (b.id === S.sel));
+  for (const z of order) {
+    const t = T[z.type], sel = z.id === S.sel && editable, drawing = z.id === S.drawing && editable;
+    const pts = z.points.map(p => P.refToScreen(p[0], p[1]));
+    if (!pts.length) continue;
+    ctx.lineJoin = "round"; ctx.lineCap = "round";
+    if (t.geom === "polygon" && pts.length >= 3 && !drawing) {
+      ctx.fillStyle = t.color + (sel ? "40" : "2a");
+      ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])); ctx.closePath(); ctx.fill();
+    }
+    const lw = t.geom === "polyline" ? (sel ? 4 : 3) : (sel ? 3 : 2);
+    ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+    if (t.geom === "polygon" && pts.length >= 3 && !drawing) ctx.closePath();
+    ctx.strokeStyle = "rgba(0,0,0,.7)"; ctx.lineWidth = lw + 2; ctx.stroke();
+    ctx.strokeStyle = t.color; ctx.lineWidth = lw; ctx.stroke();
+    if (drawing && t.geom === "polygon" && pts.length >= 2) {
+      ctx.setLineDash([6, 5]); ctx.strokeStyle = t.color; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(pts[pts.length - 1][0], pts[pts.length - 1][1]); ctx.lineTo(pts[0][0], pts[0][1]); ctx.stroke(); ctx.setLineDash([]);
+    }
+    if (drawing && S.mouse && S.mouse.panel === P) {
+      const last = pts[pts.length - 1]; ctx.setLineDash([3, 4]); ctx.strokeStyle = "#fff"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(last[0], last[1]); ctx.lineTo(S.mouse.sx, S.mouse.sy); ctx.stroke(); ctx.setLineDash([]);
+    }
+    if (sel || drawing) {
+      pts.forEach((p, i) => {
+        const r = (i === S.selV && sel) ? 6 : 4.5;
+        ctx.fillStyle = i === S.selV && sel ? "#fff" : t.color; ctx.strokeStyle = "#000"; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.rect(p[0] - r, p[1] - r, 2 * r, 2 * r); ctx.fill(); ctx.stroke();
+        if (i === 0 && drawing && t.geom === "polygon" && pts.length >= 3) { ctx.strokeStyle = "#fff"; ctx.beginPath(); ctx.arc(p[0], p[1], 9, 0, 7); ctx.stroke(); }
+      });
+    } else if (t.geom === "polyline" || pts.length < 3) {
+      pts.forEach(p => { ctx.fillStyle = t.color; ctx.fillRect(p[0] - 2, p[1] - 2, 4, 4); });
+    }
+    if ($("tNames").checked) {
+      const c = centroid(z); if (c) { const p = P.refToScreen(c[0], c[1]); label(ctx, p[0] + 6, p[1] - 6, zoneLabelText(z), t.color, "bottom"); }
+    }
+  }
+}
+function drawLoupe() {
+  const L = $("loupe");
+  const show = S.mode === "draw" && S.mouse && S.mouse.panel === MAIN && (S.drawing || (S.drag && S.drag.kind === "vertex")) && S.view.s < 3;
+  L.style.display = show ? "block" : "none";
+  if (!show) return;
+  const img = S.img4k || S.imgRef; if (!img) return;
+  const ctx = L.getContext("2d"), zoom = 5, half = 90 / zoom;   // 180 px shows 36 x 36 px of 4K
+  const [x, y] = S.mouse.ref;
+  const k = img.naturalWidth / IMG_W;
+  ctx.imageSmoothingEnabled = false;
+  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, 180, 180);
+  ctx.drawImage(img, (x - half) * k, (y - half) * k, 2 * half * k, 2 * half * k, 0, 0, 180, 180);
+  const Z = { refToScreen: (a, b) => [(a - x + half) * zoom, (b - y + half) * zoom] };
+  for (const z of S.zones) {
+    if (!S.vis[z.type] || !z.points.length) continue;
+    const t = T[z.type], pts = z.points.map(p => Z.refToScreen(p[0], p[1]));
+    ctx.strokeStyle = t.color; ctx.lineWidth = 1.5; ctx.beginPath(); pts.forEach((p, i) => i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]));
+    if (t.geom === "polygon" && pts.length >= 3 && z.id !== S.drawing) ctx.closePath(); ctx.stroke();
+    pts.forEach(p => { ctx.fillStyle = t.color; ctx.fillRect(p[0] - 2.5, p[1] - 2.5, 5, 5); });
+  }
+  ctx.strokeStyle = "rgba(255,255,255,.9)"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(90, 0); ctx.lineTo(90, 80); ctx.moveTo(90, 100); ctx.lineTo(90, 180); ctx.moveTo(0, 90); ctx.lineTo(80, 90); ctx.moveTo(100, 90); ctx.lineTo(180, 90); ctx.stroke();
+  ctx.fillStyle = "rgba(0,0,0,.7)"; ctx.fillRect(0, 162, 180, 18); ctx.fillStyle = "#fff"; ctx.font = "11px ui-monospace, monospace";
+  ctx.fillText(x.toFixed(1) + ", " + y.toFixed(1) + (S.img4k ? "  4K" : "  1080p"), 5, 175);
+}
+
+// ================================================================ verification panels
+let VPANELS = [];
+function buildVerifyPanels() {
+  const g = $("vgrid"); g.innerHTML = ""; VPANELS = [];
+  $("vtabs").innerHTML = "";
+  S.data.videos.forEach((v, i) => {
+    const d = document.createElement("div"); d.className = "vpanel"; d.dataset.stem = v.stem;
+    const c = document.createElement("canvas"); d.appendChild(c);
+    const t = document.createElement("div"); t.className = "vtitle";
+    let info;
+    if (v.is_reference) info = "reference frame (zones drawn here)";
+    else {
+      const le = (v.landmark_error || {}).homography || {}, dp = v.displacement_px || {};
+      info = "landmark error median " + le.median + " px, max " + le.max + " px (" + le.n + " landmarks); zones moved " + dp.min + " to " + dp.max + " px";
+    }
+    t.innerHTML = "<b>" + v.stem + "</b> &middot; " + esc(info);
+    d.appendChild(t); g.appendChild(d);
+    const P = makePanel(c, v.stem); VPANELS.push(P);
+    attachPanelEvents(P);
+    const b = document.createElement("button"); b.textContent = (i + 1) + " " + v.stem; b.dataset.stem = v.stem;
+    b.onclick = () => { S.vsel = v.stem; S.layout = 1; applyLayout(); };
+    $("vtabs").appendChild(b);
+  });
+  applyLayout();
+}
+function applyLayout() {
+  requestAnimationFrame(() => { $("vgrid").style.paddingTop = ($("verifyBar").offsetHeight + 14) + "px"; S.needDraw = true; });
+  $("vgrid").className = "vgrid " + (S.layout === 4 ? "g4" : "g1");
+  $("lay4").classList.toggle("on", S.layout === 4); $("lay1").classList.toggle("on", S.layout === 1);
+  document.querySelectorAll("#vgrid .vpanel").forEach(d => d.style.display = (S.layout === 4 || d.dataset.stem === S.vsel) ? "" : "none");
+  document.querySelectorAll("#vtabs button").forEach(b => b.classList.toggle("on", S.layout === 1 && b.dataset.stem === S.vsel));
+  S.needDraw = true;
+}
+function setMode(m) {
+  S.mode = m;
+  if (m === "verify" && S.drawing) finishDrawing();
+  $("modeDraw").classList.toggle("on", m === "draw"); $("modeVerify").classList.toggle("on", m === "verify");
+  $("layout").classList.toggle("verify", m === "verify");
+  $("cv").style.display = m === "draw" ? "" : "none";
+  $("drawBar").style.display = m === "draw" ? "" : "none";
+  $("verifyBar").style.display = m === "verify" ? "" : "none";
+  $("vgrid").style.display = m === "verify" ? "" : "none";
+  $("addSec").style.display = m === "draw" ? "" : "none";
+  if (m === "verify") { S.data.videos.forEach(v => bgImage(v.stem)); applyLayout(); }
+  render();
+  requestAnimationFrame(() => { if (m === "verify" && !S.vfitted) { S.vfitted = true; fit(); } });
+}
+
+// ================================================================ interaction (draw mode)
+function hitVertex(P, sx, sy, z) {
+  let best = null, bd = 9;
+  z.points.forEach((p, i) => { const q = P.refToScreen(p[0], p[1]); const d = Math.hypot(q[0] - sx, q[1] - sy); if (d < bd) { bd = d; best = i; } });
+  return best;
+}
+function hitEdge(P, sx, sy, z) {
+  const pts = z.points.map(p => P.refToScreen(p[0], p[1]));
+  let best = null, bd = 7;
+  edges(pts, T[z.type].geom === "polygon").forEach(([a, b], i) => { const [d, t] = segDist([sx, sy], a, b); if (d < bd && t > 0.05 && t < 0.95) { bd = d; best = i; } });
+  return best;
+}
+function hitZone(P, sx, sy) {
+  const cands = S.zones.filter(z => S.vis[z.type]);
+  for (let k = cands.length - 1; k >= 0; k--) {       // strokes first (thin things win)
+    const z = cands[k]; const pts = z.points.map(p => P.refToScreen(p[0], p[1]));
+    if (edges(pts, T[z.type].geom === "polygon").some(([a, b]) => segDist([sx, sy], a, b)[0] < 6)) return z;
+  }
+  const r = P.screenToRef(sx, sy);
+  for (let k = cands.length - 1; k >= 0; k--) { const z = cands[k]; if (T[z.type].geom === "polygon" && z.points.length >= 3 && inPoly(r, z.points)) return z; }
+  return null;
+}
+function attachPanelEvents(P) {
+  const c = P.canvas;
+  c.addEventListener("wheel", e => {
+    e.preventDefault();
+    const r = c.getBoundingClientRect();
+    zoomBy(Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018)), e.clientX - r.left, e.clientY - r.top, P);
+  }, { passive: false });
+  c.addEventListener("pointerdown", e => onDown(P, e));
+  c.addEventListener("pointermove", e => onMove(P, e));
+  c.addEventListener("pointerup", e => onUp(P, e));
+  c.addEventListener("pointercancel", e => { S.drag = null; });
+  c.addEventListener("pointerleave", () => { S.mouse = null; S.needDraw = true; });
+  c.addEventListener("dblclick", e => { if (P === MAIN && S.drawing) { e.preventDefault(); finishDrawing(); } });
+  c.addEventListener("contextmenu", e => e.preventDefault());
+}
+function pos(P, e) { const r = P.canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+function onDown(P, e) {
+  const [sx, sy] = pos(P, e);
+  P.canvas.setPointerCapture(e.pointerId);
+  const panOnly = e.button === 1 || e.button === 2 || S.space || P !== MAIN || S.mode !== "draw";
+  S.drag = { kind: "maybe", panel: P, sx, sy, x0: sx, y0: sy, moved: false, panOnly };
+  if (panOnly) { S.drag.kind = "pan"; return; }
+  if (S.drawing) return;                               // click adds a point on pointerup, drag pans
+  const z = zoneById(S.sel);
+  if (z && S.vis[z.type]) {
+    const vi = hitVertex(P, sx, sy, z);
+    if (vi != null) { S.selV = vi; S.drag = Object.assign(S.drag, { kind: "vertex", zid: z.id, vi, before: snap() }); render(); return; }
+    const ei = hitEdge(P, sx, sy, z);
+    if (ei != null) {
+      const before = snap(); const r = P.screenToRef(sx, sy);
+      z.points.splice(ei + 1, 0, [r1(clampX(r[0])), r1(clampY(r[1]))]); S.selV = ei + 1;
+      S.drag = Object.assign(S.drag, { kind: "vertex", zid: z.id, vi: ei + 1, before, inserted: true }); render(); return;
+    }
+  }
+  for (const zz of S.zones.slice().reverse()) {        // grab a vertex of any visible zone
+    if (!S.vis[zz.type] || zz.id === S.sel) continue;
+    const vi = hitVertex(P, sx, sy, zz);
+    if (vi != null) { S.sel = zz.id; S.selV = vi; S.drag = Object.assign(S.drag, { kind: "vertex", zid: zz.id, vi, before: snap() }); render(); return; }
+  }
+  S.drag.kind = "maybe";
+}
+function onMove(P, e) {
+  const [sx, sy] = pos(P, e);
+  const r = P.screenToRef(sx, sy);
+  S.mouse = { panel: P, sx, sy, ref: r };
+  const pill = S.mode === "draw" ? $("coordPill") : $("vCoordPill");
+  pill.textContent = (r[0] >= 0 && r[0] <= IMG_W && r[1] >= 0 && r[1] <= IMG_H) ? "ref x " + r[0].toFixed(1) + ", y " + r[1].toFixed(1) : "outside the frame";
+  const d = S.drag;
+  if (d) {
+    if (!d.moved && Math.hypot(sx - d.x0, sy - d.y0) > 4) d.moved = true;
+    if (d.kind === "vertex") {
+      const z = zoneById(d.zid); if (z) { z.points[d.vi] = [r1(clampX(r[0])), r1(clampY(r[1]))]; }
+    } else if ((d.kind === "pan" || d.kind === "maybe") && d.moved) {
+      d.kind = "pan"; S.userMoved = true;
+      S.view.cx -= (sx - d.sx) / S.view.s; S.view.cy -= (sy - d.sy) / S.view.s;
+    }
+    d.sx = sx; d.sy = sy;
+  } else if (P === MAIN && S.mode === "draw") {
+    let cur = S.drawing ? "crosshair" : "grab";
+    const z = zoneById(S.sel);
+    if (!S.drawing && z && S.vis[z.type]) { if (hitVertex(P, sx, sy, z) != null) cur = "move"; else if (hitEdge(P, sx, sy, z) != null) cur = "copy"; else if (hitZone(P, sx, sy)) cur = "pointer"; }
+    else if (!S.drawing && hitZone(P, sx, sy)) cur = "pointer";
+    if (S.space) cur = "grab";
+    P.canvas.style.cursor = cur;
+  }
+  S.needDraw = true;
+}
+function onUp(P, e) {
+  const d = S.drag; S.drag = null;
+  if (!d) return;
+  const [sx, sy] = pos(P, e);
+  if (d.kind === "vertex") {
+    if (d.moved || d.inserted) { pushUndo(d.before); changed(); } else render();
+    return;
+  }
+  if (d.kind === "pan" || d.moved || d.panOnly) { S.needDraw = true; return; }
+  // a click
+  if (S.drawing) {
+    const z = zoneById(S.drawing); if (!z) { S.drawing = null; return render(); }
+    const t = T[z.type];
+    if (t.geom === "polygon" && z.points.length >= 3) {
+      const f = P.refToScreen(z.points[0][0], z.points[0][1]);
+      if (Math.hypot(f[0] - sx, f[1] - sy) < 10) return finishDrawing();
+    }
+    const r = P.screenToRef(sx, sy), slack = 40 / S.view.s;   // clicks just outside snap to the frame edge
+    if (r[0] < -slack || r[0] > IMG_W + slack || r[1] < -slack || r[1] > IMG_H + slack) return toast("That point is outside the frame");
+    commit(() => { z.points.push([r1(clampX(r[0])), r1(clampY(r[1]))]); });
+    return;
+  }
+  const z = hitZone(P, sx, sy);
+  S.sel = z ? z.id : null; S.selV = null; render();
+  if (z) scrollZoneIntoView(z.id);
+}
+
+function startDrawing(type, attrs) {
+  if (S.mode !== "draw") setMode("draw");
+  if (S.drawing) finishDrawing();
+  const t = T[type], n = S.zones.filter(z => z.type === type).length + 1;
+  const z = { id: newId(), type, name: t.label + " " + n, points: [], attrs: Object.assign({}, attrs || {}) };
+  if (t.attr && !(t.attr[0] in z.attrs)) z.attrs[t.attr[0]] = "";
+  commit(() => { S.zones.push(z); });
+  S.drawing = z.id; S.sel = z.id; S.selV = null; render();
+  $("cv").style.cursor = "crosshair";
+}
+function continueDrawing(id) { const z = zoneById(id); if (!z) return; S.drawing = id; S.sel = id; S.selV = null; render(); }
+function finishDrawing() {
+  const z = zoneById(S.drawing); S.drawing = null;
+  if (z) {
+    const t = T[z.type];
+    if (z.points.length === 0) { commit(() => { S.zones = S.zones.filter(q => q.id !== z.id); }); S.sel = null; toast("Empty zone removed"); }
+    else if (z.points.length < t.min) toast(z.name + " needs " + t.min + " points; it is kept, add points later");
+  }
+  render();
+}
+function deleteZone(id) {
+  const z = zoneById(id); if (!z) return;
+  ask("Delete " + z.name + " (" + z.points.length + " points)? You can undo this.", [["Cancel", false], ["Delete", true, true]]).then(ok => {
+    if (!ok) return;
+    commit(() => { S.zones = S.zones.filter(q => q.id !== id); });
+    if (S.sel === id) { S.sel = null; S.selV = null; } if (S.drawing === id) S.drawing = null; render();
+  });
+}
+function deleteVertex() {
+  const z = zoneById(S.sel); if (!z || S.selV == null) return;
+  const i = S.selV; commit(() => { z.points.splice(i, 1); }); S.selV = z.points.length ? Math.min(i, z.points.length - 1) : null; render();
+}
+function zoomToZone(id) {
+  const z = zoneById(id); if (!z || !z.points.length) return;
+  if (S.mode !== "draw") setMode("draw");
+  const xs = z.points.map(p => p[0]), ys = z.points.map(p => p[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys), r = stageRect();
+  S.view.cx = (x0 + x1) / 2; S.view.cy = (y0 + y1) / 2;
+  S.view.s = Math.min(8, Math.max(0.1, Math.min((r.width - 120) / Math.max(40, x1 - x0), (r.height - 160) / Math.max(40, y1 - y0))));
+  S.sel = id; updateZoomPill(); render();
+}
+
+// ================================================================ side panel
+function renderAdd() {
+  const g = $("addGrid"); g.innerHTML = "";
+  TYPES.forEach(t => {
+    const b = document.createElement("button");
+    b.innerHTML = '<span class="sw" style="background:' + t.color + '"></span>' + esc(t.label);
+    b.title = "Draw a new " + t.label;
+    b.onclick = () => startDrawing(t.key);
+    b.onmouseenter = () => { S.hoverType = t.key; renderHelp(); };
+    b.onmouseleave = () => { S.hoverType = null; renderHelp(); };
+    g.appendChild(b);
+  });
+  const h = document.createElement("button"); h.style.opacity = ".6";
+  h.onclick = () => toast("Signal heads are fixed reference boxes; they are always shown when 'signal heads' is ticked");
+  h.innerHTML = '<span class="sw" style="background:' + HEAD_COLOR + '"></span>signal head (fixed)';
+  h.title = "Signal heads are read-only, from signals/signal_heads.json";
+  h.onmouseenter = () => { S.hoverType = "signal_head"; renderHelp(); };
+  h.onmouseleave = () => { S.hoverType = null; renderHelp(); };
+  g.appendChild(h);
+}
+function renderHelp() {
+  const k = S.hoverType || (zoneById(S.sel) || {}).type;
+  const el = $("typeHelp");
+  if (k === "signal_head") { el.style.borderLeftColor = HEAD_COLOR; el.innerHTML = "<b>signal head</b>: read-only boxes from signals/signal_heads.json (not stored in zones). D is the near-carriageway vehicle signal (<b>red_light</b>, <b>stop_line</b>); A is a pedestrian signal. In the verification view they show whether the alignment is right."; return; }
+  const t = T[k];
+  if (!t) { el.style.borderLeftColor = "var(--border)"; el.innerHTML = "Pick a zone type to draw. Hover a button to see what the model uses it for."; return; }
+  el.style.borderLeftColor = t.color; el.innerHTML = "<b>" + esc(t.label) + "</b> (" + t.geom + ", " + t.min + "+ points): " + t.help;
+}
+function attrSelect(z) {
+  const t = T[z.type]; if (!t.attr) return null;
+  const s = document.createElement("select"); const [an, opts] = t.attr;
+  opts.forEach(([v, l]) => { const o = document.createElement("option"); o.value = v; o.textContent = l; s.appendChild(o); });
+  s.value = z.attrs[an] || "";
+  if (!s.value && an !== "kind") s.classList.add("need");
+  s.onchange = () => commit(() => { z.attrs[an] = s.value; });
+  s.onclick = e => e.stopPropagation();
+  return s;
+}
+function renderDrawBox() {
+  const z = zoneById(S.drawing);
+  $("drawSec").style.display = z ? "" : "none";
+  if (!z) return;
+  const t = T[z.type], box = $("drawBox"); box.innerHTML = "";
+  const n = z.points.length;
+  const head = document.createElement("div");
+  head.innerHTML = '<span class="sw" style="display:inline-block;vertical-align:-1px;background:' + t.color + '"></span> <b>Drawing ' + esc(z.name) + "</b> &middot; " + n + " point" + (n === 1 ? "" : "s") +
+    '<div class="muted" style="margin-top:3px">' + (t.geom === "polygon"
+      ? "Click to add corners. Close with <kbd>Enter</kbd>, a double-click, or a click on the first point. <kbd>Backspace</kbd> removes the last point. Drag to pan."
+      : "Click points along the line. Finish with <kbd>Enter</kbd> or a double-click. <kbd>Backspace</kbd> removes the last point. Drag to pan.") + "</div>";
+  box.appendChild(head);
+  const sel = attrSelect(z);
+  if (sel) { const r = document.createElement("div"); r.className = "row"; r.appendChild(sel); box.appendChild(r); }
+  const row = document.createElement("div"); row.className = "row";
+  const fin = document.createElement("button"); fin.className = "primary"; fin.textContent = t.geom === "polygon" ? "Close polygon" : "Finish line"; fin.onclick = finishDrawing;
+  const back = document.createElement("button"); back.textContent = "Remove last point"; back.disabled = !n; back.onclick = () => { if (z.points.length) commit(() => z.points.pop()); };
+  row.append(fin, back); box.appendChild(row);
+}
+function scrollZoneIntoView(id) { const el = document.querySelector('.zrow[data-id="' + id + '"]'); if (el) el.scrollIntoView({ block: "nearest" }); }
+function renderZoneList() {
+  const box = $("zoneList"); box.innerHTML = "";
+  $("zCount").textContent = S.zones.length ? "(" + S.zones.length + ")" : "";
+  TYPES.forEach(t => {
+    const zs = S.zones.filter(z => z.type === t.key);
+    const g = document.createElement("div"); g.className = "zgroup";
+    const h = document.createElement("div"); h.className = "zghead";
+    h.innerHTML = '<span class="sw" style="background:' + t.color + '"></span>' + esc(t.label) + ' <span class="cnt">' + zs.length + "</span>";
+    const lab = document.createElement("label"); const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = S.vis[t.key];
+    cb.onchange = () => { S.vis[t.key] = cb.checked; LS.set("salen-zones:vis", S.vis); S.needDraw = true; };
+    lab.append(cb, document.createTextNode("show")); h.appendChild(lab); g.appendChild(h);
+    zs.forEach(z => {
+      const row = document.createElement("div"); row.className = "zrow" + (z.id === S.sel ? " sel" : ""); row.dataset.id = z.id;
+      const inp = document.createElement("input"); inp.className = "zname"; inp.value = z.name; inp.maxLength = 80; inp.title = "Rename";
+      inp.onfocus = () => { if (S.sel !== z.id) { S.sel = z.id; S.selV = null; S.needDraw = true; document.querySelectorAll(".zrow").forEach(r => r.classList.toggle("sel", r.dataset.id === z.id)); renderHelp(); } };
+      inp.onchange = () => commit(() => { z.name = inp.value.trim() || T[z.type].label; });
+      inp.onkeydown = e => { if (e.key === "Enter") inp.blur(); };
+      const zb = document.createElement("button"); zb.className = "small"; zb.textContent = "zoom"; zb.onclick = () => zoomToZone(z.id);
+      const db = document.createElement("button"); db.className = "small danger"; db.textContent = "delete"; db.onclick = () => deleteZone(z.id);
+      row.append(inp, zb, db);
+      const meta = document.createElement("div"); meta.className = "zmeta";
+      const few = z.points.length < t.min;
+      meta.innerHTML = '<span style="' + (few ? "color:var(--bad);font-weight:600" : "") + '">' + z.points.length + " pts</span>";
+      const sel = attrSelect(z); if (sel) meta.appendChild(sel);
+      if (S.drawing !== z.id) { const ab = document.createElement("button"); ab.className = "small"; ab.textContent = "add points"; ab.title = "Continue adding points at the end"; ab.onclick = () => continueDrawing(z.id); meta.appendChild(ab); }
+      if (z.id === S.sel && S.selV != null) { const vb = document.createElement("button"); vb.className = "small danger"; vb.textContent = "delete point " + (S.selV + 1); vb.onclick = deleteVertex; meta.appendChild(vb); }
+      row.appendChild(meta);
+      row.onclick = e => { if (e.target.tagName === "BUTTON" || e.target.tagName === "SELECT" || e.target.tagName === "INPUT") return; S.sel = z.id; S.selV = null; render(); };
+      g.appendChild(row);
+    });
+    if (!zs.length) { const e = document.createElement("div"); e.className = "zempty"; e.textContent = "none yet"; g.appendChild(e); }
+    box.appendChild(g);
+  });
+  $("undoBtn").disabled = !S.undo.length; $("redoBtn").disabled = !S.redo.length;
+}
+function problems() {
+  const out = [];
+  if (S.rejected) S.rejected.forEach(p => out.push(["err", "Server rejected the save: " + p, null]));
+  const names = {};
+  for (const z of S.zones) {
+    const t = T[z.type];
+    if (z.points.length < t.min) out.push(["err", z.name + ": " + (t.geom === "polygon" ? "a polygon needs 3 or more points" : "a stop line needs 2 or more points") + " (has " + z.points.length + ")", z.id]);
+    if (t.attr && t.attr[0] !== "kind" && !z.attrs[t.attr[0]]) out.push(["wrn", z.name + ": choose the " + t.attr[0], z.id]);
+    if (t.geom === "polygon" && z.points.length >= 4 && selfIntersects(z.points)) out.push(["wrn", z.name + ": edges cross each other (bow-tie shape)", z.id]);
+    const k = z.type + "|" + z.name.toLowerCase(); if (names[k]) out.push(["wrn", "two " + t.label + " zones are both named " + z.name, z.id]); names[k] = true;
+  }
+  const lanes = S.zones.filter(z => z.type === "live_lane" && z.points.length >= 3), bays = S.zones.filter(z => z.type === "parking_bay" && z.points.length >= 3);
+  for (const a of lanes) for (const b of bays) if (polysOverlap(a.points, b.points)) out.push(["wrn", a.name + " overlaps " + b.name + ": parked vehicles would count as stopped in a live lane", a.id]);
+  if (!S.zones.some(z => z.type === "stop_line" && z.attrs.approach === "near_carriageway")) out.push(["wrn", "no stop line for the near carriageway yet (red_light and stop_line need it)", null]);
+  if (!S.zones.some(z => z.type === "zebra_crossing")) out.push(["wrn", "no zebra crossing yet (jaywalking, failure_to_yield)", null]);
+  if (!S.zones.some(z => z.type === "live_lane")) out.push(["wrn", "no live lane yet (stopped_vehicle)", null]);
+  if (!S.zones.some(z => z.type === "parking_bay")) out.push(["wrn", "no parking bay yet (the parked cars at the far left edge)", null]);
+  return out;
+}
+function renderProblems() {
+  const ps = problems(), ul = $("problems"); ul.innerHTML = "";
+  const nErr = ps.filter(p => p[0] === "err").length;
+  $("probBadge").innerHTML = ps.length ? '<span class="sev ' + (nErr ? "err" : "wrn") + '" style="text-transform:none">' + ps.length + " to look at</span>" : '<span class="sev ok" style="text-transform:none">all good</span>';
+  if (!ps.length) { ul.innerHTML = '<li><span class="sev ok">OK</span><span>No problems found.</span></li>'; return; }
+  ps.forEach(([sev, msg, id]) => {
+    const li = document.createElement("li");
+    li.innerHTML = '<span class="sev ' + sev + '">' + (sev === "err" ? "Fix" : "Check") + "</span><span>" + esc(msg) + "</span>";
+    if (id) li.onclick = () => zoomToZone(id);
+    ul.appendChild(li);
+  });
+}
+function renderEvLegend() {
+  if (!S.data) return;
+  const f = S.data.lanes.flows.map((n, i) => '<span style="color:' + FLOW_COLORS[i] + ';font-weight:700">&#9632;</span> ' + esc(n)).join("<br>");
+  $("evLegend").innerHTML = f + '<br><span style="color:#ff5252">&#9679;</span> car stop, <span style="color:#ffab00">&#9679;</span> bus stop (bigger = longer)';
+}
+function render() {
+  renderZoneList(); renderDrawBox(); renderProblems(); renderHelp(); S.needDraw = true;
+  const hint = S.mode === "verify"
+    ? "Drag to pan, wheel to zoom (all panels follow). 1 to 4: one video large, 0: all four. V: back to drawing."
+    : S.drawing ? "Click to add points. Enter: finish. Backspace: remove last point. Esc: stop. Drag or Space+drag: pan. Wheel: zoom."
+    : "Click a zone to select. Drag a point to move it, click an edge to insert a point, Delete removes the selected point, arrows nudge it 1 px (Shift: 10). Wheel: zoom, drag: pan, F: fit. Ctrl+Z / Ctrl+Shift+Z: undo / redo.";
+  $("keyHint").textContent = hint;
+}
+
+// ================================================================ history, export
+async function showHistory() {
+  const box = $("histBox");
+  if (box.style.display !== "none") { box.style.display = "none"; return; }
+  box.style.display = ""; box.innerHTML = '<div class="muted">loading...</div>';
+  try {
+    const r = await api("/api/zones/history"); const j = await r.json();
+    if (!j.versions.length) { box.innerHTML = '<div class="muted">No saved versions yet.</div>'; return; }
+    box.innerHTML = "";
+    j.versions.forEach(v => {
+      const d = document.createElement("div");
+      d.innerHTML = "<span>v" + v.version + " &middot; " + hhmmss(v.saved_at) + " &middot; " + v.n_zones + " zones" + (v.edited_by ? " &middot; " + esc(v.edited_by) : "") + "</span>";
+      const b = document.createElement("button"); b.className = "small"; b.textContent = "load";
+      b.onclick = async () => {
+        const ok = await ask("Load version " + v.version + " (" + v.n_zones + " zones)? It replaces what you see now and is saved as a new version. Undo brings the current zones back.", [["Cancel", false], ["Load", true, true]]);
+        if (!ok) return;
+        const rr = await api("/api/zones/history?file=" + encodeURIComponent(v.file)); const doc = await rr.json();
+        commit(() => { S.zones = plainZones(doc.zones || []); }); S.sel = null; S.selV = null; S.drawing = null; render(); toast("Loaded version " + v.version);
+      };
+      d.appendChild(b); box.appendChild(d);
+    });
+    if (j.total > j.versions.length) box.insertAdjacentHTML("beforeend", '<div class="muted">' + (j.total - j.versions.length) + " older versions on the server</div>");
+  } catch (e) { box.innerHTML = '<div class="muted">Cannot load the history (offline?).</div>'; }
+}
+function exportJson() {
+  const doc = { version: S.serverVersion, frame: "C3897 reference", image_size: [IMG_W, IMG_H], coords: "reference 4K px",
+    zones: plainZones(S.zones), _meta: { exported_at: new Date().toISOString(), exported_by: name(), unsaved_changes: S.dirty,
+      types: Object.fromEntries(TYPES.map(t => [t.key, t.geom])) } };
+  const blob = new Blob([JSON.stringify(doc, null, 1)], { type: "application/json" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "zones.json"; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+}
+
+// ================================================================ keyboard
+function typing(e) { const t = e.target; return t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT"); }
+document.addEventListener("keydown", e => {
+  if (modalOpen()) return;
+  if (typing(e)) return;
+  const mod = e.ctrlKey || e.metaKey;
+  if (mod && (e.key === "z" || e.key === "Z")) { e.preventDefault(); if (e.shiftKey) redo(); else undo(); return; }
+  if (mod && (e.key === "y" || e.key === "Y")) { e.preventDefault(); redo(); return; }
+  if (mod) return;
+  if (e.key === " ") { e.preventDefault(); S.space = true; $("cv").style.cursor = "grab"; return; }
+  if (e.key === "v" || e.key === "V") { setMode(S.mode === "draw" ? "verify" : "draw"); return; }
+  if (S.mode === "verify") {
+    if (e.key >= "1" && e.key <= "4") { S.vsel = S.data.videos[+e.key - 1].stem; S.layout = 1; applyLayout(); }
+    else if (e.key === "0") { S.layout = 4; applyLayout(); }
+    else if (e.key === "+" || e.key === "=") zoomBy(1.25);
+    else if (e.key === "-" || e.key === "_") zoomBy(0.8);
+    else if (e.key === "f" || e.key === "F") fit();
+    return;
+  }
+  if (e.key === "Enter") { if (S.drawing) { e.preventDefault(); finishDrawing(); } return; }
+  if (e.key === "Escape") { if (S.drawing) finishDrawing(); else { S.sel = null; S.selV = null; render(); } return; }
+  if (e.key === "Backspace" || e.key === "Delete") {
+    e.preventDefault();
+    if (S.drawing) { const z = zoneById(S.drawing); if (z && z.points.length) commit(() => z.points.pop()); }
+    else if (S.selV != null) deleteVertex();
+    else if (S.sel) toast("Use the delete button in the list to delete a whole zone");
+    return;
+  }
+  if (e.key.startsWith("Arrow") && S.sel && S.selV != null && !S.drawing) {
+    e.preventDefault();
+    const z = zoneById(S.sel), st = e.shiftKey ? 10 : 1, p = z.points[S.selV];
+    const dx = e.key === "ArrowLeft" ? -st : e.key === "ArrowRight" ? st : 0, dy = e.key === "ArrowUp" ? -st : e.key === "ArrowDown" ? st : 0;
+    commit(() => { z.points[S.selV] = [r1(clampX(p[0] + dx)), r1(clampY(p[1] + dy))]; });
+    return;
+  }
+  if (e.key === "+" || e.key === "=") zoomBy(1.25);
+  else if (e.key === "-" || e.key === "_") zoomBy(0.8);
+  else if (e.key === "f" || e.key === "F") fit();
+  else if (e.key === "1") { zoomBy(1 / S.view.s); }
+});
+document.addEventListener("keyup", e => { if (e.key === " ") { S.space = false; S.needDraw = true; } });
+window.addEventListener("blur", () => { S.space = false; });
+
+// ================================================================ wiring
+$("modeDraw").onclick = () => setMode("draw");
+$("modeVerify").onclick = () => setMode("verify");
+$("zoomIn").onclick = () => zoomBy(1.25); $("zoomOut").onclick = () => zoomBy(0.8);
+$("zoomFit").onclick = fit; $("zoom1").onclick = () => zoomBy(1 / S.view.s);
+$("vZoomIn").onclick = () => zoomBy(1.25, null, null, VPANELS[0]); $("vZoomOut").onclick = () => zoomBy(0.8, null, null, VPANELS[0]); $("vFit").onclick = fit;
+$("lay4").onclick = () => { S.layout = 4; applyLayout(); }; $("lay1").onclick = () => { S.layout = 1; applyLayout(); };
+$("undoBtn").onclick = undo; $("redoBtn").onclick = redo;
+$("exportBtn").onclick = exportJson;
+$("serverCopyBtn").onclick = () => window.open("/api/zones?download=1&t=" + encodeURIComponent(TOKEN), "_blank", "noopener");
+$("histBtn").onclick = showHistory;
+["tNames", "tHeads", "tLandmarks", "tLanes", "tLanesBad", "tStops", "tPeds"].forEach(id => $(id).addEventListener("change", () => {
+  const st = {}; ["tNames", "tHeads", "tLandmarks", "tLanes", "tLanesBad", "tStops", "tPeds"].forEach(k => st[k] = $(k).checked); LS.set("salen-zones:toggles", st); S.needDraw = true;
+}));
+$("nameInput").addEventListener("input", e => { LS.set("salen-label:name", e.target.value.trim()); e.target.classList.toggle("missing", !name()); if (S.dirty) scheduleSave(SAVE_DELAY); });
+$("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") e.target.blur(); });
+window.addEventListener("resize", () => { if (S.mode === "verify") applyLayout(); if (!S.userMoved) fit(); S.needDraw = true; });
+
+function frame() {
+  if (S.needDraw && S.data) {
+    S.needDraw = false;
+    if (S.mode === "draw") drawPanel(mainPanel(), S.img4k || S.imgRef, { evidence: true, editable: true });
+    else VPANELS.forEach(P => { if (P.canvas.offsetParent !== null) drawPanel(P, bgImage(P.stem), { evidence: false, editable: false }); });
+    drawLoupe();
+  }
+  requestAnimationFrame(frame);
+}
+
+(function init() {
+  $("nameInput").value = LS.get("salen-label:name") || "";
+  $("nameInput").classList.toggle("missing", !name());
+  const vis = LS.get("salen-zones:vis"); if (vis) Object.assign(S.vis, vis);
+  const tg = LS.get("salen-zones:toggles"); if (tg) Object.entries(tg).forEach(([k, v]) => { if ($(k)) $(k).checked = v; });
+  mainPanel(); attachPanelEvents(MAIN);
+  renderAdd(); render();
+  loadAll();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{"frames_timed": 60, "stride": 3, "proxy": "1080p", "threads": 2,
+ "runs": [
+  {"model": "yolo11s", "imgsz": 1280, "fps_steady": 0.788, "fps_wall": 0.753},
+  {"model": "yolo11s", "imgsz": 960, "fps_steady": 1.42, "fps_wall": 1.301},
+  {"model": "yolo11n", "imgsz": 1280, "fps_steady": 1.928, "fps_wall": 1.746}],
+ "rule": "first config with >= 1.5 processed frames/s in order s@1280, s@960, n@1280",
+ "chosen": {"model": "yolo11n", "imgsz": 1280}}

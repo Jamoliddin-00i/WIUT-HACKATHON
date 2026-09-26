@@ -1,0 +1,26 @@
+{
+  "C3905.MP4": {
+    "duration": 127.63,
+    "fps": 29.97,
+    "events": [
+      [1.268, 24.191, "stopped_vehicle"],
+      [11.211, 16.95, "jaywalking"],
+      [36.77, 62.729, "stopped_vehicle"],
+      [72.139, 79.746, "jaywalking"],
+      [72.139, 111.612, "congestion"],
+      [75.609, 92.192, "stopped_vehicle"],
+      [81.448, 84.017, "near_miss"],
+      [81.782, 84.718, "failure_to_yield"],
+      [107.007, 117.918, "stopped_vehicle"]
+    ]
+  },
+  "C3896.MP4": {
+    "duration": 340.34,
+    "fps": 29.97,
+    "events": [
+      [8.542, 26.059, "stopped_vehicle"],
+      [53.82, 71.705, "congestion"],
+      [80.414, 98.832, "stopped_vehicle"]
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 {
   "reference_resolution": [3840, 2160],
-  "notes": "Initial normalized polygons traced from C3905 at 30 s. Review against other clips before using for scored predictions.",
+  "reference_video": "C3905",
+  "notes": "Rough polygons traced from C3905 at 30 s. The proposal tool warps them to other clips with EDA homographies. These zones require visual verification before scored predictions.",
   "crosswalks": {
     "middle": [[0.18, 0.54], [0.48, 0.51], [0.53, 0.59], [0.20, 0.63]],
     "right": [[0.67, 0.46], [0.91, 0.45], [0.94, 0.54], [0.68, 0.55]],

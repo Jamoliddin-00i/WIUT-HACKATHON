@@ -1,0 +1,1004 @@
+{
+ "C3905": {
+  "A": {
+   "kind": "pedestrian",
+   "samples": 1275,
+   "crop_box_4k": [
+    477,
+    976,
+    586,
+    1115
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     52.9,
+     59.5
+    ],
+    "green": [
+     52.5,
+     92.2
+    ]
+   },
+   "amber_from_midpoint": false,
+   "disc_radius_px": 9.2,
+   "thresholds": {
+    "red": 50.2,
+    "green": 49.8
+   },
+   "separation_dprime": {
+    "red": 41.3,
+    "green": 32.2
+   },
+   "drift_shift_px": {
+    "max_abs": 3.0,
+    "p99_abs": 1.0
+   },
+   "after_classified_share": 1.0,
+   "after_classified_share_of_unoccluded": 1.0,
+   "after_state_share": {
+    "green": 0.3647,
+    "green_flash": 0.0118,
+    "red": 0.6235
+   },
+   "before_v2_rule_classified_share": 0.9867,
+   "before_v2_rule_smoothed_classified_share": 0.9882,
+   "phases": [
+    {
+     "state": "red",
+     "start": 0.0,
+     "end": 34.43,
+     "duration": 34.43
+    },
+    {
+     "state": "green",
+     "start": 34.53,
+     "end": 69.37,
+     "duration": 34.84
+    },
+    {
+     "state": "red",
+     "start": 69.47,
+     "end": 114.41,
+     "duration": 44.94
+    },
+    {
+     "state": "green",
+     "start": 114.51,
+     "end": 127.53,
+     "duration": 13.02
+    }
+   ]
+  },
+  "D": {
+   "kind": "vehicle",
+   "samples": 1275,
+   "crop_box_4k": [
+    2275,
+    695,
+    2381,
+    865
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     53.1,
+     56.5
+    ],
+    "green": [
+     50.4,
+     123.4
+    ],
+    "amber": [
+     50.8,
+     90.0
+    ]
+   },
+   "amber_from_midpoint": false,
+   "disc_radius_px": 9.4,
+   "thresholds": {
+    "red": 71.6,
+    "amber": 29.5,
+    "green": 71.5
+   },
+   "separation_dprime": {
+    "red": 41.6,
+    "amber": 46.4,
+    "green": 46.1
+   },
+   "drift_shift_px": {
+    "max_abs": 3.0,
+    "p99_abs": 1.0
+   },
+   "after_classified_share": 0.9882,
+   "after_classified_share_of_unoccluded": 1.0,
+   "after_state_share": {
+    "amber": 0.0235,
+    "green": 0.3882,
+    "green_flash": 0.0063,
+    "occluded": 0.0118,
+    "red": 0.5294,
+    "red_amber": 0.0408
+   },
+   "before_v2_rule_classified_share": 0.9812,
+   "before_v2_rule_smoothed_classified_share": 0.9882,
+   "phases": [
+    {
+     "state": "red",
+     "start": 0.0,
+     "end": 31.43,
+     "duration": 31.43
+    },
+    {
+     "state": "red_amber",
+     "start": 31.53,
+     "end": 34.43,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 34.53,
+     "end": 72.37,
+     "duration": 37.84
+    },
+    {
+     "state": "amber",
+     "start": 72.47,
+     "end": 75.38,
+     "duration": 2.91
+    },
+    {
+     "state": "red",
+     "start": 75.48,
+     "end": 111.41,
+     "duration": 35.93
+    },
+    {
+     "state": "red_amber",
+     "start": 111.51,
+     "end": 114.41,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 114.51,
+     "end": 127.53,
+     "duration": 13.02
+    }
+   ]
+  }
+ },
+ "C3896": {
+  "A": {
+   "kind": "pedestrian",
+   "samples": 3400,
+   "crop_box_4k": [
+    484,
+    930,
+    590,
+    1066
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     50.9,
+     54.8
+    ],
+    "green": [
+     51.6,
+     90.7
+    ]
+   },
+   "amber_from_midpoint": false,
+   "disc_radius_px": 10.0,
+   "thresholds": {
+    "red": 25.2,
+    "green": 16.5
+   },
+   "separation_dprime": {
+    "red": 47.4,
+    "green": 31.8
+   },
+   "drift_shift_px": {
+    "max_abs": 20.0,
+    "p99_abs": 6.0
+   },
+   "after_classified_share": 0.9997,
+   "after_classified_share_of_unoccluded": 1.0,
+   "after_state_share": {
+    "green": 0.4088,
+    "green_flash": 0.0176,
+    "occluded": 0.0003,
+    "red": 0.5732
+   },
+   "before_v2_rule_classified_share": 0.5488,
+   "before_v2_rule_smoothed_classified_share": 0.5529,
+   "phases": [
+    {
+     "state": "occluded",
+     "start": 0.0,
+     "end": 0.0,
+     "duration": 0.0
+    },
+    {
+     "state": "red",
+     "start": 0.1,
+     "end": 27.03,
+     "duration": 26.93
+    },
+    {
+     "state": "green",
+     "start": 27.13,
+     "end": 59.96,
+     "duration": 32.83
+    },
+    {
+     "state": "red",
+     "start": 60.06,
+     "end": 102.0,
+     "duration": 41.94
+    },
+    {
+     "state": "green",
+     "start": 102.1,
+     "end": 135.03,
+     "duration": 32.93
+    },
+    {
+     "state": "red",
+     "start": 135.13,
+     "end": 176.98,
+     "duration": 41.85
+    },
+    {
+     "state": "green",
+     "start": 177.08,
+     "end": 210.01,
+     "duration": 32.93
+    },
+    {
+     "state": "red",
+     "start": 210.11,
+     "end": 252.05,
+     "duration": 41.94
+    },
+    {
+     "state": "green",
+     "start": 252.15,
+     "end": 285.18,
+     "duration": 33.03
+    },
+    {
+     "state": "red",
+     "start": 285.29,
+     "end": 327.23,
+     "duration": 41.94
+    },
+    {
+     "state": "green",
+     "start": 327.33,
+     "end": 340.24,
+     "duration": 12.91
+    }
+   ]
+  },
+  "D": {
+   "kind": "vehicle",
+   "samples": 3400,
+   "crop_box_4k": [
+    2263,
+    690,
+    2366,
+    857
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     52.9,
+     53.7
+    ],
+    "green": [
+     50.1,
+     121.2
+    ],
+    "amber": [
+     51.5,
+     87.4
+    ]
+   },
+   "amber_from_midpoint": true,
+   "disc_radius_px": 9.5,
+   "thresholds": {
+    "red": 11.0,
+    "amber": -0.2,
+    "green": 13.2
+   },
+   "separation_dprime": {
+    "red": 27.5,
+    "amber": 4.0,
+    "green": 18.9
+   },
+   "drift_shift_px": {
+    "max_abs": 18.0,
+    "p99_abs": 5.0
+   },
+   "after_classified_share": 0.9588,
+   "after_classified_share_of_unoccluded": 0.99,
+   "after_state_share": {
+    "amber": 0.0379,
+    "dark": 0.0006,
+    "green": 0.4141,
+    "green_flash": 0.0129,
+    "occluded": 0.0315,
+    "red": 0.4591,
+    "red_amber": 0.0347,
+    "unclear": 0.0091
+   },
+   "before_v2_rule_classified_share": 0.0253,
+   "before_v2_rule_smoothed_classified_share": 0.0044,
+   "phases": [
+    {
+     "state": "red",
+     "start": 0.0,
+     "end": 24.02,
+     "duration": 24.02
+    },
+    {
+     "state": "red_amber",
+     "start": 24.12,
+     "end": 27.03,
+     "duration": 2.91
+    },
+    {
+     "state": "green",
+     "start": 27.13,
+     "end": 62.96,
+     "duration": 35.83
+    },
+    {
+     "state": "amber",
+     "start": 63.06,
+     "end": 65.97,
+     "duration": 2.91
+    },
+    {
+     "state": "red",
+     "start": 66.07,
+     "end": 99.0,
+     "duration": 32.93
+    },
+    {
+     "state": "red_amber",
+     "start": 99.1,
+     "end": 102.0,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 102.1,
+     "end": 123.42,
+     "duration": 21.32
+    },
+    {
+     "state": "unclear",
+     "start": 123.52,
+     "end": 127.43,
+     "duration": 3.91
+    },
+    {
+     "state": "green",
+     "start": 127.53,
+     "end": 138.04,
+     "duration": 10.51
+    },
+    {
+     "state": "amber",
+     "start": 138.14,
+     "end": 141.04,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 141.14,
+     "end": 174.07,
+     "duration": 32.93
+    },
+    {
+     "state": "red_amber",
+     "start": 174.17,
+     "end": 177.08,
+     "duration": 2.91
+    },
+    {
+     "state": "green",
+     "start": 177.18,
+     "end": 184.38,
+     "duration": 7.2
+    },
+    {
+     "state": "unclear",
+     "start": 184.48,
+     "end": 185.69,
+     "duration": 1.21
+    },
+    {
+     "state": "green",
+     "start": 185.79,
+     "end": 189.29,
+     "duration": 3.5
+    },
+    {
+     "state": "dark",
+     "start": 189.39,
+     "end": 192.39,
+     "duration": 3.0
+    },
+    {
+     "state": "green",
+     "start": 192.49,
+     "end": 213.01,
+     "duration": 20.52
+    },
+    {
+     "state": "amber",
+     "start": 213.11,
+     "end": 216.02,
+     "duration": 2.91
+    },
+    {
+     "state": "red",
+     "start": 216.12,
+     "end": 249.05,
+     "duration": 32.93
+    },
+    {
+     "state": "red_amber",
+     "start": 249.15,
+     "end": 252.05,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 252.15,
+     "end": 288.19,
+     "duration": 36.04
+    },
+    {
+     "state": "amber",
+     "start": 288.29,
+     "end": 291.19,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 291.29,
+     "end": 324.22,
+     "duration": 32.93
+    },
+    {
+     "state": "red_amber",
+     "start": 324.32,
+     "end": 327.23,
+     "duration": 2.91
+    },
+    {
+     "state": "green",
+     "start": 327.33,
+     "end": 340.24,
+     "duration": 12.91
+    }
+   ]
+  }
+ },
+ "C3897": {
+  "A": {
+   "kind": "pedestrian",
+   "samples": 3175,
+   "crop_box_4k": [
+    484,
+    929,
+    590,
+    1065
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     51.6,
+     55.3
+    ],
+    "green": [
+     52.2,
+     91.6
+    ]
+   },
+   "amber_from_midpoint": false,
+   "disc_radius_px": 10.2,
+   "thresholds": {
+    "red": 24.8,
+    "green": 16.2
+   },
+   "separation_dprime": {
+    "red": 53.1,
+    "green": 31.6
+   },
+   "drift_shift_px": {
+    "max_abs": 5.0,
+    "p99_abs": 0.0
+   },
+   "after_classified_share": 1.0,
+   "after_classified_share_of_unoccluded": 1.0,
+   "after_state_share": {
+    "green": 0.3962,
+    "green_flash": 0.0192,
+    "red": 0.5846
+   },
+   "before_v2_rule_classified_share": 0.5033,
+   "before_v2_rule_smoothed_classified_share": 0.5515,
+   "phases": [
+    {
+     "state": "red",
+     "start": 0.0,
+     "end": 19.82,
+     "duration": 19.82
+    },
+    {
+     "state": "green",
+     "start": 19.92,
+     "end": 52.65,
+     "duration": 32.73
+    },
+    {
+     "state": "red",
+     "start": 52.75,
+     "end": 94.59,
+     "duration": 41.84
+    },
+    {
+     "state": "green",
+     "start": 94.69,
+     "end": 127.63,
+     "duration": 32.94
+    },
+    {
+     "state": "red",
+     "start": 127.73,
+     "end": 169.67,
+     "duration": 41.94
+    },
+    {
+     "state": "green",
+     "start": 169.77,
+     "end": 202.8,
+     "duration": 33.03
+    },
+    {
+     "state": "red",
+     "start": 202.9,
+     "end": 244.84,
+     "duration": 41.94
+    },
+    {
+     "state": "green",
+     "start": 244.94,
+     "end": 277.88,
+     "duration": 32.94
+    },
+    {
+     "state": "red",
+     "start": 277.98,
+     "end": 317.72,
+     "duration": 39.74
+    }
+   ]
+  },
+  "D": {
+   "kind": "vehicle",
+   "samples": 3175,
+   "crop_box_4k": [
+    2263,
+    689,
+    2366,
+    856
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     53.5,
+     54.5
+    ],
+    "green": [
+     50.7,
+     122.0
+    ],
+    "amber": [
+     52.1,
+     88.2
+    ]
+   },
+   "amber_from_midpoint": true,
+   "disc_radius_px": 9.4,
+   "thresholds": {
+    "red": 11.3,
+    "amber": -0.1,
+    "green": 12.8
+   },
+   "separation_dprime": {
+    "red": 32.4,
+    "amber": 6.4,
+    "green": 29.2
+   },
+   "drift_shift_px": {
+    "max_abs": 4.0,
+    "p99_abs": 1.0
+   },
+   "after_classified_share": 0.994,
+   "after_classified_share_of_unoccluded": 1.0,
+   "after_state_share": {
+    "amber": 0.0375,
+    "green": 0.434,
+    "green_flash": 0.0176,
+    "occluded": 0.006,
+    "red": 0.468,
+    "red_amber": 0.0369
+   },
+   "before_v2_rule_classified_share": 0.022,
+   "before_v2_rule_smoothed_classified_share": 0.0016,
+   "phases": [
+    {
+     "state": "red",
+     "start": 0.0,
+     "end": 16.82,
+     "duration": 16.82
+    },
+    {
+     "state": "red_amber",
+     "start": 16.92,
+     "end": 19.82,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 19.92,
+     "end": 55.66,
+     "duration": 35.74
+    },
+    {
+     "state": "amber",
+     "start": 55.76,
+     "end": 58.66,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 58.76,
+     "end": 91.59,
+     "duration": 32.83
+    },
+    {
+     "state": "red_amber",
+     "start": 91.69,
+     "end": 94.59,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 94.69,
+     "end": 130.63,
+     "duration": 35.94
+    },
+    {
+     "state": "amber",
+     "start": 130.73,
+     "end": 133.63,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 133.73,
+     "end": 166.67,
+     "duration": 32.94
+    },
+    {
+     "state": "red_amber",
+     "start": 166.77,
+     "end": 169.67,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 169.77,
+     "end": 205.81,
+     "duration": 36.04
+    },
+    {
+     "state": "amber",
+     "start": 205.91,
+     "end": 208.81,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 208.91,
+     "end": 241.84,
+     "duration": 32.93
+    },
+    {
+     "state": "red_amber",
+     "start": 241.94,
+     "end": 244.84,
+     "duration": 2.9
+    },
+    {
+     "state": "green",
+     "start": 244.94,
+     "end": 280.88,
+     "duration": 35.94
+    },
+    {
+     "state": "amber",
+     "start": 280.98,
+     "end": 283.88,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 283.98,
+     "end": 316.62,
+     "duration": 32.64
+    },
+    {
+     "state": "red_amber",
+     "start": 316.72,
+     "end": 317.72,
+     "duration": 1.0
+    }
+   ]
+  }
+ },
+ "C3902": {
+  "A": {
+   "kind": "pedestrian",
+   "samples": 3175,
+   "crop_box_4k": [
+    383,
+    1009,
+    491,
+    1147
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     50.9,
+     58.7
+    ],
+    "green": [
+     50.9,
+     92.7
+    ]
+   },
+   "amber_from_midpoint": false,
+   "disc_radius_px": 9.5,
+   "thresholds": {
+    "red": 45.5,
+    "green": 53.0
+   },
+   "separation_dprime": {
+    "red": 88.3,
+    "green": 52.5
+   },
+   "drift_shift_px": {
+    "max_abs": 7.0,
+    "p99_abs": 3.0
+   },
+   "after_classified_share": 0.9997,
+   "after_classified_share_of_unoccluded": 0.9997,
+   "after_state_share": {
+    "green": 0.422,
+    "green_flash": 0.0183,
+    "red": 0.5594,
+    "unclear": 0.0003
+   },
+   "before_v2_rule_classified_share": 0.9798,
+   "before_v2_rule_smoothed_classified_share": 0.9827,
+   "phases": [
+    {
+     "state": "red",
+     "start": 0.0,
+     "end": 37.04,
+     "duration": 37.04
+    },
+    {
+     "state": "green",
+     "start": 37.14,
+     "end": 72.07,
+     "duration": 34.93
+    },
+    {
+     "state": "red",
+     "start": 72.17,
+     "end": 117.12,
+     "duration": 44.95
+    },
+    {
+     "state": "green",
+     "start": 117.22,
+     "end": 152.05,
+     "duration": 34.83
+    },
+    {
+     "state": "red",
+     "start": 152.15,
+     "end": 197.1,
+     "duration": 44.95
+    },
+    {
+     "state": "green",
+     "start": 197.2,
+     "end": 232.03,
+     "duration": 34.83
+    },
+    {
+     "state": "red",
+     "start": 232.13,
+     "end": 277.08,
+     "duration": 44.95
+    },
+    {
+     "state": "green",
+     "start": 277.18,
+     "end": 312.11,
+     "duration": 34.93
+    },
+    {
+     "state": "red",
+     "start": 312.21,
+     "end": 317.72,
+     "duration": 5.51
+    }
+   ]
+  },
+  "D": {
+   "kind": "vehicle",
+   "samples": 3175,
+   "crop_box_4k": [
+    2181,
+    735,
+    2286,
+    905
+   ],
+   "lamp_centres_crop_px": {
+    "red": [
+     52.4,
+     56.7
+    ],
+    "green": [
+     50.2,
+     124.4
+    ],
+    "amber": [
+     51.1,
+     90.4
+    ]
+   },
+   "amber_from_midpoint": false,
+   "disc_radius_px": 9.5,
+   "thresholds": {
+    "red": 49.9,
+    "amber": 11.5,
+    "green": 66.9
+   },
+   "separation_dprime": {
+    "red": 55.5,
+    "amber": 33.1,
+    "green": 21.7
+   },
+   "drift_shift_px": {
+    "max_abs": 7.0,
+    "p99_abs": 2.0
+   },
+   "after_classified_share": 0.9553,
+   "after_classified_share_of_unoccluded": 1.0,
+   "after_state_share": {
+    "amber": 0.0365,
+    "green": 0.4274,
+    "green_flash": 0.0129,
+    "occluded": 0.0447,
+    "red": 0.4476,
+    "red_amber": 0.0309
+   },
+   "before_v2_rule_classified_share": 0.9109,
+   "before_v2_rule_smoothed_classified_share": 0.9178,
+   "phases": [
+    {
+     "state": "red",
+     "start": 0.0,
+     "end": 34.03,
+     "duration": 34.03
+    },
+    {
+     "state": "red_amber",
+     "start": 34.13,
+     "end": 37.04,
+     "duration": 2.91
+    },
+    {
+     "state": "green",
+     "start": 37.14,
+     "end": 75.08,
+     "duration": 37.94
+    },
+    {
+     "state": "amber",
+     "start": 75.18,
+     "end": 78.08,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 78.18,
+     "end": 114.11,
+     "duration": 35.93
+    },
+    {
+     "state": "red_amber",
+     "start": 114.21,
+     "end": 117.02,
+     "duration": 2.81
+    },
+    {
+     "state": "green",
+     "start": 117.12,
+     "end": 155.05,
+     "duration": 37.93
+    },
+    {
+     "state": "amber",
+     "start": 155.16,
+     "end": 158.06,
+     "duration": 2.9
+    },
+    {
+     "state": "red",
+     "start": 158.16,
+     "end": 194.09,
+     "duration": 35.93
+    },
+    {
+     "state": "red_amber",
+     "start": 194.19,
+     "end": 197.1,
+     "duration": 2.91
+    },
+    {
+     "state": "green",
+     "start": 197.2,
+     "end": 235.03,
+     "duration": 37.83
+    },
+    {
+     "state": "amber",
+     "start": 235.13,
+     "end": 238.04,
+     "duration": 2.91
+    },
+    {
+     "state": "red",
+     "start": 238.14,
+     "end": 274.07,
+     "duration": 35.93
+    },
+    {
+     "state": "red_amber",
+     "start": 274.17,
+     "end": 277.08,
+     "duration": 2.91
+    },
+    {
+     "state": "green",
+     "start": 277.18,
+     "end": 315.11,
+     "duration": 37.93
+    },
+    {
+     "state": "amber",
+     "start": 315.21,
+     "end": 317.72,
+     "duration": 2.51
+    }
+   ]
+  }
+ }
+}

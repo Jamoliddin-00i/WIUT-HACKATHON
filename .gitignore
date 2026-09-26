@@ -27,3 +27,10 @@ __pycache__/
 
 # Model/framework caches that should not be committed accidentally
 runs/
+
+# Offline model weights and framework state
+weights/*
+!weights/.gitkeep
+*.pt
+Ultralytics/
+predictions.json

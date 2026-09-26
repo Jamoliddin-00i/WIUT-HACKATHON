@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Salen Team Tools</title>
+<style>
+:root { --bg: #f6f7f9; --panel: #ffffff; --text: #16181d; --muted: #5d6573; --border: #d5dae2; --accent: #2457d6; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #111317; --panel: #1a1d23; --text: #e8eaee; --muted: #9aa3b2; --border: #333844; --accent: #6b95ff; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 720px; margin: 0 auto; padding: 28px 16px 40px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+p.lead { color: var(--muted); margin: 0 0 20px; }
+a.tool { display: block; background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+  color: var(--text); text-decoration: none; }
+a.tool:hover { border-color: var(--accent); }
+a.tool b { color: var(--accent); font-size: 16px; }
+a.tool span { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Salen team tools</h1>
+  <p class="lead">WIUT x Toyota 2026. Everything saves to the server by itself; keep this link private.</p>
+  <a class="tool" href="index.html"><b>Event labeling</b><span>Mark event segments [start, end, class] on the four videos. Output: ground_truth.json.</span></a>
+  <a class="tool" href="zones.html"><b>Zone editor</b><span>Draw stop lines, zebra crossings, parking bays, live lanes, bus stops and non-carriageway areas once on the reference frame, then check them warped into all four videos.</span></a>
+  <a class="tool" href="spotcheck.html"><b>Signal spot-check</b><span>Check 240 automatic traffic-light readings against 4K crops, one key press each; results show the agreement and every disagreement.</span></a>
+  <a class="tool" href="guide.html"><b>Labeling guide</b><span>Class rules and the organizers' answers.</span></a>
+</main>
+</body>
+</html>

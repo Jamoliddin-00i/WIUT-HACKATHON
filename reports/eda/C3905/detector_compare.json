@@ -1,0 +1,92 @@
+{
+ "a": {
+  "label": "yolo11n 1280 (CPU)",
+  "file": "tracks.csv",
+  "rows": 63873,
+  "processed_frames_with_boxes": 1275,
+  "unique_tracks": {
+   "person": 465,
+   "car": 286,
+   "bus": 29,
+   "truck": 48,
+   "motorcycle": 3,
+   "bicycle": 10
+  },
+  "tracks_min_det": {
+   "person": 421,
+   "car": 268,
+   "bus": 27,
+   "truck": 38,
+   "motorcycle": 2,
+   "bicycle": 9
+  },
+  "detections_per_frame": {
+   "person": 23.03,
+   "car": 22.05,
+   "bus": 2.88,
+   "truck": 1.66,
+   "motorcycle": 0.08,
+   "bicycle": 0.39
+  },
+  "median_track_s": {
+   "person": 2.9,
+   "car": 6.0,
+   "bus": 6.3,
+   "truck": 0.5,
+   "motorcycle": 0.7,
+   "bicycle": 1.8
+  },
+  "person_box_height_4k": {
+   "median": 128.6,
+   "p05": 77.2,
+   "share_below_96px": 0.203,
+   "share_below_80px": 0.062,
+   "count_below_96px_per_frame": 4.67
+  }
+ },
+ "b": {
+  "label": "yolo11m 1280 (T4)",
+  "file": "tracks_kaggle.csv",
+  "rows": 78830,
+  "processed_frames_with_boxes": 1275,
+  "unique_tracks": {
+   "person": 606,
+   "car": 223,
+   "bus": 21,
+   "truck": 51,
+   "motorcycle": 11,
+   "bicycle": 14
+  },
+  "tracks_min_det": {
+   "person": 547,
+   "car": 211,
+   "bus": 20,
+   "truck": 27,
+   "motorcycle": 9,
+   "bicycle": 11
+  },
+  "detections_per_frame": {
+   "person": 31.55,
+   "car": 25.33,
+   "bus": 2.56,
+   "truck": 1.61,
+   "motorcycle": 0.3,
+   "bicycle": 0.48
+  },
+  "median_track_s": {
+   "person": 2.9,
+   "car": 8.8,
+   "bus": 2.7,
+   "truck": 0.2,
+   "motorcycle": 1.0,
+   "bicycle": 1.7
+  },
+  "person_box_height_4k": {
+   "median": 108.0,
+   "p05": 73.0,
+   "share_below_96px": 0.299,
+   "share_below_80px": 0.079,
+   "count_below_96px_per_frame": 9.44
+  }
+ }
+}

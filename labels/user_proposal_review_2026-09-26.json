@@ -1,0 +1,193 @@
+{
+  "video": "C3905.MP4",
+  "review_date": "2026-09-26",
+  "source": "User review of older automatic proposals in conversation",
+  "notes": [
+    "Keep labels/user_truth_2026-09-26.json as the manually corrected timing reference.",
+    "The user provided comments only for C3905; other pasted videos have no review verdict.",
+    "Rejections apply to the reviewed proposals/actors, not every possible event at those timestamps.",
+    "Use these for development evaluation only; never read them during inference."
+  ],
+  "reviews": [
+    {
+      "proposal": [
+        0,
+        26.026,
+        "stopped_vehicle"
+      ],
+      "verdict": "confirmed",
+      "comment": "good, but alr got better."
+    },
+    {
+      "proposal": [
+        11.011,
+        13.514,
+        "failure_to_yield"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        13.514,
+        17.517,
+        "jaywalking"
+      ],
+      "verdict": "confirmed",
+      "comment": "good, but alr got better."
+    },
+    {
+      "proposal": [
+        34.034,
+        35.035,
+        "jaywalking"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        35.535,
+        64.564,
+        "stopped_vehicle"
+      ],
+      "verdict": "confirmed",
+      "comment": "good, but alr got better"
+    },
+    {
+      "proposal": [
+        37.538,
+        39.038,
+        "jaywalking"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        40.04,
+        43.044,
+        "failure_to_yield"
+      ],
+      "verdict": "rejected",
+      "comment": "false, pedestrian gave the way to car"
+    },
+    {
+      "proposal": [
+        47.547,
+        48.549,
+        "jaywalking"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        59.559,
+        60.561,
+        "jaywalking"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        63.063,
+        63.564,
+        "failure_to_yield"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        73.573,
+        77.578,
+        "jaywalking"
+      ],
+      "verdict": "confirmed",
+      "comment": "good, but alr got better"
+    },
+    {
+      "proposal": [
+        74.074,
+        93.594,
+        "stopped_vehicle"
+      ],
+      "verdict": "confirmed",
+      "comment": "good, but alr got better"
+    },
+    {
+      "proposal": [
+        83.584,
+        84.585,
+        "failure_to_yield"
+      ],
+      "verdict": "confirmed",
+      "comment": "good, but alr got better"
+    },
+    {
+      "proposal": [
+        84.084,
+        87.088,
+        "jaywalking"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        103.103,
+        110.109,
+        "jaywalking"
+      ],
+      "verdict": "confirmed",
+      "comment": "true, improved by hand."
+    },
+    {
+      "proposal": [
+        110.11,
+        110.611,
+        "failure_to_yield"
+      ],
+      "verdict": "rejected",
+      "comment": "very near, but pedestrian didnt enter the second part of zebra yet in that frame."
+    },
+    {
+      "proposal": [
+        111.111,
+        116.115,
+        "jaywalking"
+      ],
+      "verdict": "merge",
+      "comment": "actually merged with true jaywalking in that time interval"
+    },
+    {
+      "proposal": [
+        112.612,
+        113.112,
+        "failure_to_yield"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        114.615,
+        115.115,
+        "failure_to_yield"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    },
+    {
+      "proposal": [
+        123.624,
+        126.627,
+        "jaywalking"
+      ],
+      "verdict": "rejected",
+      "comment": "false"
+    }
+  ]
+}

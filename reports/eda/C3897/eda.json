@@ -1,0 +1,3982 @@
+{
+ "counts_per_sec": [
+  {
+   "t": 0,
+   "car": 26,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 1,
+   "car": 25,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 2,
+   "car": 25,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 3,
+   "car": 27,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 4,
+   "car": 29,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 5,
+   "car": 30,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 6,
+   "car": 31,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 7,
+   "car": 31,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 23
+  },
+  {
+   "t": 8,
+   "car": 32,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 22
+  },
+  {
+   "t": 9,
+   "car": 32,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 10,
+   "car": 33,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 11,
+   "car": 35,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 12,
+   "car": 34,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 13,
+   "car": 34,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 14,
+   "car": 34,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 15,
+   "car": 35,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 16,
+   "car": 37,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 17,
+   "car": 35,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 18,
+   "car": 34,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 19,
+   "car": 33,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 20,
+   "car": 33,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 21,
+   "car": 32,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 22,
+   "car": 31,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 23,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 24,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 25,
+   "car": 31,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 26,
+   "car": 32,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 27,
+   "car": 31,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 28,
+   "car": 31,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 29,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 30,
+   "car": 31,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 31,
+   "car": 33,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 32,
+   "car": 35,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 33,
+   "car": 33,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 34,
+   "car": 31,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 35,
+   "car": 29,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 36,
+   "car": 29,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 37,
+   "car": 28,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 38,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 39,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 40,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 41,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 42,
+   "car": 30,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 43,
+   "car": 35,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 44,
+   "car": 35,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 45,
+   "car": 35,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 46,
+   "car": 34,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 47,
+   "car": 34,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 48,
+   "car": 35,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 49,
+   "car": 37,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 50,
+   "car": 37,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 51,
+   "car": 35,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 52,
+   "car": 35,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 53,
+   "car": 35,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 54,
+   "car": 31,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 55,
+   "car": 31,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 56,
+   "car": 31,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 57,
+   "car": 33,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 58,
+   "car": 29,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 59,
+   "car": 29,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 60,
+   "car": 30,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 61,
+   "car": 27,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 62,
+   "car": 27,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 63,
+   "car": 25,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 64,
+   "car": 23,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 65,
+   "car": 22,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 66,
+   "car": 21,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 67,
+   "car": 20,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 68,
+   "car": 19,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 69,
+   "car": 20,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 70,
+   "car": 18,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 71,
+   "car": 16,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 72,
+   "car": 21,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 73,
+   "car": 18,
+   "bus": 2,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 74,
+   "car": 18,
+   "bus": 2,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 75,
+   "car": 17,
+   "bus": 2,
+   "truck": 3,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 76,
+   "car": 17,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 77,
+   "car": 19,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 78,
+   "car": 20,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 79,
+   "car": 18,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 80,
+   "car": 19,
+   "bus": 2,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 81,
+   "car": 20,
+   "bus": 2,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 82,
+   "car": 22,
+   "bus": 2,
+   "truck": 3,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 83,
+   "car": 22,
+   "bus": 2,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 84,
+   "car": 25,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 85,
+   "car": 22,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 86,
+   "car": 25,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 87,
+   "car": 24,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 88,
+   "car": 23,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 89,
+   "car": 23,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 90,
+   "car": 27,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 91,
+   "car": 31,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 92,
+   "car": 32,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 93,
+   "car": 32,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 94,
+   "car": 32,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 22
+  },
+  {
+   "t": 95,
+   "car": 31,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 96,
+   "car": 32,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 97,
+   "car": 31,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 98,
+   "car": 30,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 99,
+   "car": 33,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 23
+  },
+  {
+   "t": 100,
+   "car": 32,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 101,
+   "car": 31,
+   "bus": 4,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 23
+  },
+  {
+   "t": 102,
+   "car": 30,
+   "bus": 4,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 103,
+   "car": 30,
+   "bus": 4,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 104,
+   "car": 29,
+   "bus": 4,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 105,
+   "car": 31,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 106,
+   "car": 32,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 23
+  },
+  {
+   "t": 107,
+   "car": 32,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 108,
+   "car": 30,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 109,
+   "car": 31,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 22
+  },
+  {
+   "t": 110,
+   "car": 32,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 111,
+   "car": 32,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 112,
+   "car": 31,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 113,
+   "car": 31,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 22
+  },
+  {
+   "t": 114,
+   "car": 32,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 23
+  },
+  {
+   "t": 115,
+   "car": 31,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 23
+  },
+  {
+   "t": 116,
+   "car": 30,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 20
+  },
+  {
+   "t": 117,
+   "car": 29,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 22
+  },
+  {
+   "t": 118,
+   "car": 32,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 119,
+   "car": 30,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 120,
+   "car": 32,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 121,
+   "car": 32,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 122,
+   "car": 35,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 123,
+   "car": 34,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 124,
+   "car": 31,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 22
+  },
+  {
+   "t": 125,
+   "car": 31,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 126,
+   "car": 29,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 127,
+   "car": 28,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 128,
+   "car": 26,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 129,
+   "car": 28,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 130,
+   "car": 30,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 131,
+   "car": 28,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 23
+  },
+  {
+   "t": 132,
+   "car": 31,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 133,
+   "car": 33,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 134,
+   "car": 29,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 135,
+   "car": 26,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 136,
+   "car": 28,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 137,
+   "car": 28,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 138,
+   "car": 27,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 139,
+   "car": 25,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 140,
+   "car": 24,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 141,
+   "car": 24,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 142,
+   "car": 22,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 143,
+   "car": 20,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 144,
+   "car": 19,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 145,
+   "car": 18,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 146,
+   "car": 17,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 147,
+   "car": 20,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 148,
+   "car": 20,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 149,
+   "car": 19,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 150,
+   "car": 20,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 151,
+   "car": 20,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 152,
+   "car": 20,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 153,
+   "car": 20,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 154,
+   "car": 20,
+   "bus": 0,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 155,
+   "car": 20,
+   "bus": 0,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 156,
+   "car": 20,
+   "bus": 0,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 157,
+   "car": 21,
+   "bus": 0,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 158,
+   "car": 22,
+   "bus": 0,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 159,
+   "car": 21,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 160,
+   "car": 21,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 161,
+   "car": 24,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 162,
+   "car": 24,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 163,
+   "car": 25,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 164,
+   "car": 25,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 165,
+   "car": 25,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 166,
+   "car": 26,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 167,
+   "car": 27,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 168,
+   "car": 25,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 169,
+   "car": 25,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 170,
+   "car": 24,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 171,
+   "car": 23,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 37
+  },
+  {
+   "t": 172,
+   "car": 21,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 40
+  },
+  {
+   "t": 173,
+   "car": 19,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 174,
+   "car": 18,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 175,
+   "car": 17,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 176,
+   "car": 16,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 177,
+   "car": 15,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 178,
+   "car": 16,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 179,
+   "car": 16,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 180,
+   "car": 14,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 181,
+   "car": 16,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 182,
+   "car": 16,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 183,
+   "car": 16,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 184,
+   "car": 15,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 185,
+   "car": 13,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 186,
+   "car": 14,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 187,
+   "car": 16,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 188,
+   "car": 15,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 189,
+   "car": 15,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 190,
+   "car": 15,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 191,
+   "car": 16,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 192,
+   "car": 16,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 193,
+   "car": 16,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 194,
+   "car": 16,
+   "bus": 1,
+   "truck": 2,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 195,
+   "car": 17,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 196,
+   "car": 17,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 197,
+   "car": 17,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 198,
+   "car": 16,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 199,
+   "car": 15,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 200,
+   "car": 13,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 201,
+   "car": 14,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 202,
+   "car": 13,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 203,
+   "car": 14,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 204,
+   "car": 15,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 205,
+   "car": 14,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 206,
+   "car": 13,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 207,
+   "car": 13,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 208,
+   "car": 11,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 209,
+   "car": 11,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 210,
+   "car": 12,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 211,
+   "car": 14,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 212,
+   "car": 16,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 213,
+   "car": 16,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 214,
+   "car": 16,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 40
+  },
+  {
+   "t": 215,
+   "car": 18,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 40
+  },
+  {
+   "t": 216,
+   "car": 20,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 40
+  },
+  {
+   "t": 217,
+   "car": 19,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 37
+  },
+  {
+   "t": 218,
+   "car": 19,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 39
+  },
+  {
+   "t": 219,
+   "car": 18,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 220,
+   "car": 20,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 37
+  },
+  {
+   "t": 221,
+   "car": 21,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 222,
+   "car": 20,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 38
+  },
+  {
+   "t": 223,
+   "car": 22,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 42
+  },
+  {
+   "t": 224,
+   "car": 21,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 42
+  },
+  {
+   "t": 225,
+   "car": 22,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 42
+  },
+  {
+   "t": 226,
+   "car": 22,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 39
+  },
+  {
+   "t": 227,
+   "car": 24,
+   "bus": 3,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 37
+  },
+  {
+   "t": 228,
+   "car": 25,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 229,
+   "car": 25,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 38
+  },
+  {
+   "t": 230,
+   "car": 24,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 231,
+   "car": 26,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 232,
+   "car": 27,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 233,
+   "car": 26,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 234,
+   "car": 26,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 235,
+   "car": 25,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 236,
+   "car": 25,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 237,
+   "car": 25,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 238,
+   "car": 27,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 239,
+   "car": 29,
+   "bus": 1,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 240,
+   "car": 28,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 241,
+   "car": 28,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 242,
+   "car": 32,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 243,
+   "car": 33,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 244,
+   "car": 34,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 245,
+   "car": 35,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 246,
+   "car": 38,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 247,
+   "car": 39,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 248,
+   "car": 34,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 249,
+   "car": 35,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 250,
+   "car": 33,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 251,
+   "car": 31,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 252,
+   "car": 26,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 253,
+   "car": 25,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 254,
+   "car": 25,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 255,
+   "car": 22,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 256,
+   "car": 24,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 257,
+   "car": 24,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 27
+  },
+  {
+   "t": 258,
+   "car": 22,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 1,
+   "bicycle": 0,
+   "person": 24
+  },
+  {
+   "t": 259,
+   "car": 21,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 25
+  },
+  {
+   "t": 260,
+   "car": 20,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 261,
+   "car": 20,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 28
+  },
+  {
+   "t": 262,
+   "car": 19,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 263,
+   "car": 19,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 264,
+   "car": 21,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 26
+  },
+  {
+   "t": 265,
+   "car": 20,
+   "bus": 3,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 266,
+   "car": 19,
+   "bus": 2,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 267,
+   "car": 19,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 268,
+   "car": 17,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 269,
+   "car": 15,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 270,
+   "car": 15,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 271,
+   "car": 13,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 272,
+   "car": 14,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 273,
+   "car": 14,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 274,
+   "car": 15,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 275,
+   "car": 15,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 276,
+   "car": 15,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 277,
+   "car": 15,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 278,
+   "car": 16,
+   "bus": 2,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 279,
+   "car": 16,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 280,
+   "car": 17,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 281,
+   "car": 16,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 282,
+   "car": 19,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 283,
+   "car": 18,
+   "bus": 1,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 284,
+   "car": 18,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 285,
+   "car": 17,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 36
+  },
+  {
+   "t": 286,
+   "car": 15,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 287,
+   "car": 16,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 288,
+   "car": 17,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 289,
+   "car": 15,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 290,
+   "car": 16,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 291,
+   "car": 15,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 292,
+   "car": 16,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 293,
+   "car": 15,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 294,
+   "car": 15,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 295,
+   "car": 19,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 296,
+   "car": 17,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 297,
+   "car": 17,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 298,
+   "car": 17,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 30
+  },
+  {
+   "t": 299,
+   "car": 19,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 29
+  },
+  {
+   "t": 300,
+   "car": 19,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 31
+  },
+  {
+   "t": 301,
+   "car": 22,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 302,
+   "car": 23,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 303,
+   "car": 24,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 304,
+   "car": 23,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 305,
+   "car": 24,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 306,
+   "car": 24,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 307,
+   "car": 25,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 308,
+   "car": 28,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 309,
+   "car": 26,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 310,
+   "car": 25,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 311,
+   "car": 26,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 312,
+   "car": 28,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 32
+  },
+  {
+   "t": 313,
+   "car": 29,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  },
+  {
+   "t": 314,
+   "car": 31,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 315,
+   "car": 32,
+   "bus": 0,
+   "truck": 0,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 35
+  },
+  {
+   "t": 316,
+   "car": 34,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 34
+  },
+  {
+   "t": 317,
+   "car": 32,
+   "bus": 0,
+   "truck": 1,
+   "motorcycle": 0,
+   "bicycle": 0,
+   "person": 33
+  }
+ ],
+ "density_per_min": [
+  {
+   "minute": 0,
+   "vehicles": 116,
+   "persons": 118,
+   "avg_speed_px_s": 132.1
+  },
+  {
+   "minute": 1,
+   "vehicles": 149,
+   "persons": 131,
+   "avg_speed_px_s": 149.5
+  },
+  {
+   "minute": 2,
+   "vehicles": 96,
+   "persons": 166,
+   "avg_speed_px_s": 114.2
+  },
+  {
+   "minute": 3,
+   "vehicles": 93,
+   "persons": 186,
+   "avg_speed_px_s": 140.6
+  },
+  {
+   "minute": 4,
+   "vehicles": 96,
+   "persons": 179,
+   "avg_speed_px_s": 157.3
+  },
+  {
+   "minute": 5,
+   "vehicles": 47,
+   "persons": 50,
+   "avg_speed_px_s": 73.3
+  }
+ ],
+ "lane_flows": [
+  {
+   "lane": "F1 middle-right to top-left",
+   "direction": "right to left",
+   "count": 155
+  },
+  {
+   "lane": "F2 top-left to bottom-right",
+   "direction": "towards camera, left to right",
+   "count": 151
+  },
+  {
+   "lane": "F3 middle-left to bottom-left",
+   "direction": "towards camera",
+   "count": 8
+  },
+  {
+   "lane": "F4 bottom-right to bottom-left",
+   "direction": "right to left",
+   "count": 6
+  }
+ ],
+ "heatmap_url": "/media/eda/C3897/heatmap.png",
+ "trajectories_url": "/media/eda/C3897/trajectories.png",
+ "notes": [
+  "EDA v4: reviewed findings, confidence and rule-input status are in reports/eda/SUMMARY.md and tools/scene/CONTRACT.md. The notes below are automatic descriptive statistics of this clip only.",
+  "1162 tracks in 318 s: 692 pedestrians (60%), 425 car, 17 bus, 22 truck, 6 motorcycle, 0 bicycle; 3 person boxes riding two-wheelers were relabelled as riders.",
+  "On average 26.7 pedestrians and 25 vehicles are on screen at once (peak 37 pedestrians).",
+  "4 vehicle flows found; the largest are F1 middle-right to top-left (right to left, 155 tracks); F2 top-left to bottom-right (towards camera, left to right, 151 tracks); F3 middle-left to bottom-left (towards camera, 8 tracks).",
+  "Furthest queued stop that began while head D showed red, red_amber or amber, per flow (rough upper bound for a stop line; D is a timing proxy for the near carriageway only): F1 near [1545, 472] (15% of its vehicles stopped >= 2 s, queue 1.2 vs 1.3 vehicles while D red vs not red); F2 near [3682, 2154] (53% of its vehicles stopped >= 2 s, queue 9.0 vs 3.3 vehicles while D red vs not red); F3 near [551, 980] (62% of its vehicles stopped >= 2 s, queue 0.8 vs 0.1 vehicles while D red vs not red).",
+  "Median pedestrian box height is 120 px at 4K; 27% are under 96px (16px at imgsz 640), 1% are under 64px (16px at imgsz 960), 0% are under 48px (16px at imgsz 1280). These are detected boxes, so the smallest people are already missing.",
+  "Mean luma goes from 94.1 to 94.4 (+0.4%) over the clip, range 91.1 to 99.6 of 255; the largest swing is +7.1% within 15 s (119 to 134 s). Iris, shutter and gain are constant in the camera metadata (reports/eda/camera), so this is not exposure control; brightness rules (fire_smoke) must still normalise per frame.",
+  "184 of 692 pedestrian tracks spend >= 0.5 s on cells used by moving vehicles; 5 crossing corridor(s) found, the busiest spans x 480 to 2320, y 960 to 1680 (107 people); 23 people are on the road outside corridors, most around [1578, 1436] (includes kerbside waiting and bus boarding, so an upper bound for jaywalking).",
+  "Signal: vehicle head D (3 lamps, from the head inventory) at (2315, 773) in this video; its v4 timeline has a known state for 99.4% of the clip (coverage, not accuracy: no human-verified labels yet). D is a timing proxy for the near-carriageway flow; which movements it controls is unknown.",
+  "Of 330 vehicle tracks with enough motion, 272 go straight, 44 turn and 8 reverse heading (U-turn like, e.g. track 21 at [3165, 1268] around 27.3 s); check these by eye before treating them as illegal_u_turn examples.",
+  "4 vehicle(s) stand still for over 90% of a track longer than 60 s at [176, 1053], [134, 909], [59, 816], [3703, 938] (parked), which a stopped_vehicle rule must whitelist or time-gate.",
+  "Tracker: 19.1% of tracks live under 1 s and 69.8% of vehicle tracks start away from the frame edge, a sign of occlusion and ID switches."
+ ],
+ "extra": {
+  "video": {
+   "stem": "C3897",
+   "orig_resolution": [
+    3840,
+    2160
+   ],
+   "fps": 29.97,
+   "frames": 9525,
+   "duration_s": 317.82,
+   "proxy_resolution": [
+    1920,
+    1080
+   ]
+  },
+  "density_last_minute_seconds": 17.8,
+  "lane_flow_clustering": {
+   "method": "k-means on start xy, end xy, net heading, then merge clusters that share heading (< 20 deg) and line (< 250 px)",
+   "k": 6,
+   "silhouette": 0.762,
+   "merged": 2,
+   "eligible_tracks": 320,
+   "rule": "vehicle tracks >= 2 s and >= 300 px net travel"
+  },
+  "turning_movements": {
+   "counts": {
+    "straight": 272,
+    "turn_anticlockwise_on_screen": 32,
+    "u_turn_like": 14,
+    "turn_clockwise_on_screen": 12
+   },
+   "rule": "heading change between first and last 5 moving samples; |d| < 35 straight, > 140 U-turn like; image-plane, so perspective bends it",
+   "non_straight": [
+    {
+     "track_id": 4,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -36.5,
+     "xy_mid": [
+      1985,
+      678
+     ],
+     "t": [
+      0.0,
+      15.4
+     ]
+    },
+    {
+     "track_id": 15,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -42.7,
+     "xy_mid": [
+      2428,
+      1247
+     ],
+     "t": [
+      24.0,
+      33.8
+     ]
+    },
+    {
+     "track_id": 21,
+     "kind": "u_turn_like",
+     "delta_deg": -177.0,
+     "xy_mid": [
+      3165,
+      1268
+     ],
+     "t": [
+      27.3,
+      74.8
+     ]
+    },
+    {
+     "track_id": 35,
+     "kind": "u_turn_like",
+     "delta_deg": -156.6,
+     "xy_mid": [
+      2534,
+      1053
+     ],
+     "t": [
+      0.0,
+      18.3
+     ]
+    },
+    {
+     "track_id": 82,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -41.2,
+     "xy_mid": [
+      1195,
+      1188
+     ],
+     "t": [
+      0.8,
+      32.8
+     ]
+    },
+    {
+     "track_id": 128,
+     "kind": "u_turn_like",
+     "delta_deg": 173.6,
+     "xy_mid": [
+      2355,
+      1225
+     ],
+     "t": [
+      2.2,
+      94.7
+     ]
+    },
+    {
+     "track_id": 291,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -52.9,
+     "xy_mid": [
+      1223,
+      1165
+     ],
+     "t": [
+      10.1,
+      34.9
+     ]
+    },
+    {
+     "track_id": 717,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -72.2,
+     "xy_mid": [
+      1444,
+      812
+     ],
+     "t": [
+      35.4,
+      106.6
+     ]
+    },
+    {
+     "track_id": 775,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -44.6,
+     "xy_mid": [
+      1230,
+      1016
+     ],
+     "t": [
+      39.9,
+      54.6
+     ]
+    },
+    {
+     "track_id": 1002,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 131.3,
+     "xy_mid": [
+      977,
+      1286
+     ],
+     "t": [
+      52.1,
+      62.1
+     ]
+    },
+    {
+     "track_id": 1019,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -37.2,
+     "xy_mid": [
+      1421,
+      1408
+     ],
+     "t": [
+      52.9,
+      66.8
+     ]
+    },
+    {
+     "track_id": 1085,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -68.2,
+     "xy_mid": [
+      1957,
+      1386
+     ],
+     "t": [
+      55.2,
+      60.8
+     ]
+    },
+    {
+     "track_id": 1178,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -50.6,
+     "xy_mid": [
+      1036,
+      1140
+     ],
+     "t": [
+      58.9,
+      111.2
+     ]
+    },
+    {
+     "track_id": 1195,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -44.3,
+     "xy_mid": [
+      1625,
+      1222
+     ],
+     "t": [
+      60.1,
+      103.2
+     ]
+    },
+    {
+     "track_id": 1321,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 112.6,
+     "xy_mid": [
+      721,
+      1110
+     ],
+     "t": [
+      65.6,
+      104.3
+     ]
+    },
+    {
+     "track_id": 1387,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 65.6,
+     "xy_mid": [
+      1992,
+      622
+     ],
+     "t": [
+      71.4,
+      89.8
+     ]
+    },
+    {
+     "track_id": 1498,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 90.3,
+     "xy_mid": [
+      1981,
+      529
+     ],
+     "t": [
+      78.7,
+      138.1
+     ]
+    },
+    {
+     "track_id": 1701,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 49.3,
+     "xy_mid": [
+      3569,
+      1008
+     ],
+     "t": [
+      80.8,
+      86.6
+     ]
+    },
+    {
+     "track_id": 1740,
+     "kind": "u_turn_like",
+     "delta_deg": -157.1,
+     "xy_mid": [
+      3116,
+      1285
+     ],
+     "t": [
+      82.6,
+      105.3
+     ]
+    },
+    {
+     "track_id": 1778,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -35.8,
+     "xy_mid": [
+      461,
+      467
+     ],
+     "t": [
+      84.5,
+      90.1
+     ]
+    },
+    {
+     "track_id": 1896,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 73.7,
+     "xy_mid": [
+      3654,
+      951
+     ],
+     "t": [
+      90.4,
+      94.7
+     ]
+    },
+    {
+     "track_id": 1969,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -39.4,
+     "xy_mid": [
+      1712,
+      1258
+     ],
+     "t": [
+      99.0,
+      107.5
+     ]
+    },
+    {
+     "track_id": 2022,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 139.0,
+     "xy_mid": [
+      784,
+      1181
+     ],
+     "t": [
+      98.8,
+      109.1
+     ]
+    },
+    {
+     "track_id": 2078,
+     "kind": "u_turn_like",
+     "delta_deg": 141.5,
+     "xy_mid": [
+      811,
+      1147
+     ],
+     "t": [
+      101.1,
+      111.6
+     ]
+    },
+    {
+     "track_id": 2080,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -50.6,
+     "xy_mid": [
+      1407,
+      1293
+     ],
+     "t": [
+      101.9,
+      114.5
+     ]
+    },
+    {
+     "track_id": 2089,
+     "kind": "u_turn_like",
+     "delta_deg": 179.5,
+     "xy_mid": [
+      2959,
+      1221
+     ],
+     "t": [
+      101.8,
+      134.4
+     ]
+    },
+    {
+     "track_id": 2116,
+     "kind": "u_turn_like",
+     "delta_deg": 179.5,
+     "xy_mid": [
+      2936,
+      1328
+     ],
+     "t": [
+      103.0,
+      149.8
+     ]
+    },
+    {
+     "track_id": 2169,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -46.3,
+     "xy_mid": [
+      1644,
+      1420
+     ],
+     "t": [
+      105.5,
+      118.6
+     ]
+    },
+    {
+     "track_id": 2183,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -35.5,
+     "xy_mid": [
+      1991,
+      1422
+     ],
+     "t": [
+      105.9,
+      112.5
+     ]
+    },
+    {
+     "track_id": 2437,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -37.0,
+     "xy_mid": [
+      3104,
+      1542
+     ],
+     "t": [
+      112.8,
+      126.5
+     ]
+    },
+    {
+     "track_id": 2498,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -42.7,
+     "xy_mid": [
+      2374,
+      1605
+     ],
+     "t": [
+      114.2,
+      148.4
+     ]
+    },
+    {
+     "track_id": 2559,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -41.1,
+     "xy_mid": [
+      1864,
+      1026
+     ],
+     "t": [
+      117.0,
+      133.5
+     ]
+    },
+    {
+     "track_id": 2638,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -38.4,
+     "xy_mid": [
+      2822,
+      2022
+     ],
+     "t": [
+      120.4,
+      188.8
+     ]
+    },
+    {
+     "track_id": 2654,
+     "kind": "u_turn_like",
+     "delta_deg": 176.2,
+     "xy_mid": [
+      2914,
+      1270
+     ],
+     "t": [
+      121.2,
+      148.1
+     ]
+    },
+    {
+     "track_id": 2685,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -42.9,
+     "xy_mid": [
+      1976,
+      1651
+     ],
+     "t": [
+      122.7,
+      157.4
+     ]
+    },
+    {
+     "track_id": 2709,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 123.9,
+     "xy_mid": [
+      926,
+      1202
+     ],
+     "t": [
+      123.8,
+      179.5
+     ]
+    },
+    {
+     "track_id": 2729,
+     "kind": "turn_anticlockwise_on_screen",
+     "delta_deg": -38.3,
+     "xy_mid": [
+      1499,
+      1332
+     ],
+     "t": [
+      124.8,
+      174.5
+     ]
+    },
+    {
+     "track_id": 2886,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 128.1,
+     "xy_mid": [
+      1102,
+      955
+     ],
+     "t": [
+      132.1,
+      184.5
+     ]
+    },
+    {
+     "track_id": 2967,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 129.9,
+     "xy_mid": [
+      883,
+      1240
+     ],
+     "t": [
+      173.1,
+      182.4
+     ]
+    },
+    {
+     "track_id": 3228,
+     "kind": "turn_clockwise_on_screen",
+     "delta_deg": 40.9,
+     "xy_mid": [
+      3055,
+      1946
+     ],
+     "t": [
+      150.0,
+      159.0
+     ]
+    }
+   ]
+  },
+  "signal": {
+   "version": "v4",
+   "status": "PROVISIONAL (coverage only; no human-verified lamp labels yet)",
+   "vehicle_head": {
+    "head": "D",
+    "type": "vehicle",
+    "lamps": 3,
+    "box_ref": [
+     2291,
+     719,
+     2340,
+     827
+    ],
+    "box_video": [
+     2291,
+     719,
+     2340,
+     827
+    ],
+    "file": "reports/eda/signals/v4/C3897_D_intervals_v4.csv"
+   },
+   "pedestrian_head": {
+    "head": "A",
+    "type": "pedestrian",
+    "lamps": 2,
+    "box_ref": [
+     517,
+     964,
+     554,
+     1038
+    ],
+    "box_video": [
+     517,
+     964,
+     554,
+     1038
+    ],
+    "file": "reports/eda/signals/v4/C3897_A_intervals_v4.csv"
+   },
+   "head_source": "reports/eda/signals/signal_heads.json",
+   "box_mapping": "box_ref (reference C3897 4K px) mapped with H_ref_to_video from registration.json",
+   "time_share_by_state": {
+    "amber": 0.0375,
+    "green": 0.4154,
+    "green_blink": 0.0378,
+    "red": 0.4674,
+    "red_amber": 0.0362,
+    "unknown": 0.0057
+   },
+   "coverage_known_state": 0.9943,
+   "green_onsets_after_known_red_s": [],
+   "meaning": "head D is a strong timing proxy for the near-carriageway flow; the far carriageway is also cycle-locked with a different phase offset; which movements D physically controls is UNKNOWN (reports/eda/SUMMARY.md, finding 3)",
+   "corr_D_green_vs_moving_minus_stationary": 0.721
+  },
+  "long_standing_vehicles": [
+   {
+    "track_id": 16,
+    "cls": "car",
+    "duration_s": 317.7,
+    "xy": [
+     176,
+     1053
+    ]
+   },
+   {
+    "track_id": 19,
+    "cls": "car",
+    "duration_s": 317.7,
+    "xy": [
+     134,
+     909
+    ]
+   },
+   {
+    "track_id": 39,
+    "cls": "car",
+    "duration_s": 317.7,
+    "xy": [
+     59,
+     816
+    ]
+   },
+   {
+    "track_id": 5220,
+    "cls": "car",
+    "duration_s": 75.2,
+    "xy": [
+     3703,
+     938
+    ]
+   }
+  ],
+  "lighting": {
+   "mean_luma_first10s": 94.1,
+   "mean_luma_last10s": 94.4,
+   "min": 91.1,
+   "max": 99.6,
+   "change_pct": 0.4,
+   "p95_luma_median": 201.0,
+   "largest_15s_change_pct": 7.1,
+   "largest_15s_change_at_s": [
+    119.1,
+    134.1
+   ]
+  },
+  "perspective": {
+   "person_height_px_vs_ground_y": {
+    "slope": 0.1277,
+    "intercept": 29.6
+   },
+   "rough_m_per_px_at_y": {
+    "396": 0.0212,
+    "757": 0.0135,
+    "1117": 0.0099,
+    "1477": 0.0078,
+    "1838": 0.0064
+   },
+   "assumption": "person height about 1.7 m; valid only near the fitted y range"
+  },
+  "pedestrians_on_carriageway": {
+   "definition": "person ground point in a direction-field cell used by moving vehicles, >= 5 samples (~0.5 s)",
+   "tracks_on_road": 184,
+   "of_person_tracks": 692,
+   "crossing_corridors": [
+    {
+     "cells": 75,
+     "bbox_px": [
+      480,
+      960,
+      2320,
+      1680
+     ],
+     "people": 107
+    },
+    {
+     "cells": 50,
+     "bbox_px": [
+      2320,
+      800,
+      3760,
+      1200
+     ],
+     "people": 102
+    },
+    {
+     "cells": 1,
+     "bbox_px": [
+      1520,
+      2080,
+      1600,
+      2160
+     ],
+     "people": 40
+    },
+    {
+     "cells": 1,
+     "bbox_px": [
+      1680,
+      2080,
+      1760,
+      2160
+     ],
+     "people": 38
+    },
+    {
+     "cells": 6,
+     "bbox_px": [
+      1360,
+      320,
+      1600,
+      480
+     ],
+     "people": 17
+    }
+   ],
+   "corridor_rule": "road cells with >= 10 distinct people, dilated by one cell",
+   "tracks_on_road_outside_corridors": 23,
+   "outside_spots": [
+    {
+     "people": 7,
+     "median_xy": [
+      1578,
+      1436
+     ]
+    },
+    {
+     "people": 6,
+     "median_xy": [
+      986,
+      262
+     ]
+    },
+    {
+     "people": 2,
+     "median_xy": [
+      2315,
+      763
+     ]
+    },
+    {
+     "people": 2,
+     "median_xy": [
+      2660,
+      792
+     ]
+    },
+    {
+     "people": 2,
+     "median_xy": [
+      2809,
+      1863
+     ]
+    },
+    {
+     "people": 1,
+     "median_xy": [
+      523,
+      517
+     ]
+    }
+   ]
+  },
+  "tracker": {
+   "raw_track_ids": 1301,
+   "tracks_after_min_det_filter": 1165,
+   "min_detections": 3,
+   "riders_relabelled": 3,
+   "tracks_by_class": {
+    "person": 692,
+    "car": 425,
+    "truck": 22,
+    "bus": 17,
+    "motorcycle": 6,
+    "rider": 3
+   },
+   "detections_by_class": {
+    "person": 84741,
+    "car": 73167,
+    "bus": 3649,
+    "truck": 1532,
+    "rider": 209,
+    "motorcycle": 194
+   },
+   "median_track_duration_s": {
+    "person": 5.3,
+    "car": 9.4,
+    "truck": 0.9,
+    "bus": 12.0,
+    "motorcycle": 1.2,
+    "rider": 5.8
+   },
+   "short_tracks_under_1s_pct": 19.1,
+   "vehicle_tracks_born_inside_frame_pct": 69.8,
+   "max_concurrent": {
+    "bus": 4,
+    "car": 37,
+    "motorcycle": 1,
+    "person": 37,
+    "rider": 2,
+    "truck": 2
+   },
+   "mean_concurrent": {
+    "bus": 1.1,
+    "car": 23.0,
+    "motorcycle": 0.1,
+    "person": 26.7,
+    "rider": 0.1,
+    "truck": 0.5
+   }
+  },
+  "tracks_source": {
+   "file": "tracks_kaggle.csv",
+   "detector": "yolo11m imgsz 1280 + ByteTrack (Kaggle T4)"
+  },
+  "lane_flow_details": [
+   {
+    "lane": "F1 middle-right to top-left",
+    "flow_id": 0,
+    "count": 155,
+    "start_median": [
+     3688,
+     1240
+    ],
+    "end_median": [
+     297,
+     201
+    ],
+    "heading_deg_image": 197.0,
+    "classes": {
+     "car": 146,
+     "bus": 6,
+     "truck": 3
+    },
+    "median_speed_px_s": 287.7,
+    "share_that_stopped_2s": 0.148,
+    "stops": 36,
+    "median_stop_s": 7.0,
+    "furthest_queued_stop_in_D_red": [
+     1545,
+     472
+    ],
+    "queue_stops_used": 18,
+    "corr_queue_vs_D_red": -0.037,
+    "mean_queue_D_red_vs_not_red": [
+     1.2,
+     1.3
+    ]
+   },
+   {
+    "lane": "F2 top-left to bottom-right",
+    "flow_id": 2,
+    "count": 151,
+    "start_median": [
+     295,
+     498
+    ],
+    "end_median": [
+     3685,
+     1965
+    ],
+    "heading_deg_image": 23.4,
+    "classes": {
+     "car": 140,
+     "bus": 6,
+     "truck": 3,
+     "motorcycle": 2
+    },
+    "median_speed_px_s": 197.8,
+    "share_that_stopped_2s": 0.53,
+    "stops": 100,
+    "median_stop_s": 15.4,
+    "furthest_queued_stop_in_D_red": [
+     3682,
+     2154
+    ],
+    "queue_stops_used": 65,
+    "corr_queue_vs_D_red": 0.62,
+    "mean_queue_D_red_vs_not_red": [
+     9.0,
+     3.3
+    ]
+   },
+   {
+    "lane": "F3 middle-left to bottom-left",
+    "flow_id": 3,
+    "count": 8,
+    "start_median": [
+     260,
+     734
+    ],
+    "end_median": [
+     123,
+     1845
+    ],
+    "heading_deg_image": 97.1,
+    "classes": {
+     "car": 8
+    },
+    "median_speed_px_s": 134.8,
+    "share_that_stopped_2s": 0.625,
+    "stops": 6,
+    "median_stop_s": 23.6,
+    "furthest_queued_stop_in_D_red": [
+     551,
+     980
+    ],
+    "queue_stops_used": 6,
+    "corr_queue_vs_D_red": 0.404,
+    "mean_queue_D_red_vs_not_red": [
+     0.8,
+     0.1
+    ]
+   },
+   {
+    "lane": "F4 bottom-right to bottom-left",
+    "flow_id": 4,
+    "count": 6,
+    "start_median": [
+     3687,
+     2001
+    ],
+    "end_median": [
+     249,
+     2158
+    ],
+    "heading_deg_image": 177.4,
+    "classes": {
+     "car": 6
+    },
+    "median_speed_px_s": 646.5,
+    "share_that_stopped_2s": 0.0,
+    "stops": 0,
+    "median_stop_s": null,
+    "corr_queue_vs_D_red": 0.055,
+    "mean_queue_D_red_vs_not_red": [
+     0.0,
+     0.0
+    ]
+   }
+  ],
+  "stop_runs": {
+   "count": 211,
+   "vehicles": 145,
+   "median_s": 9.1,
+   "stop_thr_px_s": 25.0
+  },
+  "size_px_4k": {
+   "car": {
+    "median": 152.6,
+    "p10": 81.4
+   },
+   "bus": {
+    "median": 222.4,
+    "p10": 170.6
+   },
+   "truck": {
+    "median": 248.4,
+    "p10": 150.9
+   },
+   "motorcycle": {
+    "median": 152.3,
+    "p10": 113.5
+   },
+   "person": {
+    "median": 120.2,
+    "p10": 83.8
+   }
+  },
+  "person_height_share_below": {
+   "96px (16px at imgsz 640)": 0.273,
+   "64px (16px at imgsz 960)": 0.008,
+   "48px (16px at imgsz 1280)": 0.002
+  },
+  "speed_px_s": {
+   "car": {
+    "median_of_track_p85": 340.6
+   },
+   "bus": {
+    "median_of_track_p85": 156.6
+   },
+   "truck": {
+    "median_of_track_p85": 276.0
+   },
+   "motorcycle": {
+    "median_of_track_p85": 434.5
+   },
+   "person": {
+    "median_of_track_p85": 48.5
+   }
+  },
+  "figures": [
+   "counts_over_time.png",
+   "direction_field.png",
+   "heatmap.png",
+   "heatmap_persons.png",
+   "lane_flows.png",
+   "lighting.png",
+   "object_size.png",
+   "pedestrian_crossings.png",
+   "signal.png",
+   "speed_duration.png",
+   "stop_map.png",
+   "trajectories.png"
+  ],
+  "auto_notes": [
+   "EDA v4: reviewed findings, confidence and rule-input status are in reports/eda/SUMMARY.md and tools/scene/CONTRACT.md. The notes below are automatic descriptive statistics of this clip only.",
+   "1162 tracks in 318 s: 692 pedestrians (60%), 425 car, 17 bus, 22 truck, 6 motorcycle, 0 bicycle; 3 person boxes riding two-wheelers were relabelled as riders.",
+   "On average 26.7 pedestrians and 25 vehicles are on screen at once (peak 37 pedestrians).",
+   "4 vehicle flows found; the largest are F1 middle-right to top-left (right to left, 155 tracks); F2 top-left to bottom-right (towards camera, left to right, 151 tracks); F3 middle-left to bottom-left (towards camera, 8 tracks).",
+   "Furthest queued stop that began while head D showed red, red_amber or amber, per flow (rough upper bound for a stop line; D is a timing proxy for the near carriageway only): F1 near [1545, 472] (15% of its vehicles stopped >= 2 s, queue 1.2 vs 1.3 vehicles while D red vs not red); F2 near [3682, 2154] (53% of its vehicles stopped >= 2 s, queue 9.0 vs 3.3 vehicles while D red vs not red); F3 near [551, 980] (62% of its vehicles stopped >= 2 s, queue 0.8 vs 0.1 vehicles while D red vs not red).",
+   "Median pedestrian box height is 120 px at 4K; 27% are under 96px (16px at imgsz 640), 1% are under 64px (16px at imgsz 960), 0% are under 48px (16px at imgsz 1280). These are detected boxes, so the smallest people are already missing.",
+   "Mean luma goes from 94.1 to 94.4 (+0.4%) over the clip, range 91.1 to 99.6 of 255; the largest swing is +7.1% within 15 s (119 to 134 s). Iris, shutter and gain are constant in the camera metadata (reports/eda/camera), so this is not exposure control; brightness rules (fire_smoke) must still normalise per frame.",
+   "184 of 692 pedestrian tracks spend >= 0.5 s on cells used by moving vehicles; 5 crossing corridor(s) found, the busiest spans x 480 to 2320, y 960 to 1680 (107 people); 23 people are on the road outside corridors, most around [1578, 1436] (includes kerbside waiting and bus boarding, so an upper bound for jaywalking).",
+   "Signal: vehicle head D (3 lamps, from the head inventory) at (2315, 773) in this video; its v4 timeline has a known state for 99.4% of the clip (coverage, not accuracy: no human-verified labels yet). D is a timing proxy for the near-carriageway flow; which movements it controls is unknown.",
+   "Of 330 vehicle tracks with enough motion, 272 go straight, 44 turn and 8 reverse heading (U-turn like, e.g. track 21 at [3165, 1268] around 27.3 s); check these by eye before treating them as illegal_u_turn examples.",
+   "4 vehicle(s) stand still for over 90% of a track longer than 60 s at [176, 1053], [134, 909], [59, 816], [3703, 938] (parked), which a stopped_vehicle rule must whitelist or time-gate.",
+   "Tracker: 19.1% of tracks live under 1 s and 69.8% of vehicle tracks start away from the frame edge, a sign of occlusion and ID switches."
+  ],
+  "deprecated": {
+   "vehicle_light_guess": "REMOVED in v4. v2 picked the light whose green correlated best with traffic; that was the pedestrian head A in C3896 and C3902. Use extra.signal (head D from signals/signal_heads.json, v4 intervals).",
+   "signal_colour_summary": "REMOVED in v4 (HSV reading of COCO-detected boxes on the 1080p proxy, phases forward-filled). Use reports/eda/signals/v4/<STEM>_D_intervals_v4.csv.",
+   "traffic_lights_detected": "REMOVED in v4 (COCO detector boxes). The head inventory is reports/eda/signals/signal_heads.json.",
+   "signal_timeline.csv": "no longer written (legacy HSV per-sample timeline)."
+  }
+ }
+}

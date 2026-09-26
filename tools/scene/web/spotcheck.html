@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Salen Signal Spot-check</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%23222%22/%3E%3Ccircle cx=%228%22 cy=%224%22 r=%222%22 fill=%22%23e53935%22/%3E%3Ccircle cx=%228%22 cy=%228%22 r=%222%22 fill=%22%23ffb300%22/%3E%3Ccircle cx=%228%22 cy=%2212%22 r=%222%22 fill=%22%232e9d4a%22/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --panel2: #eef1f5; --text: #16181d; --muted: #5d6573;
+  --border: #d5dae2; --accent: #2457d6; --accent-text: #ffffff; --ok: #1b8a3a; --warn: #b26a00;
+  --bad: #c62828; --focus: #2457d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317; --panel: #1a1d23; --panel2: #232730; --text: #e8eaee; --muted: #9aa3b2;
+    --border: #333844; --accent: #6b95ff; --accent-text: #0b0d12; --ok: #4cc26d; --warn: #f0a93b;
+    --bad: #ff6b6b; --focus: #8fb0ff;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+button, input, select { font: inherit; color: inherit; }
+a { color: var(--accent); }
+button { background: var(--panel2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 9px; cursor: pointer; white-space: nowrap; }
+button:hover { border-color: var(--accent); }
+button:disabled { opacity: .45; cursor: default; }
+button.on { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+input { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 3px 6px; }
+kbd { display: inline-block; min-width: 1.4em; text-align: center; padding: 0 4px; border: 1px solid var(--border);
+  border-bottom-width: 2px; border-radius: 4px; background: var(--panel2); font: 11.5px/1.5 ui-monospace, Menlo, monospace; color: var(--text); }
+.muted { color: var(--muted); }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; }
+header.top { position: sticky; top: 0; z-index: 20; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 8px 16px;
+  background: var(--panel); border-bottom: 1px solid var(--border); }
+.brand { font-weight: 700; }
+.spacer { flex: 1; }
+.links { font-size: 13px; display: flex; gap: 10px; flex-wrap: wrap; }
+.who-field { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.who-field input { width: 120px; }
+.who-field input.missing { border-color: var(--bad); }
+.status { font-weight: 600; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; }
+.status.ok { color: var(--ok); } .status.busy { color: var(--muted); }
+.status.bad { color: #fff; background: var(--bad); border-color: var(--bad); }
+main { max-width: 1180px; margin: 0 auto; padding: 12px 16px 50px; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+.prog { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bar { flex: 1; min-width: 180px; height: 12px; background: var(--panel2); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.bar div { height: 100%; background: var(--ok); width: 0; transition: width .2s; }
+.checkgrid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 12px; }
+.viewer { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.big { background: #000; border-radius: 6px; padding: 8px; display: inline-block; position: relative; }
+.big canvas { display: block; image-rendering: pixelated; }
+.bigcap { font-size: 12px; color: #ccc; margin-top: 4px; text-align: center; min-height: 16px; }
+.ctx { display: flex; flex-direction: column; gap: 10px; }
+.ctx .thumb { background: #000; border-radius: 6px; padding: 5px; cursor: pointer; text-align: center; color: #ccc; font-size: 11.5px; border: 2px solid transparent; }
+.ctx .thumb:hover { border-color: var(--accent); }
+.ctx img { image-rendering: pixelated; display: block; margin: 0 auto 3px; }
+.strip { margin-top: 10px; }
+.strip .tiles { display: grid; gap: 3px; background: #000; padding: 5px; border-radius: 6px; }
+.strip .tile { position: relative; cursor: pointer; border: 2px solid transparent; border-radius: 3px; overflow: hidden; background-repeat: no-repeat; image-rendering: pixelated; }
+.strip .tile.center { border-color: #fff; }
+.strip .tile.cur { border-color: var(--accent); }
+.strip .tlab { display: grid; gap: 3px; font-size: 10.5px; color: var(--muted); text-align: center; padding: 2px 5px 0; }
+.info { font-size: 13px; }
+.info table { border-collapse: collapse; width: 100%; }
+.info td { padding: 3px 4px; vertical-align: top; }
+.info td:first-child { color: var(--muted); width: 88px; }
+.autobox { margin-top: 8px; padding: 7px 9px; border-radius: 6px; background: var(--panel2); font-size: 13px; }
+.answers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+.answers button { padding: 9px 6px; font-weight: 600; font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 3px; border-width: 2px; }
+.answers button .lamps { display: flex; gap: 3px; height: 12px; }
+.answers button .lamps i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.answers button.chosen { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 20%, var(--panel)); }
+.nav { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; align-items: center; }
+.last { font-size: 13px; margin-top: 8px; min-height: 20px; }
+.agree { color: var(--ok); font-weight: 700; } .differ { color: var(--bad); font-weight: 700; }
+.headnote { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+table.t { border-collapse: collapse; font-size: 13px; margin: 4px 0 10px; }
+table.t th, table.t td { border: 1px solid var(--border); padding: 3px 8px; text-align: right; }
+table.t th { background: var(--panel2); font-weight: 600; }
+table.t td:first-child, table.t th:first-child { text-align: left; }
+table.t td.diag { background: color-mix(in srgb, var(--ok) 18%, var(--panel)); font-weight: 700; }
+table.t td.off { background: color-mix(in srgb, var(--bad) 15%, var(--panel)); font-weight: 700; }
+.tables { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.big-num { font-size: 30px; font-weight: 700; }
+.dis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.dis .d { background: var(--panel2); border-radius: 6px; padding: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); }
+.dis .d:hover { border-color: var(--accent); }
+.dis img { image-rendering: pixelated; display: block; margin: 0 auto 4px; background: #000; }
+#toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 50; display: none; background: var(--text); color: var(--bg); padding: 8px 14px; border-radius: 8px; max-width: 92vw; }
+@media (max-width: 900px) { .checkgrid { grid-template-columns: 1fr; } .answers { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Signal spot-check</div>
+  <div style="display:flex;gap:4px">
+    <button id="tabCheck" class="on">Check</button>
+    <button id="tabResults">Results</button>
+  </div>
+  <div class="spacer"></div>
+  <label class="who-field">Your name <input id="nameInput" placeholder="type your name" maxlength="60" autocomplete="off"></label>
+  <nav class="links">
+    <a href="index.html">labeling tool</a>
+    <a href="zones.html">zone editor</a>
+    <a href="tools.html">all tools</a>
+  </nav>
+  <div id="saveStatus" class="status busy">loading...</div>
+</header>
+
+<main>
+<div class="card prog">
+  <b id="progText">loading...</b>
+  <div class="bar"><div id="progBar"></div></div>
+  <span class="muted" id="progSub"></span>
+</div>
+
+<section id="checkView">
+  <div class="checkgrid">
+    <div class="card">
+      <div class="viewer">
+        <div>
+          <div class="big"><canvas id="bigCv"></canvas><div class="bigcap" id="bigCap"></div></div>
+        </div>
+        <div class="ctx" id="ctxBox"></div>
+      </div>
+      <div class="strip" id="stripBox"></div>
+    </div>
+    <div class="card">
+      <div class="info" id="infoBox"></div>
+      <div class="autobox" id="autoBox"></div>
+      <label style="display:flex;gap:6px;align-items:center;margin-top:8px;font-size:13px;cursor:pointer">
+        <input type="checkbox" id="hideAuto" checked> hide the automatic label (unbiased; shown after you answer)
+      </label>
+      <div class="answers" id="answers"></div>
+      <div class="nav">
+        <button id="backBtn" title="Left arrow or Backspace">&larr; Back</button>
+        <button id="skipBtn" title="Right arrow">Skip &rarr;</button>
+        <button id="firstOpenBtn" title="N">First unanswered</button>
+        <button id="playBtn" title="P">Play 2.4 s</button>
+      </div>
+      <div class="last" id="lastBox"></div>
+    </div>
+  </div>
+</section>
+
+<section id="resultsView" style="display:none">
+  <div class="card">
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-end">
+      <div><div class="muted">agreement (answered, not unsure)</div><div class="big-num" id="rAgree">-</div></div>
+      <div id="rCounts" class="muted"></div>
+      <div class="spacer"></div>
+      <div style="display:flex;gap:6px">
+        <button id="expJson">Export JSON</button>
+        <button id="expCsv">Export CSV</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="tables" id="rTables"></div>
+  </div>
+  <div class="card">
+    <b>Confusion table</b> <span class="muted">(rows: automatic label, columns: your answer)</span>
+    <div style="overflow-x:auto" id="rConf"></div>
+  </div>
+  <div class="card">
+    <b>Disagreements</b> <span class="muted" id="rDisN"></span> <span class="muted">(click one to open it)</span>
+    <div class="dis" id="rDis" style="margin-top:8px"></div>
+  </div>
+</section>
+</main>
+<div id="toast"></div>
+
+<script>
+"use strict";
+const LABELS = [
+  // key, text, shortcut letter, lamp colours for the button icon
+  ["red", "red", "r", ["#e53935", "#333", "#333"]],
+  ["red_amber", "red + amber", "m", ["#e53935", "#ffb300", "#333"]],
+  ["amber", "amber", "a", ["#333", "#ffb300", "#333"]],
+  ["green", "green", "g", ["#333", "#333", "#2e9d4a"]],
+  ["green_flash", "blinking green", "b", ["#333", "#333", "#2e9d4a80"]],
+  ["dark", "dark / off", "d", ["#333", "#333", "#333"]],
+  ["occluded", "occluded", "o", []],
+  ["unsure", "unsure", "u", []],
+];
+const LT = {}; LABELS.forEach(l => LT[l[0]] = l[1]);
+const KEY2 = {}; LABELS.forEach((l, i) => { KEY2[l[2]] = l[0]; KEY2[String(i + 1)] = l[0]; });
+const HEADS = {
+  D: "D: vehicle signal of the near carriageway, 3 round lamps (red top, amber middle, green bottom). Before green it shows red + amber; green blinks for its last ~3 s.",
+  A: "A: pedestrian signal, 2 lamps (red standing figure top, green walking figure bottom). It has no amber.",
+};
+const TOKEN = location.pathname.split("/").filter(Boolean)[0] || "";
+const PKEY = "salen-spot:pending", LKEY = "salen-spot:answers";
+const LS = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+};
+const $ = id => document.getElementById(id);
+const S = { items: [], byId: {}, answers: {}, pending: [], idx: 0, sending: false, retry: 3000, retryTimer: null,
+  imgs: {}, tile: null, playing: null, last: null, view: "check" };
+
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function hhmmss(iso) { const d = iso ? new Date(iso) : new Date(); return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }); }
+function api(path, opts = {}) { opts.headers = Object.assign({ "X-Token": TOKEN }, opts.headers || {}); opts.cache = "no-store"; return fetch(path, opts); }
+function toast(m, ms = 2500) { const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(toast._t); toast._t = setTimeout(() => t.style.display = "none", ms); }
+function name() { return $("nameInput").value.trim(); }
+function setStatus(kind, text) { const el = $("saveStatus"); el.className = "status " + kind; el.textContent = text; }
+function img(src) {
+  if (!src) return null;
+  if (!S.imgs[src]) { const im = new Image(); im.onload = () => { if (cur() && (cur().img === src || (cur().strip && cur().strip.src === src))) drawBig(); }; im.src = src; S.imgs[src] = im; }
+  return S.imgs[src];
+}
+const cur = () => S.items[S.idx];
+const nAnswered = () => S.items.filter(it => S.answers[it.id]).length;
+
+// ---------------------------------------------------------------- saving (one answer per request, queued)
+function persistLocal() { LS.set(PKEY, S.pending); LS.set(LKEY, S.answers); }
+function queue(id, label) {
+  S.pending = S.pending.filter(p => p.id !== id);
+  S.pending.push({ id, label, auto_hidden: $("hideAuto").checked, at: new Date().toISOString() });
+  persistLocal(); flush();
+}
+async function flush() {
+  if (S.sending || !S.pending.length) { if (!S.pending.length && !S.sending) setStatus("ok", "saved at " + hhmmss()); return; }
+  S.sending = true; clearTimeout(S.retryTimer);
+  setStatus("busy", "saving" + (S.pending.length > 1 ? " (" + S.pending.length + " waiting)" : "") + "...");
+  const p = S.pending[0];
+  let res = null, body = {};
+  try {
+    res = await api("/api/spotcheck", { method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: p.id, label: p.label, by: name(), auto_hidden: p.auto_hidden }) });
+    body = await res.json().catch(() => ({}));
+  } catch (e) { res = null; }
+  S.sending = false;
+  if (res && res.ok) {
+    if (S.pending[0] === p) S.pending.shift(); else S.pending = S.pending.filter(q => q !== p);
+    persistLocal(); S.retry = 3000;
+    return flush();
+  }
+  if (res && res.status === 400) {  // the server will never accept it; drop it but tell the user
+    S.pending = S.pending.filter(q => q !== p); persistLocal();
+    toast("Server refused an answer for " + p.id + ": " + (body.error || "bad request"), 6000);
+    return flush();
+  }
+  setStatus("bad", "OFFLINE, " + S.pending.length + " answer" + (S.pending.length > 1 ? "s" : "") + " kept in browser, retrying");
+  S.retryTimer = setTimeout(flush, S.retry); S.retry = Math.min(S.retry * 2, 20000);
+}
+window.addEventListener("online", flush);
+window.addEventListener("beforeunload", e => { if (S.pending.length) { persistLocal(); e.preventDefault(); e.returnValue = ""; } });
+
+// ---------------------------------------------------------------- answering
+function answer(label) {
+  const it = cur(); if (!it) return;
+  if (document.activeElement && document.activeElement.tagName === "BUTTON") document.activeElement.blur();
+  stopPlay();
+  const prev = S.answers[it.id];
+  if (label === null) delete S.answers[it.id];
+  else S.answers[it.id] = { label, at: new Date().toISOString(), by: name() };
+  queue(it.id, label);
+  S.last = label === null ? null : { id: it.id, label, auto: it.auto, changed: !!prev && prev.label !== label };
+  if (label !== null) go(S.idx + 1, true); else renderCheck();
+}
+function go(i, fromAnswer) {
+  stopPlay();
+  if (i >= S.items.length) {
+    const open = S.items.findIndex(it => !S.answers[it.id]);
+    if (open < 0) { S.idx = S.items.length - 1; renderAll(); toast("All " + S.items.length + " answered. See Results.", 5000); return; }
+    i = open; if (fromAnswer) toast("End of the list; jumped to the first unanswered item");
+  }
+  S.idx = Math.max(0, i); S.tile = null; renderAll();
+  [1, 2, 3].forEach(k => { const n = S.items[S.idx + k]; if (n) { img(n.img); if (n.strip) img(n.strip.src); } });
+}
+
+// ---------------------------------------------------------------- rendering: check view
+function renderProgress() {
+  const n = nAnswered(), N = S.items.length;
+  $("progText").textContent = n + " / " + N + " answered";
+  $("progBar").style.width = (N ? 100 * n / N : 0) + "%";
+  const rare = S.items.filter(it => S.rare.includes(it.auto)).length;
+  $("progSub").textContent = "item " + (S.idx + 1) + " of " + N + " (the first " + rare + " are the rare automatic labels)";
+}
+function drawBig() {
+  const it = cur(); if (!it) return;
+  const cv = $("bigCv"), ctx = cv.getContext("2d");
+  let src = img(it.img), sx = 0, sw, sh, cap = "sampled frame (native 4K crop)";
+  if (S.tile != null && it.strip) {
+    const st = img(it.strip.src);
+    if (st && st.complete && st.naturalWidth) {
+      src = st; sw = st.naturalWidth / it.strip.tiles; sh = st.naturalHeight; sx = S.tile * sw;
+      const dt = ((S.tile - it.strip.center) * it.strip.step_frames * 1001 / 30000);
+      cap = (dt === 0 ? "sampled moment" : (dt > 0 ? "+" : "") + dt.toFixed(1) + " s") + (S.playing ? " (playing)" : "") + " from the strip";
+    }
+  }
+  if (!src || !src.complete || !src.naturalWidth) { $("bigCap").textContent = "loading..."; return; }
+  if (sw == null) { sw = src.naturalWidth; sh = src.naturalHeight; }
+  const base = S.imgs[it.img] && S.imgs[it.img].naturalWidth ? S.imgs[it.img] : src;
+  const maxH = Math.min(560, window.innerHeight - 200), maxW = Math.min(560, window.innerWidth - 80);
+  const k = Math.max(2, Math.floor(Math.min(maxH / base.naturalHeight, maxW / base.naturalWidth)));
+  const W = Math.round(base.naturalWidth * k), H = Math.round(base.naturalHeight * k);
+  if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; cv.style.width = W + "px"; cv.style.height = H + "px"; }
+  ctx.imageSmoothingEnabled = false; ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H);
+  ctx.drawImage(src, sx, 0, sw, sh, 0, 0, sw * k, sh * k);
+  $("bigCap").textContent = cap + " · " + k + "x";
+}
+function renderCheck() {
+  const it = cur(); if (!it) return;
+  drawBig();
+  // previous / next sample of the same head
+  const ctx = $("ctxBox"); ctx.innerHTML = "";
+  [["prev", "previous sample"], ["next", "next sample"]].forEach(([k, lab]) => {
+    const o = it[k] ? S.byId[it[k]] : null;
+    const d = document.createElement("div"); d.className = "thumb";
+    if (!o) { d.innerHTML = '<div style="padding:18px 6px">no ' + lab + "</div>"; d.style.cursor = "default"; ctx.appendChild(d); return; }
+    const dt = o.t_s - it.t_s;
+    const im = document.createElement("img"); im.src = o.img; im.onload = () => { im.style.width = im.naturalWidth + "px"; };
+    d.appendChild(im);
+    d.insertAdjacentHTML("beforeend", esc(lab) + " (" + (dt > 0 ? "+" : "") + dt.toFixed(1) + " s)" + (S.answers[o.id] ? "<br>you: " + esc(LT[S.answers[o.id].label]) : ""));
+    d.title = "Open " + o.id; d.onclick = () => go(S.items.indexOf(o));
+    ctx.appendChild(d);
+  });
+  // strip
+  const sb = $("stripBox"); sb.innerHTML = "";
+  if (it.strip) {
+    const s = it.strip, st = img(s.src);
+    const build = () => {
+      if (!st.naturalWidth) return;
+      const tw = st.naturalWidth / s.tiles, th = st.naturalHeight;
+      const avail = Math.min(sb.clientWidth || 800, 1100) - 10 - 3 * (s.tiles - 1) - 4 * s.tiles;
+      const k = Math.min(1.5, avail / (tw * s.tiles));
+      sb.innerHTML = '<div style="font-size:12.5px;margin-bottom:4px"><b>Context:</b> the same head every 0.2 s from -1.2 s to +1.2 s (' + esc(s.source) + '). White frame = sampled moment. Hover or click a frame to see it large; <kbd>P</kbd> plays them.</div>';
+      const tiles = document.createElement("div"); tiles.className = "tiles"; tiles.style.gridTemplateColumns = "repeat(" + s.tiles + ", " + (tw * k) + "px)";
+      const labs = document.createElement("div"); labs.className = "tlab"; labs.style.gridTemplateColumns = tiles.style.gridTemplateColumns;
+      for (let i = 0; i < s.tiles; i++) {
+        const t = document.createElement("div"); t.className = "tile" + (i === s.center ? " center" : "") + (i === S.tile ? " cur" : "");
+        t.style.width = tw * k + "px"; t.style.height = th * k + "px";
+        t.style.backgroundImage = "url(" + s.src + ")"; t.style.backgroundSize = (st.naturalWidth * k) + "px " + (th * k) + "px";
+        t.style.backgroundPosition = (-i * tw * k) + "px 0";
+        t.onmouseenter = () => { if (!S.playing) { S.tile = i; drawBig(); markTile(); } };
+        t.onclick = () => { stopPlay(); S.tile = i; drawBig(); markTile(); };
+        tiles.appendChild(t);
+        const dt = (i - s.center) * s.step_frames * 1001 / 30000;
+        labs.insertAdjacentHTML("beforeend", "<span>" + (i === s.center ? "now" : (dt > 0 ? "+" : "") + dt.toFixed(1)) + "</span>");
+      }
+      tiles.onmouseleave = () => { if (!S.playing) { S.tile = null; drawBig(); markTile(); } };
+      sb.appendChild(tiles); sb.appendChild(labs);
+    };
+    if (st.complete && st.naturalWidth) build(); else st.addEventListener("load", build, { once: true });
+  } else sb.innerHTML = '<div class="muted" style="font-size:12.5px">No context strip for this item.</div>';
+  $("playBtn").disabled = !it.strip;
+  // info
+  const a = S.answers[it.id];
+  $("infoBox").innerHTML = "<table>" +
+    "<tr><td>item</td><td><b class='mono'>" + esc(it.id) + "</b></td></tr>" +
+    "<tr><td>video</td><td>" + esc(it.stem) + " at " + it.t_s.toFixed(2) + " s (frame " + it.frame + ")</td></tr>" +
+    "<tr><td>head</td><td><b>" + esc(it.head) + "</b></td></tr>" +
+    "<tr><td>your answer</td><td>" + (a ? "<b>" + esc(LT[a.label]) + "</b> <button class='small' id='clearBtn' style='font-size:12px;padding:0 6px'>clear</button>" : "<span class='muted'>not answered</span>") + "</td></tr>" +
+    "</table><div class='headnote'>" + esc(HEADS[it.head] || "") + "</div>";
+  if (a) $("clearBtn").onclick = () => answer(null);
+  const hide = $("hideAuto").checked && !a;
+  $("autoBox").innerHTML = "Automatic label: " + (hide ? "<span class='muted'>hidden until you answer</span>" : "<b>" + esc(LT[it.auto] || it.auto) + "</b>" +
+    (a && a.label !== "unsure" ? (a.label === it.auto ? " <span class='agree'>agrees</span>" : " <span class='differ'>differs</span>") : ""));
+  document.querySelectorAll("#answers button").forEach(b => b.classList.toggle("chosen", !!a && b.dataset.label === a.label));
+  const l = S.last;
+  $("lastBox").innerHTML = l ? "Last: <span class='mono'>" + esc(l.id) + "</span> you said <b>" + esc(LT[l.label]) + "</b>, automatic <b>" + esc(LT[l.auto] || l.auto) + "</b> " +
+    (l.label === "unsure" ? "" : l.label === l.auto ? "<span class='agree'>agrees</span>" : "<span class='differ'>differs</span>") + (l.changed ? " (changed)" : "") : "";
+  $("backBtn").disabled = S.idx === 0;
+}
+function markTile() { document.querySelectorAll(".strip .tile").forEach((t, i) => t.classList.toggle("cur", i === S.tile)); }
+function play() {
+  const it = cur(); if (!it || !it.strip) return;
+  if (S.playing) return stopPlay();
+  S.tile = 0; $("playBtn").textContent = "Stop";
+  S.playing = setInterval(() => { S.tile = (S.tile + 1) % it.strip.tiles; drawBig(); markTile(); }, 200);
+  drawBig(); markTile();
+}
+function stopPlay() { if (S.playing) { clearInterval(S.playing); S.playing = null; S.tile = null; $("playBtn").textContent = "Play 2.4 s"; drawBig(); markTile(); } }
+
+// ---------------------------------------------------------------- results
+function pct(a, n) { return n ? (100 * a / n).toFixed(1) + "%" : "-"; }
+function renderResults() {
+  const rows = S.items.map(it => ({ it, a: S.answers[it.id] })).filter(r => r.a);
+  const scored = rows.filter(r => r.a.label !== "unsure");
+  const agree = scored.filter(r => r.a.label === r.it.auto).length;
+  $("rAgree").textContent = scored.length ? pct(agree, scored.length) : "-";
+  $("rCounts").innerHTML = agree + " of " + scored.length + " agree &middot; " + rows.length + " answered of " + S.items.length +
+    " &middot; " + (rows.length - scored.length) + " unsure";
+  const group = (fn, title) => {
+    const g = {};
+    scored.forEach(r => { const k = fn(r.it); g[k] = g[k] || [0, 0]; g[k][1]++; if (r.a.label === r.it.auto) g[k][0]++; });
+    let h = "<div><b>" + esc(title) + "</b><table class='t'><tr><th></th><th>n</th><th>agree</th><th>%</th></tr>";
+    Object.keys(g).sort().forEach(k => { h += "<tr><td>" + esc(k) + "</td><td>" + g[k][1] + "</td><td>" + g[k][0] + "</td><td>" + pct(g[k][0], g[k][1]) + "</td></tr>"; });
+    if (!Object.keys(g).length) h += "<tr><td colspan=4 class='muted'>no answers yet</td></tr>";
+    return h + "</table></div>";
+  };
+  $("rTables").innerHTML = group(it => "head " + it.head, "Per head") + group(it => it.stem, "Per video") +
+    group(it => LT[it.auto] || it.auto, "Per automatic label") + group(it => it.stem + " " + it.head, "Per video and head");
+  const autos = [...new Set(S.items.map(it => it.auto))].sort((a, b) => LABELS.findIndex(l => l[0] === a) - LABELS.findIndex(l => l[0] === b));
+  const hum = LABELS.map(l => l[0]);
+  let h = "<table class='t'><tr><th>auto \\ you</th>" + hum.map(x => "<th>" + esc(LT[x]) + "</th>").join("") + "<th>total</th></tr>";
+  autos.forEach(a => {
+    const rs = rows.filter(r => r.it.auto === a);
+    h += "<tr><td><b>" + esc(LT[a] || a) + "</b></td>" + hum.map(x => {
+      const n = rs.filter(r => r.a.label === x).length;
+      return "<td class='" + (n ? (x === a ? "diag" : (x === "unsure" ? "" : "off")) : "") + "'>" + (n || "") + "</td>";
+    }).join("") + "<td>" + rs.length + "</td></tr>";
+  });
+  $("rConf").innerHTML = h + "</table>";
+  const dis = scored.filter(r => r.a.label !== r.it.auto);
+  $("rDisN").textContent = "(" + dis.length + ")";
+  const box = $("rDis"); box.innerHTML = dis.length ? "" : "<div class='muted'>None yet.</div>";
+  dis.forEach(r => {
+    const d = document.createElement("div"); d.className = "d";
+    d.innerHTML = "<img src='" + esc(r.it.img) + "' onload='this.style.width=(this.naturalWidth)+\"px\"'>" +
+      "<b class='mono'>" + esc(r.it.id) + "</b><br>auto <b>" + esc(LT[r.it.auto] || r.it.auto) + "</b>, you <b>" + esc(LT[r.a.label]) + "</b>";
+    d.onclick = () => { setView("check"); go(S.items.indexOf(r.it)); };
+    box.appendChild(d);
+  });
+}
+function renderAll() { renderProgress(); if (S.view === "check") renderCheck(); else renderResults(); }
+function setView(v) {
+  S.view = v; stopPlay();
+  $("tabCheck").classList.toggle("on", v === "check"); $("tabResults").classList.toggle("on", v === "results");
+  $("checkView").style.display = v === "check" ? "" : "none"; $("resultsView").style.display = v === "results" ? "" : "none";
+  renderAll();
+}
+
+// ---------------------------------------------------------------- wiring
+function buildAnswers() {
+  const box = $("answers"); box.innerHTML = "";
+  LABELS.forEach(([k, text, letter, lamps], i) => {
+    const b = document.createElement("button"); b.dataset.label = k;
+    b.innerHTML = '<span class="lamps">' + lamps.map(c => '<i style="background:' + c + '"></i>').join("") + "</span>" +
+      "<span>" + esc(text) + "</span><span><kbd>" + (i + 1) + "</kbd> <kbd>" + letter.toUpperCase() + "</kbd></span>";
+    b.onclick = () => answer(k);
+    box.appendChild(b);
+  });
+}
+document.addEventListener("keydown", e => {
+  if (e.target && e.target.tagName === "INPUT" && e.target.type !== "checkbox") return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (S.view !== "check") return;
+  const k = e.key.toLowerCase();
+  if (KEY2[k]) { e.preventDefault(); answer(KEY2[k]); return; }
+  if (e.key === "ArrowLeft" || e.key === "Backspace") { e.preventDefault(); if (S.idx > 0) go(S.idx - 1); return; }
+  if (e.key === "ArrowRight") { e.preventDefault(); go(S.idx + 1); return; }
+  if (k === "n") { const i = S.items.findIndex(it => !S.answers[it.id]); if (i >= 0) go(i); return; }
+  if (k === "p" || e.key === " ") { e.preventDefault(); play(); return; }
+});
+$("backBtn").onclick = () => go(S.idx - 1);
+$("skipBtn").onclick = () => go(S.idx + 1);
+$("firstOpenBtn").onclick = () => { const i = S.items.findIndex(it => !S.answers[it.id]); if (i >= 0) go(i); else toast("Everything is answered"); };
+$("playBtn").onclick = play;
+$("tabCheck").onclick = () => setView("check");
+$("tabResults").onclick = () => setView("results");
+$("hideAuto").onchange = e => { LS.set("salen-spot:hideAuto", e.target.checked); renderCheck(); };
+$("expJson").onclick = () => window.open("/api/spotcheck/export?format=json&download=1&t=" + encodeURIComponent(TOKEN), "_blank", "noopener");
+$("expCsv").onclick = () => window.open("/api/spotcheck/export?format=csv&download=1&t=" + encodeURIComponent(TOKEN), "_blank", "noopener");
+$("nameInput").addEventListener("input", e => { LS.set("salen-label:name", e.target.value.trim()); e.target.classList.toggle("missing", !name()); });
+$("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") e.target.blur(); });
+window.addEventListener("resize", () => { if (S.view === "check") renderCheck(); });
+
+(async function init() {
+  $("nameInput").value = LS.get("salen-label:name") || "";
+  $("nameInput").classList.toggle("missing", !name());
+  const h = LS.get("salen-spot:hideAuto"); if (h === false) $("hideAuto").checked = false;
+  buildAnswers();
+  let items, srv;
+  try {
+    const [a, b] = await Promise.all([fetch("spotcheck/items.json", { cache: "no-cache" }), api("/api/spotcheck")]);
+    if (!a.ok || !b.ok) throw new Error("load");
+    items = await a.json(); srv = await b.json();
+  } catch (e) { setStatus("bad", "cannot load (bad link or offline)"); $("progText").textContent = "Cannot load. Check the link and reload."; return; }
+  S.items = items.items; S.rare = items.rare_labels || []; S.items.forEach(it => S.byId[it.id] = it);
+  S.answers = srv.answers || {};
+  // answers this browser made that never reached the server
+  S.pending = (LS.get(PKEY) || []).filter(p => S.byId[p.id]);
+  S.pending.forEach(p => { if (p.label === null) delete S.answers[p.id]; else S.answers[p.id] = { label: p.label, at: p.at, by: name() }; });
+  persistLocal();
+  if (S.pending.length) { toast("Sending " + S.pending.length + " answers saved in this browser"); flush(); }
+  else setStatus("ok", srv.version ? "loaded, " + Object.keys(S.answers).length + " answers" : "no answers yet");
+  const open = S.items.findIndex(it => !S.answers[it.id]);
+  go(open < 0 ? 0 : open);
+})();
+</script>
+</body>
+</html>

@@ -1,5 +1,10 @@
 # AI / Codex working instructions
 
+## Latest user direction (2026-09-26; overrides repository-routing notes below)
+
+The user explicitly requested all our work be committed in `Jamoliddin-00i/WIUT-HACKATHON`. Work and commit in this checkout. Do not redirect implementation back to the Salen checkout or push to Hamid's repository. The current implementation and its dependencies are now present here; use this repo's `PROJECT_STATE.md`. Part A tuning is paused; Part B is the current priority.
+
+
 Read `README.md`, `PROJECT_STATE.md`, and the official elimination task before changing the implementation.
 
 ## Canonical workflow / handoff discipline

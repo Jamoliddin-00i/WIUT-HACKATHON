@@ -1,0 +1,7 @@
+start_frame,end_frame,start_t,end_t,duration_s,state,n_samples,n_observed,n_imputed,n_unobserved,imputed,start_uncertainty_frames
+0,1035,0.0,34.534,34.534,red,345,345,0,0,False,0
+1035,1992,34.534,66.466,31.932,green,319,319,0,0,False,3
+1992,1995,66.466,66.566,0.1,unknown,1,0,0,1,False,3
+1995,2082,66.566,69.469,2.903,green_blink,29,29,0,0,False,6
+2082,3432,69.469,114.514,45.045,red,450,450,0,0,False,3
+3432,3825,114.514,127.628,13.113,green,131,131,0,0,False,3

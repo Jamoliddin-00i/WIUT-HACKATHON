@@ -1,0 +1,9 @@
+start_frame,end_frame,start_t,end_t,duration_s,state,n_samples,n_observed,n_imputed,n_unobserved,imputed,start_uncertainty_frames
+0,945,0.0,31.532,31.532,red,315,315,0,0,False,0
+945,1035,31.532,34.534,3.003,red_amber,30,30,0,0,False,3
+1035,2082,34.534,69.469,34.935,green,349,349,0,0,False,3
+2082,2172,69.469,72.472,3.003,green_blink,30,23,7,0,True,3
+2172,2262,72.472,75.475,3.003,amber,30,30,0,0,False,3
+2262,3342,75.475,111.511,36.036,red,360,360,0,0,False,3
+3342,3432,111.511,114.514,3.003,red_amber,30,22,8,0,True,3
+3432,3825,114.514,127.628,13.113,green,131,131,0,0,False,3

@@ -1,0 +1,1122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Salen Event Labeler</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Crect width=%2216%22 height=%2216%22 rx=%223%22 fill=%22%232457d6%22/%3E%3Crect x=%223%22 y=%226%22 width=%2210%22 height=%224%22 fill=%22white%22/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #f6f7f9; --panel: #ffffff; --panel2: #eef1f5; --text: #16181d; --muted: #5d6573;
+  --border: #d5dae2; --accent: #2457d6; --accent-text: #ffffff; --ok: #1b8a3a; --warn: #b26a00;
+  --bad: #c62828; --track: #e7ebf0; --axis: #8a93a2; --playhead: #111111; --focus: #2457d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317; --panel: #1a1d23; --panel2: #232730; --text: #e8eaee; --muted: #9aa3b2;
+    --border: #333844; --accent: #6b95ff; --accent-text: #0b0d12; --ok: #4cc26d; --warn: #f0a93b;
+    --bad: #ff6b6b; --track: #262a33; --axis: #7d8696; --playhead: #ffffff; --focus: #8fb0ff;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text);
+  font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--accent); }
+button { background: var(--panel2); border: 1px solid var(--border); border-radius: 6px;
+  padding: 4px 9px; cursor: pointer; white-space: nowrap; }
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button.small { padding: 1px 6px; font-size: 12px; }
+button.on { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+input, select { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 4px 6px; }
+kbd { display: inline-block; min-width: 1.5em; text-align: center; padding: 0 4px; border: 1px solid var(--border);
+  border-bottom-width: 2px; border-radius: 4px; background: var(--panel2); font: 12px/1.5 ui-monospace, Menlo, monospace; }
+.mono { font-family: ui-monospace, Menlo, Consolas, monospace; }
+.muted { color: var(--muted); }
+
+header.top { position: sticky; top: 0; z-index: 20; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+  padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--border); }
+.brand { font-weight: 700; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tab { display: flex; flex-direction: column; align-items: flex-start; padding: 3px 10px; line-height: 1.25; }
+.tab .who { font-size: 11px; color: var(--muted); }
+.tab.on .who, .tab.on .muted { color: inherit !important; opacity: .85; }
+.tab .dot { color: var(--warn); font-weight: 700; }
+.who-field { display: flex; align-items: center; gap: 6px; }
+.who-field input { width: 130px; }
+.who-field input.missing { border-color: var(--bad); box-shadow: 0 0 0 2px color-mix(in srgb, var(--bad) 30%, transparent); }
+.status { font-weight: 600; padding: 3px 10px; border-radius: 6px; border: 1px solid var(--border); }
+.status.ok { color: var(--ok); } .status.busy { color: var(--muted); }
+.status.bad { color: #fff; background: var(--bad); border-color: var(--bad); }
+.spacer { flex: 1; }
+
+.help { margin: 10px 16px 0; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; }
+.help summary { cursor: pointer; font-weight: 600; padding: 2px 0; }
+.help ol { margin: 6px 0; padding-left: 20px; }
+.help li { margin: 2px 0; }
+.keys { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 3px 16px; margin: 6px 0 4px; font-size: 13px; }
+
+main.grid { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 12px; padding: 12px 16px 40px; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+.card h3 { margin: 0 0 8px; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.player { min-width: 0; }
+.videoWrap { background: #000; border-radius: 8px; overflow: hidden; position: relative; aspect-ratio: 16 / 9; }
+video { width: 100%; height: 100%; display: block; background: #000; }
+.vmsg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #ddd; pointer-events: none; }
+.transport { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0; }
+.transport .grp { display: flex; gap: 4px; align-items: center; }
+.clock { font: 600 15px/1.2 ui-monospace, Menlo, monospace; padding: 4px 8px; background: var(--panel2);
+  border: 1px solid var(--border); border-radius: 6px; }
+.tlbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 6px 0 4px; font-size: 12px; }
+.tlwrap { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+canvas#timeline { display: block; width: 100%; cursor: crosshair; touch-action: none; }
+
+.side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.legend { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin: 8px 0; }
+.chip { display: flex; align-items: center; gap: 6px; text-align: left; padding: 2px 6px; font-size: 12.5px; border-radius: 5px; }
+.chip .sw { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+.chip kbd { margin-left: auto; }
+.chip.on { outline: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 14%, var(--panel)); color: var(--text); font-weight: 600; }
+.def { background: var(--panel2); border-radius: 6px; padding: 8px 10px; font-size: 13px; border-left: 5px solid var(--border); }
+.def b { display: inline-block; min-width: 38px; }
+.def .name { font-weight: 700; font-size: 14px; margin-bottom: 3px; }
+.marks { display: grid; grid-template-columns: auto 1fr auto auto; gap: 6px; align-items: center; margin-top: 10px; }
+.marks input { width: 100%; }
+.addrow { display: flex; gap: 6px; margin-top: 8px; }
+.addrow button.primary { flex: 1; }
+.rulebox { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+.problems { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+.problems li { padding: 4px 6px; border-radius: 5px; display: flex; gap: 6px; align-items: flex-start; cursor: pointer; }
+.problems li:hover { background: var(--panel2); }
+.problems .sev { font-weight: 700; flex: none; }
+.problems .sev.err { color: var(--bad); } .problems .sev.wrn { color: var(--warn); }
+.badge { font-size: 12px; font-weight: 700; padding: 0 7px; border-radius: 10px; background: var(--panel2); border: 1px solid var(--border); }
+.badge.bad { background: var(--bad); color: #fff; border-color: var(--bad); }
+.badge.ok { background: var(--ok); color: #fff; border-color: var(--ok); }
+
+.events { grid-column: 1 / -1; }
+.evhead { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; }
+.evlist { display: flex; flex-direction: column; gap: 4px; }
+.ev { display: grid; grid-template-columns: 34px 170px minmax(250px, auto) minmax(290px, auto) 60px minmax(140px, 1fr) auto;
+  gap: 6px; align-items: center; padding: 5px 6px; border: 1px solid var(--border); border-left: 6px solid var(--border);
+  border-radius: 6px; background: var(--panel); }
+.ev.sel { outline: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--panel)); }
+.ev.live .idx { color: var(--accent); font-weight: 700; }
+.ev .idx { font-size: 12px; color: var(--muted); text-align: right; cursor: pointer; }
+.ev .tgrp { display: flex; gap: 3px; align-items: center; }
+.ev .tgrp input { width: 78px; text-align: right; }
+.ev .tgrp .lbl { font-size: 11px; color: var(--muted); width: 26px; }
+.ev .dur { font-size: 12px; color: var(--muted); text-align: right; }
+.ev .note { width: 100%; }
+.ev .acts { display: flex; gap: 3px; }
+.ev select { width: 100%; }
+.evempty { color: var(--muted); padding: 12px 4px; }
+
+#toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 50; display: none; gap: 10px;
+  align-items: center; background: var(--text); color: var(--bg); padding: 8px 14px; border-radius: 8px; max-width: 92vw;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25); }
+#toast button { background: transparent; color: inherit; border-color: currentColor; }
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; align-items: center; justify-content: center; z-index: 60; padding: 16px; }
+.modal .box { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; max-width: 560px; width: 100%; }
+.modal .box p { margin: 0 0 12px; white-space: pre-line; }
+.modal .btns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+
+@media (max-width: 1100px) {
+  main.grid { grid-template-columns: 1fr; }
+  .ev { grid-template-columns: 34px minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "idx cls dur" "idx ts te" "idx note acts"; }
+  .ev .idx { grid-area: idx; align-self: start; } .ev .cls { grid-area: cls; } .ev .dur { grid-area: dur; text-align: left; }
+  .ev .ts { grid-area: ts; } .ev .te { grid-area: te; flex-wrap: wrap; } .ev .note { grid-area: note; } .ev .acts { grid-area: acts; }
+}
+@media (max-width: 640px) {
+  header.top { position: static; padding: 8px 16px; }
+  main.grid { padding: 10px 16px 40px; }
+  .help { margin: 10px 16px 0; }
+  .ev { grid-template-columns: 1fr; grid-template-areas: "idx" "cls" "ts" "te" "dur" "note" "acts"; }
+  .ev .idx { text-align: left; }
+  .ev .tgrp { flex-wrap: wrap; }
+  .legend { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Salen labeler</div>
+  <div id="tabs" class="tabs"></div>
+  <div class="spacer"></div>
+  <label class="who-field">Your name <input id="nameInput" placeholder="type your name" maxlength="60" autocomplete="off"></label>
+  <a href="guide.html" target="_blank" rel="noopener" style="font-size:13px;font-weight:600">labeling guide</a> &middot; <a href="zones.html" style="font-size:13px">zone editor</a> &middot; <a href="spotcheck.html" style="font-size:13px">signal spot-check</a> &middot; <a href="tools.html" style="font-size:13px">all tools</a> &middot; <a id="exportLink" href="#" target="_blank" rel="noopener" style="font-size:13px">export ground_truth.json</a>
+  <div id="saveStatus" class="status busy">loading...</div>
+</header>
+
+<details id="help" class="help">
+  <summary>How to label (press <kbd>H</kbd> to show or hide)</summary>
+  <ol>
+    <li>Pick your video above (the assigned person is shown under each name) and type your name top right.</li>
+    <li><b>First pass at 1x:</b> watch the whole video and spot events. Press <kbd>I</kbd> roughly where one starts, <kbd>O</kbd> where it ends, pick the class (letter key or dropdown), press <kbd>Enter</kbd>. Rough is fine here.</li>
+    <li><b>Second pass at 0.25x:</b> click each event in the list, step frames with <kbd>,</kbd> <kbd>.</kbd> and fix start and end exactly (the <b>=now</b> buttons copy the current frame time).</li>
+    <li><b>Follow the start/end rule</b> of the class shown on the right. Two events of the same class at the same time: make ONE segment covering both. Different classes may overlap. Event still going at the end of the video: end = video end (<kbd>E</kbd>).</li>
+    <li><b>When unsure, still add it and write a note</b> saying why.</li>
+    <li>Work is saved to the server about 2 s after every change (status top right) and also kept in this browser. Clear the Validate panel before you finish.</li>
+  </ol>
+  <div class="keys" id="keyList"></div>
+</details>
+
+<main class="grid">
+  <section class="player">
+    <div class="videoWrap"><video id="video" preload="auto" playsinline></video><div id="vmsg" class="vmsg">loading video...</div></div>
+    <div class="transport">
+      <div class="grp">
+        <button data-act="seek" data-d="-5" title="Shift+Left">-5s</button>
+        <button data-act="seek" data-d="-1" title="Left">-1s</button>
+        <button data-act="frame" data-d="-1" title=",">-1f</button>
+        <button id="playBtn" class="primary" data-act="play" title="Space" style="min-width:64px">Play</button>
+        <button data-act="frame" data-d="1" title=".">+1f</button>
+        <button data-act="seek" data-d="1" title="Right">+1s</button>
+        <button data-act="seek" data-d="5" title="Shift+Right">+5s</button>
+      </div>
+      <div class="clock" id="clock">0.00 s</div>
+      <div class="grp" id="speeds"></div>
+    </div>
+    <div class="tlbar">
+      <b>Timeline</b>
+      <button class="small" data-act="zoom" data-d="1" title="=">zoom in</button>
+      <button class="small" data-act="zoom" data-d="-1" title="-">zoom out</button>
+      <button class="small" data-act="zoomfit" title="0">fit</button>
+      <span class="muted" id="tlInfo"></span>
+      <span class="spacer"></span>
+      <span class="muted" id="sigInfo"></span>
+    </div>
+    <div class="tlwrap"><canvas id="timeline" height="80"></canvas></div>
+  </section>
+
+  <aside class="side">
+    <div class="card">
+      <h3>Mark an event</h3>
+      <select id="classSelect" style="width:100%"></select>
+      <div class="legend" id="legend"></div>
+      <div class="def" id="classDef"></div>
+      <div class="marks">
+        <span>Start</span><input id="markStart" class="mono" placeholder="press I" inputmode="decimal">
+        <button class="small" data-act="markStart" title="I">I =now</button><button class="small" data-act="goMarkStart" title="Shift+I">go</button>
+        <span>End</span><input id="markEnd" class="mono" placeholder="press O" inputmode="decimal">
+        <button class="small" data-act="markEnd" title="O">O =now</button><button class="small" data-act="goMarkEnd" title="Shift+O">go</button>
+      </div>
+      <div class="addrow">
+        <button class="small" data-act="markEndDur" title="E">end = video end</button>
+        <button class="small" data-act="clearMarks" title="Esc">clear</button>
+        <button class="primary" data-act="add" title="Enter">Add event (Enter)</button>
+      </div>
+      <div class="rulebox">Times are seconds (e.g. 83.40) or m:ss.xx (1:23.40). Marks snap to the start of the frame on screen.</div>
+    </div>
+    <div class="card">
+      <h3>Validate <span id="probBadge" class="badge">0</span></h3>
+      <ul class="problems" id="problems"></ul>
+    </div>
+  </aside>
+
+  <section class="card events">
+    <div class="evhead">
+      <h3 style="margin:0">Events <span class="badge" id="evCount">0</span></h3>
+      <label class="muted">sort <select id="sortSel"><option value="start">by start</option><option value="label">by class</option><option value="end">by end</option></select></label>
+      <button class="small" data-act="undo" title="Ctrl/Cmd+Z">undo</button>
+      <button class="small" data-act="redo" title="Ctrl/Cmd+Shift+Z">redo</button>
+      <span class="muted" id="savedInfo" style="font-size:12px"></span>
+    </div>
+    <div class="evlist" id="evList"></div>
+  </section>
+</main>
+
+<div id="toast"><span id="toastMsg"></span><button id="toastBtn" class="small"></button></div>
+<div class="modal" id="modal"><div class="box"><p id="modalMsg"></p><div class="btns" id="modalBtns"></div></div></div>
+
+<script>
+"use strict";
+// ---------------------------------------------------------------- constants
+const CLASSES = [
+  ["accident", "a", "#e53935", "Contact between road users or with a fixed object.", "first frame contact is visible.", "all involved stop moving or leave frame."],
+  ["near_miss", "n", "#ffa000", "Sharp braking or swerving to avoid a collision, no contact.", "onset of evasive action.", "road users clear of each other."],
+  ["red_light", "r", "#d81b60", "Vehicle crosses stop line while its signal is red.", "front crosses stop line.", "vehicle leaves intersection or frame."],
+  ["wrong_way", "w", "#8e24aa", "Vehicle moves against its lane direction, incl. oncoming lane.", "enters opposing lane.", "returns to correct lane or leaves frame."],
+  ["illegal_u_turn", "u", "#5e35b1", "U-turn where markings/signs prohibit it.", "starts turning.", "completes turn."],
+  ["stopped_vehicle", "s", "#3949ab", "Stationary on carriageway >= 10 s, not in a queue at a signal.", "vehicle stops.", "moves again or removed."],
+  ["jaywalking", "j", "#1e88e5", "Pedestrian on carriageway away from a crossing; slight drift beside zebra while following it does not count.", "steps onto road away from crossing.", "leaves road or returns to crossing."],
+  ["failure_to_yield", "y", "#00acc1", "Vehicle drives through a crossing while a pedestrian is on it or stepping onto it.", "vehicle enters crossing.", "vehicle leaves crossing."],
+  ["illegal_turn", "t", "#00897b", "Turn from wrong lane or prohibited direction.", "starts turning.", "completes turn."],
+  ["solid_line_crossing", "l", "#43a047", "Lane change/manoeuvre across a solid marking.", "wheel crosses line.", "fully in new lane."],
+  ["stop_line", "p", "#9e9d24", "Vehicle stops past the stop line on red without entering the intersection.", "vehicle stops.", "signal turns green."],
+  ["congestion", "c", "#6d4c41", "Traffic at standstill or crawling across all lanes of a direction.", "queue stops moving.", "queue clears."],
+  ["road_obstacle", "d", "#78909c", "Debris, animal or fallen object on carriageway.", "appears.", "removed."],
+  ["fire_smoke", "f", "#f4511e", "Visible fire or smoke.", "first visible smoke.", "clears or frame ends."],
+];
+const CLS = {}; CLASSES.forEach(([n, k, col, def, s, e], i) => CLS[n] = { name: n, key: k, color: col, def, start: s, end: e, i });
+const KEY2CLS = {}; CLASSES.forEach(c => KEY2CLS[c[1]] = c[0]);
+const SPEEDS = [0.25, 0.5, 1, 2, 4];
+const SIG_COL = { red: "#e53935", green: "#2e9d4a", amber: "#ffb300", unclear: "#8a8f98" };
+const SAVE_DELAY = 2000;
+const TOKEN = location.pathname.split("/").filter(Boolean)[0] || "";
+const LS = {
+  get(k) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+};
+const localKey = v => "salen-label:v1:" + v;
+const backupKey = v => "salen-label:backup:" + v;
+
+// ---------------------------------------------------------------- state
+const S = {
+  videos: [], video: null, info: null, fpsExact: 30000 / 1001,
+  events: [], selId: null, cls: null, markS: null, markE: null,
+  serverVersion: 0, serverSavedAt: null, dirty: false, editSeq: 0, savedSeq: 0,
+  saving: false, saveTimer: null, retryTimer: null, retryDelay: 3000, rejected: false,
+  undo: [], redo: [], sort: "start", signal: null,
+  view: { start: 0, span: 0 }, needDraw: true,
+};
+let nextId = 1;
+const $ = id => document.getElementById(id);
+const video = $("video");
+
+// ---------------------------------------------------------------- helpers
+const r3 = x => Math.round(x * 1000) / 1000;
+function fmtT(t) { return (t == null || !isFinite(t)) ? "" : t.toFixed(2); }
+function fmtClock(t) {
+  const m = Math.floor(t / 60), s = t - m * 60;
+  return m + ":" + (s < 10 ? "0" : "") + s.toFixed(2);
+}
+function parseTime(str) {
+  str = String(str).trim().replace(",", ".");
+  if (!str) return null;
+  const parts = str.split(":");
+  if (parts.length > 3 || parts.some(p => p === "" || isNaN(Number(p)))) return NaN;
+  let t = 0; for (const p of parts) t = t * 60 + Number(p);
+  return t;
+}
+function hhmmss(iso) {
+  if (!iso) return "";
+  const d = new Date(iso); if (isNaN(d)) return "";
+  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+}
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+function dur() { return S.info ? S.info.duration : (video.duration || 0); }
+function frameOf(t) { return Math.floor(t * S.fpsExact + 1e-3); }
+function frameStart(n) { return n / S.fpsExact; }
+function nowSnap() { return r3(Math.min(dur(), frameStart(frameOf(video.currentTime)))); }
+function api(path, opts = {}) {
+  opts.headers = Object.assign({ "X-Token": TOKEN }, opts.headers || {});
+  opts.cache = "no-store";
+  return fetch(path, opts);
+}
+function toast(msg, btnText, onBtn, ms = 4000) {
+  const t = $("toast"); $("toastMsg").textContent = msg;
+  const b = $("toastBtn");
+  if (btnText) { b.style.display = ""; b.textContent = btnText; b.onclick = () => { t.style.display = "none"; onBtn(); }; }
+  else b.style.display = "none";
+  t.style.display = "flex";
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.style.display = "none", ms);
+}
+function ask(msg, buttons) {
+  const prev = ask.q || Promise.resolve();
+  const p = prev.then(() => askNow(msg, buttons));
+  ask.q = p.catch(() => {});
+  return p;
+}
+function askNow(msg, buttons) {
+  return new Promise(res => {
+    $("modalMsg").textContent = msg;
+    const box = $("modalBtns"); box.innerHTML = "";
+    buttons.forEach(([label, val, primary]) => {
+      const b = document.createElement("button"); b.textContent = label; if (primary) b.className = "primary";
+      b.onclick = () => { $("modal").style.display = "none"; res(val); };
+      box.appendChild(b);
+    });
+    $("modal").style.display = "flex";
+  });
+}
+function modalOpen() { return $("modal").style.display === "flex"; }
+function mkEvent(o) { return { id: nextId++, start: r3(o.start), end: r3(o.end), label: o.label, note: o.note || "" }; }
+function plain(evs) { return evs.map(e => ({ start: e.start, end: e.end, label: e.label, note: e.note || "" })); }
+function sameEvents(a, b) {
+  const k = e => [e.start, e.end, e.label, e.note || ""].join("|");
+  const A = a.map(k).sort(), B = b.map(k).sort();
+  return A.length === B.length && A.every((x, i) => x === B[i]);
+}
+
+// ---------------------------------------------------------------- mutations, undo
+function snapshot() { return JSON.stringify(plain(S.events)); }
+function commit(fn) {
+  S.undo.push(snapshot()); if (S.undo.length > 200) S.undo.shift();
+  S.redo = [];
+  fn();
+  changed();
+}
+function restoreSnap(snap) {
+  const keepSel = S.events.find(e => e.id === S.selId);
+  S.events = JSON.parse(snap).map(mkEvent);
+  if (keepSel) { const m = S.events.find(e => e.start === keepSel.start && e.label === keepSel.label); S.selId = m ? m.id : null; }
+}
+function undo() {
+  if (!S.undo.length) return toast("Nothing to undo");
+  S.redo.push(snapshot()); restoreSnap(S.undo.pop()); changed(); toast("Undone");
+}
+function redo() {
+  if (!S.redo.length) return toast("Nothing to redo");
+  S.undo.push(snapshot()); restoreSnap(S.redo.pop()); changed(); toast("Redone");
+}
+function changed() {
+  S.dirty = true; S.editSeq++; S.rejected = false; S.serverProblems = null;
+  mirrorLocal();
+  renderEvents(); renderProblems(); renderTabs(); S.needDraw = true;
+  scheduleSave(SAVE_DELAY);
+  if (!name()) { $("nameInput").classList.add("missing"); }
+}
+
+// ---------------------------------------------------------------- local mirror
+function mirrorLocal() {
+  if (!S.video) return;
+  const ok = LS.set(localKey(S.video), {
+    events: plain(S.events), dirty: S.dirty, editedAt: new Date().toISOString(),
+    baseVersion: S.serverVersion, name: name(),
+  });
+  if (!ok && S.dirty) setStatus("bad", "browser storage full, keep this tab open");
+}
+function markLocalClean() {
+  const l = LS.get(localKey(S.video));
+  if (l) { l.dirty = S.dirty; l.baseVersion = S.serverVersion; LS.set(localKey(S.video), l); }
+}
+
+// ---------------------------------------------------------------- saving
+function setStatus(kind, text) { const el = $("saveStatus"); el.className = "status " + kind; el.textContent = text; }
+function name() { return $("nameInput").value.trim(); }
+function scheduleSave(delay) {
+  clearTimeout(S.saveTimer); clearTimeout(S.retryTimer);
+  if (!S.saving && !S.conflict) setStatus("busy", "unsaved changes");
+  S.saveTimer = setTimeout(doSave, delay);
+}
+async function doSave(force = false) {
+  if (!S.video || !S.dirty) return true;
+  if (S.conflict) return false;
+  if (S.saving) { S.saveAgain = true; return false; }
+  S.saving = true; S.saveAgain = false;
+  const vid = S.video, seq = S.editSeq;
+  setStatus("busy", "saving...");
+  let res, body;
+  try {
+    res = await api("/api/labels?video=" + encodeURIComponent(vid), {
+      method: "PUT", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ events: plain(S.events), labeled_by: name(), base_version: S.serverVersion, force }),
+    });
+    body = await res.json().catch(() => ({}));
+  } catch (e) { res = null; }
+  S.saving = false;
+  if (vid !== S.video) return false;
+  if (res && res.ok) {
+    S.serverVersion = body.version; S.serverSavedAt = body.saved_at || S.serverSavedAt;
+    S.retryDelay = 3000;
+    if (S.editSeq === seq) S.dirty = false;
+    markLocalClean();
+    const vm = S.videos.find(v => v.name === vid); if (vm) { vm.n_events = S.events.length; vm.version = S.serverVersion; }
+    const w = (body.warnings || []).length;
+    if (S.dirty) { scheduleSave(300); }
+    else setStatus("ok", "saved at " + hhmmss(new Date().toISOString()) + (w ? " (" + w + " overlap warning" + (w > 1 ? "s" : "") + ")" : ""));
+    $("savedInfo").textContent = "server version " + S.serverVersion;
+    renderTabs();
+    if (S.saveAgain && S.dirty) scheduleSave(300);
+    return true;
+  }
+  if (res && res.status === 409) {
+    const srv = body.server || {};
+    S.conflict = true;
+    setStatus("bad", "CONFLICT, choose a version");
+    const choice = await ask(
+      "Someone else saved " + vid + " while you were editing (server version " + srv.version + ", by " +
+      (srv.labeled_by || "unknown") + " at " + hhmmss(srv.saved_at) + ", " + (srv.events || []).length + " events).\n\n" +
+      "Your version has " + S.events.length + " events. Both versions stay in the server history either way.",
+      [["Load server version", "server"], ["Keep mine (overwrite)", "mine", true]]);
+    S.conflict = false;
+    if (choice === "mine") { return doSave(true); }
+    LS.set(backupKey(vid), { events: plain(S.events), savedAt: new Date().toISOString(), reason: "conflict" });
+    applyServer(srv); toast("Loaded server version. Your copy is kept as a browser backup.");
+    return false;
+  }
+  if (res && res.status === 400) {
+    S.rejected = true;
+    setStatus("bad", "SAVE REJECTED, see Validate");
+    S.serverProblems = body.problems || [body.error || "rejected"];
+    renderProblems();
+    return false;
+  }
+  if (res && res.status === 404) {
+    setStatus("bad", "OFFLINE (bad link or token?), retrying");
+  } else {
+    setStatus("bad", "OFFLINE, retrying (work kept in browser)");
+  }
+  clearTimeout(S.retryTimer);
+  S.retryTimer = setTimeout(() => doSave(), S.retryDelay);
+  S.retryDelay = Math.min(S.retryDelay * 2, 20000);
+  return false;
+}
+window.addEventListener("beforeunload", e => { if (S.dirty) { mirrorLocal(); e.preventDefault(); e.returnValue = ""; } });
+window.addEventListener("online", () => { if (S.dirty) doSave(); });
+
+// ---------------------------------------------------------------- loading
+function applyServer(srv, mirror = true) {
+  S.events = (srv.events || []).map(mkEvent);
+  S.serverVersion = srv.version || 0; S.serverSavedAt = srv.saved_at || null;
+  S.dirty = false; S.undo = []; S.redo = []; S.selId = null; S.serverProblems = null;
+  const vm = S.videos.find(v => v.name === S.video); if (vm) vm.n_events = S.events.length;
+  if (mirror) mirrorLocal();
+  renderAll();
+  setStatus("ok", srv.version ? "loaded version " + srv.version + (srv.saved_at ? " (" + hhmmss(srv.saved_at) + ")" : "") : "no labels yet");
+  $("savedInfo").textContent = "server version " + S.serverVersion + (srv.labeled_by ? ", last saved by " + srv.labeled_by : "");
+}
+async function loadVideoList() {
+  const r = await api("/api/videos");
+  if (!r.ok) throw new Error("videos " + r.status);
+  const j = await r.json();
+  S.videos = j.videos;
+}
+async function openVideo(vname, first) {
+  if (S.video === vname) return;
+  if (S.video && S.dirty) {
+    clearTimeout(S.saveTimer);
+    const ok = await doSave();
+    if (!ok && S.dirty) {
+      const go = await ask("Could not save " + S.video + " to the server right now. Your changes are kept in this browser and will be offered for restore when you open it again.\n\nSwitch anyway?",
+        [["Stay", false], ["Switch", true, true]]);
+      if (!go) return;
+    }
+  }
+  clearTimeout(S.saveTimer); clearTimeout(S.retryTimer);
+  const meta = S.videos.find(v => v.name === vname);
+  S.video = vname; S.info = meta; S.dirty = false; S.markS = S.markE = null; S.signal = null;
+  S.fpsExact = Math.abs(meta.fps - 29.97) < 0.02 ? 30000 / 1001 : meta.fps;
+  S.view = { start: 0, span: meta.duration };
+  try { localStorage.setItem("salen-label:lastVideo", vname); } catch (e) {}
+  history.replaceState(null, "", "#" + vname);
+  $("vmsg").style.display = ""; $("vmsg").textContent = "loading video...";
+  video.src = meta.media;
+  renderTabs(); renderMarks();
+  setStatus("busy", "loading labels...");
+  let srv;
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const r = await api("/api/labels?video=" + encodeURIComponent(vname));
+      if (!r.ok) throw new Error(r.status);
+      srv = await r.json(); break;
+    } catch (e) {
+      setStatus("bad", "OFFLINE, retrying");
+      await new Promise(res => setTimeout(res, Math.min(2000 * (attempt + 1), 10000)));
+      if (S.video !== vname) return;
+    }
+  }
+  if (S.video !== vname) return;
+  const local = LS.get(localKey(vname));
+  const pending = local && local.dirty && !sameEvents(local.events, srv.events || []);
+  if (pending) LS.set(backupKey(vname), { events: local.events, savedAt: local.editedAt, reason: "unsaved at load" });
+  applyServer(srv, !pending);
+  if (pending) {
+    const localNewer = !srv.saved_at || new Date(local.editedAt) > new Date(srv.saved_at);
+    if (localNewer) {
+      const c = await ask("This browser has UNSAVED changes for " + vname + " from " + hhmmss(local.editedAt) +
+        " (" + local.events.length + " events).\nThe server has version " + srv.version + (srv.saved_at ? " saved at " + hhmmss(srv.saved_at) : "") +
+        " (" + (srv.events || []).length + " events).\n\nRestore your unsaved changes?",
+        [["Use server version", "server"], ["Restore my changes", "local", true]]);
+      if (c === "local") {
+        S.undo.push(snapshot());
+        S.events = local.events.map(mkEvent);
+        changed(); scheduleSave(200);
+        toast("Restored your local changes, saving...");
+      } else mirrorLocal();
+    } else mirrorLocal();
+  }
+  loadSignal(vname);
+}
+async function loadSignal(vname) {
+  try {
+    const r = await api("/api/signal?video=" + encodeURIComponent(vname));
+    const j = await r.json();
+    if (S.video !== vname) return;
+    S.signal = j.available ? j : null;
+    $("sigInfo").textContent = S.signal ? "bottom strip: signal " + j.light + " (automatic guess, verify in video)" : "";
+    S.needDraw = true; resizeCanvas();
+  } catch (e) {}
+}
+
+// ---------------------------------------------------------------- rendering
+function renderTabs() {
+  const el = $("tabs"); el.innerHTML = "";
+  S.videos.forEach(v => {
+    const b = document.createElement("button");
+    b.className = "tab" + (v.name === S.video ? " on" : "");
+    const l = LS.get(localKey(v.name));
+    const unsaved = (v.name === S.video ? S.dirty : (l && l.dirty));
+    const n = v.name === S.video ? S.events.length : v.n_events;
+    b.innerHTML = "<span>" + esc(v.name) + " <span class='muted' style='font-size:11px'>(" + n + ")</span>" +
+      (unsaved ? " <span class='dot' title='unsaved changes'>*</span>" : "") + "</span><span class='who'>" + esc(v.assigned_to) + "</span>";
+    b.onclick = () => openVideo(v.name);
+    el.appendChild(b);
+  });
+}
+function renderClassUI() {
+  const sel = $("classSelect");
+  sel.innerHTML = "<option value=''>choose class...</option>" + CLASSES.map(c => "<option value='" + c[0] + "'>" + c[0] + "  (" + c[1].toUpperCase() + ")</option>").join("");
+  const lg = $("legend"); lg.innerHTML = "";
+  CLASSES.forEach(c => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.dataset.cls = c[0];
+    b.innerHTML = "<span class='sw' style='background:" + c[2] + "'></span><span>" + c[0] + "</span><kbd>" + c[1].toUpperCase() + "</kbd>";
+    b.onclick = () => setClass(c[0]);
+    lg.appendChild(b);
+  });
+}
+function setClass(c) {
+  S.cls = c || null;
+  $("classSelect").value = S.cls || "";
+  document.querySelectorAll(".chip").forEach(ch => ch.classList.toggle("on", ch.dataset.cls === S.cls));
+  const d = $("classDef");
+  if (!S.cls) { d.style.borderLeftColor = "var(--border)"; d.innerHTML = "<div class='name'>No class selected</div>Pick one with its letter key or the dropdown. Its definition and start/end rule appear here."; }
+  else {
+    const c = CLS[S.cls];
+    d.style.borderLeftColor = c.color;
+    d.innerHTML = "<div class='name'>" + c.name + "</div><div>" + esc(c.def) + "</div><div><b>Start:</b> " + esc(c.start) + "</div><div><b>End:</b> " + esc(c.end) +
+      "</div><div class='muted' style='margin-top:4px;font-size:12px'>Past the video end: end = video end. Same class at the same time: one segment covering both.</div>";
+  }
+  const sel = S.events.find(e => e.id === S.selId);
+  S.needDraw = true;
+  return sel;
+}
+function renderMarks() {
+  if (document.activeElement !== $("markStart")) $("markStart").value = fmtT(S.markS);
+  if (document.activeElement !== $("markEnd")) $("markEnd").value = fmtT(S.markE);
+  S.needDraw = true;
+}
+function sortedEvents() {
+  const ev = S.events.slice();
+  if (S.sort === "label") ev.sort((a, b) => CLS[a.label].i - CLS[b.label].i || a.start - b.start);
+  else if (S.sort === "end") ev.sort((a, b) => a.end - b.end || a.start - b.start);
+  else ev.sort((a, b) => a.start - b.start || a.end - b.end);
+  return ev;
+}
+function renderEvents() {
+  const list = $("evList");
+  const focused = document.activeElement;
+  const keep = focused && focused.dataset && focused.dataset.eid ? [focused.dataset.eid, focused.dataset.f] : null;
+  list.innerHTML = "";
+  $("evCount").textContent = S.events.length;
+  if (!S.events.length) { list.innerHTML = "<div class='evempty'>No events yet. Press I at the start, O at the end, pick a class, Enter.</div>"; return; }
+  const opts = CLASSES.map(c => "<option value='" + c[0] + "'>" + c[0] + "</option>").join("");
+  sortedEvents().forEach((e, k) => {
+    const row = document.createElement("div");
+    row.className = "ev" + (e.id === S.selId ? " sel" : "");
+    row.dataset.id = e.id;
+    row.style.borderLeftColor = CLS[e.label].color;
+    row.innerHTML =
+      "<div class='idx' title='select and go to start'>" + (k + 1) + "</div>" +
+      "<select class='cls' data-eid='" + e.id + "' data-f='label'>" + opts + "</select>" +
+      "<div class='tgrp ts'><span class='lbl'>start</span><input class='mono' data-eid='" + e.id + "' data-f='start' value='" + fmtT(e.start) + "'>" +
+        "<button class='small' data-ev='nudge' data-f='start' data-d='-0.1'>-0.1</button><button class='small' data-ev='nudge' data-f='start' data-d='0.1'>+0.1</button>" +
+        "<button class='small' data-ev='now' data-f='start' title='set start to current frame'>=now</button></div>" +
+      "<div class='tgrp te'><span class='lbl'>end</span><input class='mono' data-eid='" + e.id + "' data-f='end' value='" + fmtT(e.end) + "'>" +
+        "<button class='small' data-ev='nudge' data-f='end' data-d='-0.1'>-0.1</button><button class='small' data-ev='nudge' data-f='end' data-d='0.1'>+0.1</button>" +
+        "<button class='small' data-ev='now' data-f='end' title='set end to current frame'>=now</button>" +
+        "<button class='small' data-ev='enddur' title='end = video end'>=vid end</button></div>" +
+      "<div class='dur'>" + (e.end - e.start).toFixed(2) + " s</div>" +
+      "<input class='note' data-eid='" + e.id + "' data-f='note' placeholder='note (optional)' maxlength='2000'>" +
+      "<div class='acts'><button class='small' data-ev='gos'>go start</button><button class='small' data-ev='goe'>go end</button><button class='small' data-ev='del' title='Delete'>delete</button></div>";
+    row.querySelector("select").value = e.label;
+    row.querySelector(".note").value = e.note || "";
+    list.appendChild(row);
+  });
+  if (keep) {
+    const el = list.querySelector("[data-eid='" + keep[0] + "'][data-f='" + keep[1] + "']");
+    if (el) { el.focus(); if (el.setSelectionRange && el.type !== "select-one") { const n = el.value.length; try { el.setSelectionRange(n, n); } catch (e) {} } }
+  }
+  markLiveRows();
+}
+function markLiveRows() {
+  const t = video.currentTime;
+  document.querySelectorAll(".ev").forEach(r => {
+    const e = S.events.find(x => x.id == r.dataset.id);
+    r.classList.toggle("live", !!e && t >= e.start && t <= e.end);
+  });
+}
+function problems() {
+  const out = [];
+  const D = dur();
+  if (!name()) out.push({ sev: "wrn", msg: "Type your name (top right) so saves record who labeled." });
+  S.events.forEach(e => {
+    if (e.end > D + 1e-6) out.push({ sev: "err", msg: e.label + " at " + fmtT(e.start) + ": end " + fmtT(e.end) + " is past the video end " + D, ids: [e.id] });
+    if (e.start < 0) out.push({ sev: "err", msg: e.label + ": start below 0", ids: [e.id] });
+    if (e.end <= e.start) out.push({ sev: "err", msg: e.label + " at " + fmtT(e.start) + ": end is not after start", ids: [e.id] });
+    else if (e.end - e.start < 0.5) out.push({ sev: "wrn", msg: e.label + " at " + fmtT(e.start) + ": only " + (e.end - e.start).toFixed(2) + " s long (under 0.5 s)", ids: [e.id] });
+    if (e.label === "stopped_vehicle" && e.end - e.start < 10 && e.end > e.start) out.push({ sev: "wrn", msg: "stopped_vehicle at " + fmtT(e.start) + ": " + (e.end - e.start).toFixed(1) + " s, the class needs >= 10 s stationary", ids: [e.id] });
+  });
+  const by = {};
+  S.events.forEach(e => (by[e.label] = by[e.label] || []).push(e));
+  Object.keys(by).forEach(l => {
+    const ev = by[l].slice().sort((a, b) => a.start - b.start);
+    let cur = ev[0];
+    for (let i = 1; i < ev.length; i++) {
+      if (ev[i].start < cur.end) out.push({ sev: "err", msg: l + ": " + fmtT(cur.start) + "-" + fmtT(cur.end) + " overlaps " + fmtT(ev[i].start) + "-" + fmtT(ev[i].end) + " (same class must be ONE segment)", ids: [cur.id, ev[i].id], merge: true });
+      if (ev[i].end > cur.end) cur = ev[i];
+    }
+  });
+  (S.serverProblems || []).forEach(p => out.push({ sev: "err", msg: "server rejected save: " + p }));
+  return out;
+}
+function renderProblems() {
+  const p = problems();
+  const ul = $("problems"); ul.innerHTML = "";
+  const b = $("probBadge");
+  const nErr = p.filter(x => x.sev === "err").length;
+  b.textContent = p.length ? p.length : "OK";
+  b.className = "badge " + (nErr ? "bad" : p.length ? "" : "ok");
+  if (!p.length) { ul.innerHTML = "<li class='muted' style='cursor:default'>No problems found.</li>"; return; }
+  p.forEach(x => {
+    const li = document.createElement("li");
+    li.innerHTML = "<span class='sev " + x.sev + "'>" + (x.sev === "err" ? "ERROR" : "check") + "</span><span style='flex:1'>" + esc(x.msg) + "</span>";
+    if (x.merge) {
+      const mb = document.createElement("button"); mb.className = "small"; mb.textContent = "merge";
+      mb.onclick = ev => { ev.stopPropagation(); mergeEvents(x.ids); };
+      li.appendChild(mb);
+    }
+    if (x.ids) li.onclick = () => selectEvent(x.ids[0], true);
+    ul.appendChild(li);
+  });
+}
+function mergeEvents(ids) {
+  const evs = S.events.filter(e => ids.includes(e.id));
+  if (evs.length < 2) return;
+  commit(() => {
+    const keep = evs[0];
+    keep.start = Math.min(...evs.map(e => e.start)); keep.end = Math.max(...evs.map(e => e.end));
+    keep.note = evs.map(e => e.note).filter(Boolean).join(" | ");
+    S.events = S.events.filter(e => e === keep || !ids.includes(e.id));
+    S.selId = keep.id;
+  });
+  toast("Merged into one segment", "undo", undo);
+}
+function renderAll() { renderTabs(); renderEvents(); renderProblems(); renderMarks(); resizeCanvas(); }
+
+// ---------------------------------------------------------------- event actions
+function selectEvent(id, seek, toEnd) {
+  S.selId = id;
+  const e = S.events.find(x => x.id === id);
+  document.querySelectorAll(".ev").forEach(r => r.classList.toggle("sel", r.dataset.id == id));
+  if (e && seek) seekTo(toEnd ? Math.max(e.start, e.end - 0.001) : e.start + 0.001);
+  const row = document.querySelector(".ev[data-id='" + id + "']");
+  if (row) row.scrollIntoView({ block: "nearest" });
+  S.needDraw = true;
+}
+function updateEvent(id, f, val) {
+  const e = S.events.find(x => x.id === id); if (!e) return;
+  commit(() => { e[f] = val; });
+}
+function addEvent() {
+  if (!S.cls) { toast("Pick a class first (letter key or dropdown)"); $("classSelect").focus(); return; }
+  let s = S.markS, e = S.markE;
+  if (s == null) { toast("Set the start first (I)"); return; }
+  if (e == null) {
+    const t = nowSnap();
+    if (t > s) e = t; else { toast("Set the end (O) after the start"); return; }
+  }
+  if (e < s) [s, e] = [e, s];
+  if (e === s) { toast("Start and end are the same frame"); return; }
+  e = Math.min(e, dur());
+  const ev = mkEvent({ start: s, end: e, label: S.cls });
+  const clash = S.events.find(x => x.label === ev.label && ev.start < x.end && x.start < ev.end);
+  commit(() => { S.events.push(ev); S.selId = ev.id; S.markS = S.markE = null; });
+  renderMarks();
+  if (clash) toast("Overlaps another " + ev.label + " segment. Same class must be one segment", "merge", () => mergeEvents([clash.id, ev.id]), 7000);
+  else toast("Added " + ev.label + " " + fmtT(ev.start) + " to " + fmtT(ev.end), "undo", undo);
+}
+function deleteEvent(id) {
+  const e = S.events.find(x => x.id === id); if (!e) return;
+  commit(() => { S.events = S.events.filter(x => x.id !== id); if (S.selId === id) S.selId = null; });
+  toast("Deleted " + e.label + " " + fmtT(e.start) + " to " + fmtT(e.end), "undo", undo, 8000);
+}
+function stepSelected(dir) {
+  const ev = sortedEvents(); if (!ev.length) return;
+  let i = ev.findIndex(e => e.id === S.selId);
+  if (i < 0) { const t = video.currentTime; i = dir > 0 ? ev.findIndex(e => e.start > t + 0.01) : ev.map(e => e.start < t - 0.01).lastIndexOf(true); if (i < 0) i = dir > 0 ? 0 : ev.length - 1; }
+  else i = Math.max(0, Math.min(ev.length - 1, i + dir));
+  selectEvent(ev[i].id, true);
+}
+
+$("evList").addEventListener("click", ev => {
+  const row = ev.target.closest(".ev"); if (!row) return;
+  const id = Number(row.dataset.id);
+  const e = S.events.find(x => x.id === id); if (!e) return;
+  const b = ev.target.closest("button");
+  if (!b) {
+    if (ev.target.closest("input,select")) { S.selId = id; document.querySelectorAll(".ev").forEach(r => r.classList.toggle("sel", r.dataset.id == id)); S.needDraw = true; return; }
+    return selectEvent(id, true);
+  }
+  const a = b.dataset.ev, f = b.dataset.f;
+  S.selId = id;
+  if (a === "gos") return selectEvent(id, true);
+  if (a === "goe") return selectEvent(id, true, true);
+  if (a === "del") return deleteEvent(id);
+  if (a === "enddur") return updateEvent(id, "end", dur());
+  if (a === "now") return updateEvent(id, f, nowSnap());
+  if (a === "nudge") {
+    const v = r3(Math.max(0, Math.min(dur(), e[f] + Number(b.dataset.d))));
+    updateEvent(id, f, v);
+    if (video.paused) seekTo(f === "end" ? Math.max(v - 0.001, 0) : v + 0.001);
+  }
+});
+$("evList").addEventListener("change", ev => {
+  const el = ev.target; const id = Number(el.dataset.eid); const f = el.dataset.f;
+  if (!id || !f) return;
+  const e = S.events.find(x => x.id === id); if (!e) return;
+  if (f === "label") { updateEvent(id, "label", el.value); el.blur(); return; }
+  if (f === "note") { if ((e.note || "") !== el.value) updateEvent(id, "note", el.value); return; }
+  const t = parseTime(el.value);
+  if (t == null || isNaN(t) || t < 0) { toast("Not a time: " + el.value); el.value = fmtT(e[f]); return; }
+  const v = r3(Math.min(t, dur()));
+  if (v !== e[f]) updateEvent(id, f, v);
+});
+$("evList").addEventListener("keydown", ev => {
+  if (ev.key === "Enter" && ev.target.matches("input")) { ev.target.blur(); }
+});
+
+// ---------------------------------------------------------------- player
+function seekTo(t) {
+  t = Math.max(0, Math.min(t, (video.duration || dur()) - 0.001));
+  if (isFinite(t)) video.currentTime = t;
+  S.needDraw = true;
+}
+function stepFrame(d) {
+  if (!video.paused) video.pause();
+  const n = frameOf(video.currentTime) + d;
+  seekTo(Math.max(0, frameStart(n)) + 0.001);
+}
+function togglePlay() { if (video.paused) video.play().catch(() => {}); else video.pause(); }
+function setSpeed(s) {
+  video.playbackRate = s; LS.set("salen-label:speed", s);
+  document.querySelectorAll("#speeds button").forEach(b => b.classList.toggle("on", Number(b.dataset.s) === s));
+}
+function updateClock() {
+  const t = video.currentTime || 0;
+  const total = Math.floor(dur() * S.fpsExact);
+  $("clock").textContent = t.toFixed(2) + " s   " + fmtClock(t) + "   frame " + frameOf(t) + " / " + total;
+}
+video.addEventListener("play", () => { $("playBtn").textContent = "Pause"; });
+video.addEventListener("pause", () => { $("playBtn").textContent = "Play"; S.needDraw = true; });
+video.addEventListener("loadedmetadata", () => { $("vmsg").style.display = "none"; setSpeed(Number(LS.get("salen-label:speed") || 1)); S.needDraw = true; });
+// update the readout directly too, so it never depends on the repaint rate
+video.addEventListener("seeked", () => { S.needDraw = true; updateClock(); });
+video.addEventListener("timeupdate", updateClock);
+video.addEventListener("waiting", () => { $("vmsg").style.display = ""; $("vmsg").textContent = "buffering..."; });
+video.addEventListener("playing", () => { $("vmsg").style.display = "none"; });
+video.addEventListener("canplay", () => { $("vmsg").style.display = "none"; });
+video.addEventListener("error", () => { $("vmsg").style.display = ""; $("vmsg").textContent = "video failed to load, reload the page"; });
+video.addEventListener("click", togglePlay);
+
+function markStart() { S.markS = nowSnap(); renderMarks(); }
+function markEnd() { S.markE = nowSnap(); renderMarks(); }
+function onMarkInput(el, key) {
+  const t = parseTime(el.value);
+  if (t == null) { S[key] = null; renderMarks(); return; }
+  if (isNaN(t) || t < 0) { toast("Not a time: " + el.value); renderMarks(); return; }
+  S[key] = r3(Math.min(t, dur())); renderMarks();
+}
+$("markStart").addEventListener("change", e => onMarkInput(e.target, "markS"));
+$("markEnd").addEventListener("change", e => onMarkInput(e.target, "markE"));
+[$("markStart"), $("markEnd")].forEach(el => el.addEventListener("keydown", e => {
+  if (e.key === "Enter") { e.preventDefault(); el.dispatchEvent(new Event("change")); el.blur(); }
+}));
+$("classSelect").addEventListener("change", e => { setClass(e.target.value); e.target.blur(); });
+$("sortSel").addEventListener("change", e => { S.sort = e.target.value; renderEvents(); e.target.blur(); });
+$("nameInput").addEventListener("input", e => {
+  LS.set("salen-label:name", e.target.value.trim());
+  e.target.classList.toggle("missing", !e.target.value.trim());
+  renderProblems();
+});
+$("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") e.target.blur(); });
+
+// ---------------------------------------------------------------- buttons
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("button[data-act]"); if (!b) return;
+  const a = b.dataset.act, d = Number(b.dataset.d);
+  const acts = {
+    seek: () => seekTo(video.currentTime + d), frame: () => stepFrame(d), play: togglePlay,
+    zoom: () => zoom(d > 0 ? 0.5 : 2), zoomfit: () => { S.view = { start: 0, span: dur() }; S.needDraw = true; },
+    markStart, markEnd, markEndDur: () => { S.markE = dur(); renderMarks(); },
+    goMarkStart: () => S.markS != null && seekTo(S.markS + 0.001), goMarkEnd: () => S.markE != null && seekTo(S.markE - 0.001),
+    clearMarks: () => { S.markS = S.markE = null; renderMarks(); }, add: addEvent, undo, redo,
+  };
+  if (acts[a]) acts[a]();
+});
+// buttons must not keep focus, otherwise Space/Enter would also "click" them
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("button");
+  if (b && !b.closest(".modal")) setTimeout(() => b.blur(), 0);
+});
+
+// ---------------------------------------------------------------- keyboard
+function typing(el) {
+  if (!el) return false;
+  const t = el.tagName;
+  return t === "TEXTAREA" || t === "SELECT" || el.isContentEditable || (t === "INPUT" && !["button", "checkbox", "radio", "range"].includes(el.type));
+}
+document.addEventListener("keydown", e => {
+  if (modalOpen()) return;
+  if (typing(e.target)) { if (e.key === "Escape") e.target.blur(); return; }
+  const k = e.key;
+  if ((e.ctrlKey || e.metaKey) && !e.altKey) {
+    if (k.toLowerCase() === "z") { e.preventDefault(); if (e.shiftKey) redo(); else undo(); }
+    else if (k.toLowerCase() === "y") { e.preventDefault(); redo(); }
+    return;
+  }
+  if (e.altKey) return;
+  let handled = true;
+  switch (k) {
+    case " ": togglePlay(); break;
+    case "ArrowLeft": seekTo(video.currentTime - (e.shiftKey ? 5 : 1)); break;
+    case "ArrowRight": seekTo(video.currentTime + (e.shiftKey ? 5 : 1)); break;
+    case ",": case "<": stepFrame(-1); break;
+    case ".": case ">": stepFrame(1); break;
+    case "1": case "2": case "3": case "4": case "5": setSpeed(SPEEDS[Number(k) - 1]); break;
+    case "Enter": addEvent(); break;
+    case "Escape": S.markS = S.markE = null; S.selId = null; renderMarks(); renderEvents(); break;
+    case "Delete": case "Backspace": if (S.selId) deleteEvent(S.selId); else handled = false; break;
+    case "[": stepSelected(-1); break;
+    case "]": stepSelected(1); break;
+    case "=": case "+": zoom(0.5); break;
+    case "-": case "_": zoom(2); break;
+    case "0": S.view = { start: 0, span: dur() }; S.needDraw = true; break;
+    default: handled = false;
+  }
+  if (!handled && k.length === 1) {
+    const lk = k.toLowerCase();
+    handled = true;
+    if (lk === "i") { if (e.shiftKey) { if (S.markS != null) seekTo(S.markS + 0.001); } else markStart(); }
+    else if (lk === "o") { if (e.shiftKey) { if (S.markE != null) seekTo(S.markE - 0.001); } else markEnd(); }
+    else if (lk === "e") { S.markE = dur(); renderMarks(); }
+    else if (lk === "h") { $("help").open = !$("help").open; }
+    else if (KEY2CLS[lk]) setClass(KEY2CLS[lk]);
+    else handled = false;
+  }
+  if (handled) e.preventDefault();
+});
+
+// ---------------------------------------------------------------- timeline
+const cv = $("timeline"), ctx = cv.getContext("2d");
+const GUTTER = 118, AXIS_H = 20, ROW_H = 18, SIG_H = 10, OV_H = 6;
+let layout = { rows: [], w: 0, h: 0 };
+function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function rowClasses() {
+  const set = new Set(S.events.map(e => e.label));
+  if (S.cls && (S.markS != null || S.markE != null)) set.add(S.cls);
+  return CLASSES.map(c => c[0]).filter(c => set.has(c));
+}
+function resizeCanvas() {
+  const rows = rowClasses();
+  const h = OV_H + AXIS_H + Math.max(1, rows.length) * ROW_H + (S.signal ? SIG_H + 4 : 0) + 4;
+  const w = cv.parentElement.clientWidth;
+  const dpr = window.devicePixelRatio || 1;
+  cv.style.height = h + "px";
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  layout = { rows, w, h };
+  S.needDraw = true;
+}
+function clampView() {
+  const D = dur() || 1;
+  S.view.span = Math.max(2, Math.min(D, S.view.span || D));
+  S.view.start = Math.max(0, Math.min(D - S.view.span, S.view.start));
+}
+function zoom(f, anchorT) {
+  const t = anchorT != null ? anchorT : video.currentTime;
+  const frac = S.view.span ? (t - S.view.start) / S.view.span : 0.5;
+  S.view.span = S.view.span * f;
+  clampView();
+  S.view.start = t - frac * S.view.span;
+  clampView();
+  S.needDraw = true;
+}
+function tx(t) { return GUTTER + (t - S.view.start) / S.view.span * (layout.w - GUTTER - 6); }
+function xt(x) { return S.view.start + (x - GUTTER) / (layout.w - GUTTER - 6) * S.view.span; }
+function draw() {
+  const { w, h, rows } = layout;
+  if (!w) return;
+  clampView();
+  const text = css("--text"), muted = css("--muted"), track = css("--track"), axis = css("--axis"), panel = css("--panel"), accent = css("--accent");
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = panel; ctx.fillRect(0, 0, w, h);
+  const D = dur() || 1;
+  // overview bar (where the zoomed window is)
+  ctx.fillStyle = track; ctx.fillRect(GUTTER, 1, w - GUTTER - 6, OV_H - 2);
+  if (S.view.span < D - 0.01) {
+    ctx.fillStyle = accent;
+    const x0 = GUTTER + S.view.start / D * (w - GUTTER - 6), x1 = GUTTER + (S.view.start + S.view.span) / D * (w - GUTTER - 6);
+    ctx.fillRect(x0, 1, Math.max(3, x1 - x0), OV_H - 2);
+  }
+  // axis
+  const y0 = OV_H;
+  const pxPerS = (w - GUTTER - 6) / S.view.span;
+  const steps = [0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, 60, 120];
+  const step = steps.find(s => s * pxPerS >= 70) || 300;
+  ctx.font = "11px ui-monospace, Menlo, monospace"; ctx.textBaseline = "middle";
+  ctx.strokeStyle = axis; ctx.fillStyle = muted; ctx.lineWidth = 1;
+  const first = Math.ceil(S.view.start / step) * step;
+  for (let t = first; t <= S.view.start + S.view.span + 1e-9; t += step) {
+    const x = Math.round(tx(t)) + 0.5;
+    ctx.globalAlpha = 0.35; ctx.beginPath(); ctx.moveTo(x, y0 + AXIS_H - 4); ctx.lineTo(x, h); ctx.stroke(); ctx.globalAlpha = 1;
+    const lab = step < 1 ? t.toFixed(1) : (t >= 60 ? fmtClock(t).replace(/\.00$/, "") : String(Math.round(t)));
+    ctx.fillText(lab, x + 3, y0 + AXIS_H / 2);
+  }
+  ctx.fillStyle = muted; ctx.fillText(S.view.span < D - 0.01 ? "zoomed" : "full video", 6, y0 + AXIS_H / 2);
+  // rows
+  const clip = () => { ctx.save(); ctx.beginPath(); ctx.rect(GUTTER, 0, w - GUTTER, h); ctx.clip(); };
+  let y = y0 + AXIS_H;
+  layout.rowY = {};
+  if (!rows.length) {
+    ctx.fillStyle = muted; ctx.fillText("no events yet", GUTTER + 6, y + ROW_H / 2);
+  }
+  rows.forEach(c => {
+    layout.rowY[c] = y;
+    ctx.fillStyle = track; ctx.fillRect(GUTTER, y + 2, w - GUTTER - 6, ROW_H - 4);
+    ctx.fillStyle = CLS[c].color; ctx.fillRect(4, y + 5, 8, ROW_H - 10);
+    ctx.fillStyle = text; ctx.fillText(c, 16, y + ROW_H / 2);
+    clip();
+    S.events.filter(e => e.label === c).forEach(e => {
+      const x0 = tx(e.start), x1 = Math.max(tx(e.end), x0 + 2);
+      ctx.fillStyle = CLS[c].color; ctx.fillRect(x0, y + 2, x1 - x0, ROW_H - 4);
+      if (e.id === S.selId) { ctx.strokeStyle = text; ctx.lineWidth = 2; ctx.strokeRect(x0 + 1, y + 2, x1 - x0 - 2, ROW_H - 4); ctx.lineWidth = 1; }
+    });
+    if (c === S.cls && S.markS != null) {
+      const endT = S.markE != null ? S.markE : Math.max(S.markS, video.currentTime);
+      const a = Math.min(S.markS, endT), b = Math.max(S.markS, endT);
+      ctx.setLineDash([4, 3]); ctx.strokeStyle = CLS[c].color; ctx.lineWidth = 2;
+      ctx.strokeRect(tx(a), y + 3, Math.max(2, tx(b) - tx(a)), ROW_H - 6);
+      ctx.setLineDash([]); ctx.lineWidth = 1;
+    }
+    ctx.restore();
+    y += ROW_H;
+  });
+  if (!rows.length) y += ROW_H;
+  // pending marks without class row: show as flags on axis
+  clip();
+  [[S.markS, "I"], [S.markE, "O"]].forEach(([t, l]) => {
+    if (t == null) return;
+    const x = tx(t);
+    ctx.fillStyle = accent; ctx.fillRect(x - 1, y0, 2, AXIS_H - 2);
+    ctx.fillText(l, x + 3, y0 + 5);
+  });
+  ctx.restore();
+  // signal strip
+  if (S.signal) {
+    y += 2;
+    ctx.fillStyle = muted; ctx.fillText("signal " + S.signal.light, 16, y + SIG_H / 2);
+    clip();
+    ctx.fillStyle = track; ctx.fillRect(GUTTER, y, w - GUTTER - 6, SIG_H);
+    S.signal.phases.forEach(p => {
+      ctx.fillStyle = SIG_COL[p.state] || SIG_COL.unclear;
+      const x0 = tx(p.start), x1 = tx(p.end + 0.1);
+      ctx.fillRect(x0, y, Math.max(1, x1 - x0), SIG_H);
+    });
+    ctx.restore();
+  }
+  // playhead
+  const px = tx(video.currentTime || 0);
+  if (px >= GUTTER - 1 && px <= w) {
+    ctx.fillStyle = css("--playhead"); ctx.fillRect(Math.round(px) - 1, y0, 2, h - y0);
+  }
+  const zoomTxt = S.view.span < D - 0.01 ? "showing " + fmtT(S.view.start) + " to " + fmtT(S.view.start + S.view.span) + " s" : "";
+  $("tlInfo").textContent = zoomTxt;
+}
+let drag = null;
+cv.addEventListener("pointerdown", e => {
+  const r = cv.getBoundingClientRect(); const x = e.clientX - r.left, y = e.clientY - r.top;
+  if (x < GUTTER) return;
+  const t = xt(x);
+  let hit = null;
+  for (const c of layout.rows) {
+    const ry = layout.rowY && layout.rowY[c];
+    if (ry != null && y >= ry && y < ry + ROW_H) {
+      hit = S.events.filter(ev => ev.label === c).find(ev => t >= ev.start - 2 / ((layout.w - GUTTER) / S.view.span) && t <= ev.end + 2 / ((layout.w - GUTTER) / S.view.span));
+    }
+  }
+  if (hit) selectEvent(hit.id, false);
+  seekTo(t);
+  drag = { id: e.pointerId }; cv.setPointerCapture(e.pointerId);
+});
+cv.addEventListener("pointermove", e => {
+  if (!drag) return;
+  const r = cv.getBoundingClientRect();
+  seekTo(xt(Math.max(GUTTER, e.clientX - r.left)));
+});
+cv.addEventListener("pointerup", () => { drag = null; });
+cv.addEventListener("pointercancel", () => { drag = null; });
+cv.addEventListener("wheel", e => {
+  const r = cv.getBoundingClientRect(); const x = e.clientX - r.left;
+  e.preventDefault();
+  if (Math.abs(e.deltaX) > Math.abs(e.deltaY) || e.shiftKey) {
+    const d = (e.shiftKey && !e.deltaX) ? e.deltaY : e.deltaX;
+    S.view.start += d / ((layout.w - GUTTER) / S.view.span); clampView(); S.needDraw = true;
+  } else {
+    zoom(e.deltaY < 0 ? 0.8 : 1.25, x > GUTTER ? xt(x) : video.currentTime);
+  }
+}, { passive: false });
+window.addEventListener("resize", resizeCanvas);
+
+let lastT = -1, lastLive = 0;
+function loop(ts) {
+  const t = video.currentTime;
+  if (t !== lastT || S.needDraw) {
+    // keep the playhead inside the zoomed window while playing
+    if (!video.paused && S.view.span < dur() - 0.01 && (t > S.view.start + S.view.span || t < S.view.start)) { S.view.start = t - S.view.span * 0.1; clampView(); }
+    if (layout.rows.join() !== rowClasses().join()) resizeCanvas();
+    draw(); updateClock();
+    if (ts - lastLive > 250) { markLiveRows(); lastLive = ts; }
+    lastT = t; S.needDraw = false;
+  }
+  requestAnimationFrame(loop);
+}
+
+// ---------------------------------------------------------------- init
+function renderKeys() {
+  const K = [
+    ["Space", "play / pause"], ["Left / Right", "seek -1 s / +1 s"], ["Shift+Left / Right", "seek -5 s / +5 s"],
+    [", / .", "one frame back / forward"], ["1 2 3 4 5", "speed 0.25 / 0.5 / 1 / 2 / 4"],
+    ["I", "start = current frame"], ["O", "end = current frame"], ["E", "end = video end"],
+    ["Shift+I / Shift+O", "go to marked start / end"], ["Enter", "add event (end = now if O not set)"],
+    ["Esc", "clear marks and selection"], ["[ / ]", "previous / next event (seeks to start)"],
+    ["Delete", "delete selected event"], ["Ctrl/Cmd+Z", "undo (Shift for redo)"],
+    ["= / - / 0", "timeline zoom in / out / fit"], ["H", "show / hide this help"],
+  ];
+  CLASSES.forEach(c => K.push([c[1].toUpperCase(), c[0]]));
+  $("keyList").innerHTML = K.map(([k, d]) => "<div><kbd>" + esc(k) + "</kbd> " + esc(d) + "</div>").join("");
+}
+async function init() {
+  renderKeys(); renderClassUI(); setClass(null);
+  const sp = $("speeds");
+  SPEEDS.forEach((s, i) => {
+    const b = document.createElement("button"); b.className = "small"; b.dataset.s = s; b.title = "key " + (i + 1);
+    b.textContent = s + "x"; b.onclick = () => { setSpeed(s); b.blur(); }; sp.appendChild(b);
+  });
+  $("nameInput").value = LS.get("salen-label:name") || "";
+  $("nameInput").classList.toggle("missing", !name());
+  $("exportLink").href = "/api/export?download=1&t=" + encodeURIComponent(TOKEN);
+  let seen = null; try { seen = localStorage.getItem("salen-label:helpSeen"); localStorage.setItem("salen-label:helpSeen", "1"); } catch (e) {}
+  if (!seen) $("help").open = true;
+  resizeCanvas(); requestAnimationFrame(loop);
+  for (let attempt = 0; ; attempt++) {
+    try { await loadVideoList(); break; }
+    catch (e) { setStatus("bad", "OFFLINE, retrying"); await new Promise(r => setTimeout(r, Math.min(2000 * (attempt + 1), 10000))); }
+  }
+  const want = decodeURIComponent(location.hash.slice(1)) || (() => { try { return localStorage.getItem("salen-label:lastVideo"); } catch (e) { return null; } })();
+  const pick = S.videos.find(v => v.name === want) || S.videos.find(v => v.assigned_to.toLowerCase() === name().toLowerCase()) || S.videos[0];
+  await openVideo(pick.name, true);
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+{
+ "version": "v4",
+ "schema": "<STEM>_<HEAD>_samples_v4.csv\n  frame        video frame index (0-based, the video's own frames)\n  t_sec        frame / (30000/1001)\n  state        red | red_amber | amber | green | green_blink | dark | unknown\n               (pedestrian heads use red | green | green_blink | dark | unknown)\n  observation  observed | occluded | low_confidence\n  confidence   0..1 = min(1, margin_sd / 2); 0 for occluded samples\n  margin_sd    min over lamps of |lamp score - lamp threshold| / pooled within-\n               cluster SD of that lamp (how far the weakest lamp decision is\n               from its threshold)\n  reason       why a sample is not \"observed\": occluded | unclear_lamp_combination\n               | lamp_near_threshold | short_unsupported_run | dark_inside_green\n  v3_label     the v3 per-sample label, unchanged\n  <lamp>_on    per-lamp decision (1 = above the published v3 threshold)\n  <lamp>_z     signed distance of the lamp score from its threshold in pooled SD\n               (lamp decisions under occlusion are not trustworthy)\nRules, in order:\n  1. v3 \"occluded\" -> state unknown, observation occluded.\n     v3 \"unclear\" (an impossible lamp combination) -> unknown, low_confidence.\n  2. margin_sd < 1 (a lamp within one pooled SD of its threshold) -> keep the\n     state guess, observation low_confidence.\n  3. A run of one state family (green and green_flash count as one family)\n     shorter than MIN_RUN_S that is not next to a run of at least MIN_RUN_S of\n     the same family (looking across at most MAX_BRIDGE_FRAMES of non-observed\n     samples) and does not directly (no sample in between) follow or precede a\n     long run through a legal state change (e.g. the last 0.8 s of a clip that\n     ends in red_amber right after red) -> low_confidence. This removes flicker\n     and misreads next to an occlusion (e.g. two \"amber\" runs of 0.3 and 0.6 s inside the C3896 green\n     at 125 to 127 s while a green bus covers the head).\n  4. Blinking green: inside a green-family run, v3 \"green_flash\" samples in the\n     last BLINK_TAIL_S of the run mark the blink; from the first of them to the\n     end of the run every sample is green_blink (lit and dark halves alike).\n     A v3 \"green_flash\" sample outside such a tail -> dark, low_confidence.\n\nInterval file <STEM>_<HEAD>_intervals_v4.csv (half-open [start_frame, end_frame))\n  start_frame, end_frame, start_t, end_t, duration_s, state, n_samples,\n  n_observed, n_imputed, n_unobserved, imputed, start_uncertainty_frames\nSample k stands for frames [frame_k, frame_{k+1}); the last sample stands for\n[frame_last, n_frames). The intervals therefore tile [0, n_frames) exactly, no\ngaps, no overlaps. Construction:\n  * consecutive observed samples with the same state form an interval;\n  * a run of non-observed samples (occluded or low_confidence) of at most\n    MAX_BRIDGE_FRAMES frames (1 s) whose observed neighbours on BOTH sides have\n    the same state is bridged: it takes that state, n_imputed counts it and\n    imputed = true;\n  * any other non-observed run (longer than 1 s, at a state change, or at the\n    start / end of the video) is its own interval with state \"unknown\".\n    Nothing is forward-filled through it.\nBoundary uncertainty (column start_uncertainty_frames): the change INTO an\ninterval's state happened in [start_frame - start_uncertainty_frames,\nstart_frame]. Between two known states this is one sample (3 frames, 0.1 s):\nthe change happened between the last sample of one interval and the first\nsample of the next. After an \"unknown\" interval it is that interval's length\nplus one sample (the state may have begun anywhere inside the unknown\nstretch). 0 for the interval starting at frame 0. The end of an interval is the\nstart of the next one, with the next one's uncertainty. The green_blink start\nis the first dark sample seen in the tail of green; if that dark half-period\nwas occluded the blink began up to ~0.5 s earlier.\n\n\"coverage\" in timeline_v4.json is the share of the video with a known state.\nIt is NOT accuracy: no human-verified label exists yet (reports/eda/spotcheck).",
+ "time_base": "t = frame / (30000/1001); frames are the video's own 0-based frame indices",
+ "sampling": "every 3rd frame (0.1 s)",
+ "params": {
+  "max_bridge_frames": 30,
+  "min_run_s": 1.0,
+  "blink_tail_s": 5.0,
+  "low_margin_sd": 1.0
+ },
+ "status": "PROVISIONAL: coverage only, no human-verified labels yet (reports/eda/spotcheck is unfilled)",
+ "v3_phase_gap_defect": {
+  "D": {
+   "gaps": 62,
+   "total_s": 6.21
+  },
+  "A": {
+   "gaps": 29,
+   "total_s": 2.91
+  }
+ },
+ "videos": {
+  "C3905": {
+   "n_frames": 3825,
+   "duration_s": 127.627,
+   "heads": {
+    "D": {
+     "kind": "vehicle",
+     "lamps": 3,
+     "sample_step_frames": 3,
+     "samples": 1275,
+     "observation_counts": {
+      "observed": 1260,
+      "occluded": 15
+     },
+     "low_confidence_reasons": {},
+     "intervals": 8,
+     "coverage_known_state": 1.0,
+     "unknown_total_s": 0.0,
+     "unknown_intervals_over_1s": [],
+     "imputed_intervals": 2,
+     "imputed_samples": 15,
+     "time_share_by_state": {
+      "amber": 0.0235,
+      "green": 0.3765,
+      "green_blink": 0.0235,
+      "red": 0.5294,
+      "red_amber": 0.0471
+     }
+    },
+    "A": {
+     "kind": "pedestrian",
+     "lamps": 2,
+     "sample_step_frames": 3,
+     "samples": 1275,
+     "observation_counts": {
+      "observed": 1274,
+      "low_confidence": 1
+     },
+     "low_confidence_reasons": {
+      "lamp_near_threshold": 1
+     },
+     "intervals": 6,
+     "coverage_known_state": 0.9992,
+     "unknown_total_s": 0.1,
+     "unknown_intervals_over_1s": [],
+     "imputed_intervals": 0,
+     "imputed_samples": 0,
+     "time_share_by_state": {
+      "green": 0.3529,
+      "green_blink": 0.0227,
+      "red": 0.6235,
+      "unknown": 0.0008
+     }
+    }
+   }
+  },
+  "C3896": {
+   "n_frames": 10200,
+   "duration_s": 340.34,
+   "heads": {
+    "D": {
+     "kind": "vehicle",
+     "lamps": 3,
+     "sample_step_frames": 3,
+     "samples": 3400,
+     "observation_counts": {
+      "observed": 3140,
+      "low_confidence": 153,
+      "occluded": 107
+     },
+     "low_confidence_reasons": {
+      "lamp_near_threshold": 73,
+      "short_unsupported_run": 49,
+      "unclear_lamp_combination": 31
+     },
+     "intervals": 39,
+     "coverage_known_state": 0.9409,
+     "unknown_total_s": 20.12,
+     "unknown_intervals_over_1s": [
+      [
+       2976,
+       3060
+      ],
+      [
+       3666,
+       3828
+      ],
+      [
+       5442,
+       5580
+      ],
+      [
+       5667,
+       5769
+      ],
+      [
+       9765,
+       9810
+      ]
+     ],
+     "imputed_intervals": 20,
+     "imputed_samples": 59,
+     "time_share_by_state": {
+      "amber": 0.035,
+      "green": 0.3868,
+      "green_blink": 0.0303,
+      "red": 0.4585,
+      "red_amber": 0.0303,
+      "unknown": 0.0591
+     }
+    },
+    "A": {
+     "kind": "pedestrian",
+     "lamps": 2,
+     "sample_step_frames": 3,
+     "samples": 3400,
+     "observation_counts": {
+      "observed": 3399,
+      "occluded": 1
+     },
+     "low_confidence_reasons": {},
+     "intervals": 15,
+     "coverage_known_state": 0.9997,
+     "unknown_total_s": 0.1,
+     "unknown_intervals_over_1s": [],
+     "imputed_intervals": 0,
+     "imputed_samples": 0,
+     "time_share_by_state": {
+      "green": 0.3912,
+      "green_blink": 0.0353,
+      "red": 0.5732,
+      "unknown": 0.0003
+     }
+    }
+   }
+  },
+  "C3897": {
+   "n_frames": 9525,
+   "duration_s": 317.817,
+   "heads": {
+    "D": {
+     "kind": "vehicle",
+     "lamps": 3,
+     "sample_step_frames": 3,
+     "samples": 3175,
+     "observation_counts": {
+      "observed": 3121,
+      "low_confidence": 35,
+      "occluded": 19
+     },
+     "low_confidence_reasons": {
+      "lamp_near_threshold": 29,
+      "short_unsupported_run": 6
+     },
+     "intervals": 30,
+     "coverage_known_state": 0.9943,
+     "unknown_total_s": 1.8,
+     "unknown_intervals_over_1s": [],
+     "imputed_intervals": 10,
+     "imputed_samples": 36,
+     "time_share_by_state": {
+      "amber": 0.0375,
+      "green": 0.4154,
+      "green_blink": 0.0378,
+      "red": 0.4674,
+      "red_amber": 0.0362,
+      "unknown": 0.0057
+     }
+    },
+    "A": {
+     "kind": "pedestrian",
+     "lamps": 2,
+     "sample_step_frames": 3,
+     "samples": 3175,
+     "observation_counts": {
+      "observed": 3175
+     },
+     "low_confidence_reasons": {},
+     "intervals": 13,
+     "coverage_known_state": 1.0,
+     "unknown_total_s": 0.0,
+     "unknown_intervals_over_1s": [],
+     "imputed_intervals": 0,
+     "imputed_samples": 0,
+     "time_share_by_state": {
+      "green": 0.3773,
+      "green_blink": 0.0381,
+      "red": 0.5846
+     }
+    }
+   }
+  },
+  "C3902": {
+   "n_frames": 9525,
+   "duration_s": 317.817,
+   "heads": {
+    "D": {
+     "kind": "vehicle",
+     "lamps": 3,
+     "sample_step_frames": 3,
+     "samples": 3175,
+     "observation_counts": {
+      "observed": 3026,
+      "occluded": 142,
+      "low_confidence": 7
+     },
+     "low_confidence_reasons": {
+      "short_unsupported_run": 7
+     },
+     "intervals": 22,
+     "coverage_known_state": 0.9591,
+     "unknown_total_s": 13.01,
+     "unknown_intervals_over_1s": [
+      [
+       3441,
+       3510
+      ],
+      [
+       6729,
+       7047
+      ]
+     ],
+     "imputed_intervals": 4,
+     "imputed_samples": 19,
+     "time_share_by_state": {
+      "amber": 0.0365,
+      "green": 0.4167,
+      "green_blink": 0.0283,
+      "red": 0.4476,
+      "red_amber": 0.0299,
+      "unknown": 0.0409
+     }
+    },
+    "A": {
+     "kind": "pedestrian",
+     "lamps": 2,
+     "sample_step_frames": 3,
+     "samples": 3175,
+     "observation_counts": {
+      "observed": 3173,
+      "low_confidence": 2
+     },
+     "low_confidence_reasons": {
+      "unclear_lamp_combination": 1,
+      "lamp_near_threshold": 1
+     },
+     "intervals": 14,
+     "coverage_known_state": 0.9997,
+     "unknown_total_s": 0.1,
+     "unknown_intervals_over_1s": [],
+     "imputed_intervals": 1,
+     "imputed_samples": 1,
+     "time_share_by_state": {
+      "green": 0.4025,
+      "green_blink": 0.0378,
+      "red": 0.5594,
+      "unknown": 0.0003
+     }
+    }
+   }
+  }
+ }
+}

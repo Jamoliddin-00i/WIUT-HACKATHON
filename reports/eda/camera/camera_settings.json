@@ -1,0 +1,89 @@
+{
+ "source": "Sony rtmd per-frame metadata via exiftool -api LargeFileSupport=1 -ee -G3 -n; camera clock time zone is +06:00 as recorded (Tashkent is UTC+5), so wall-clock times may be off by one hour",
+ "videos": {
+  "C3896": {
+   "camera": "Sony ILCE-6700",
+   "recording_start_camera_clock": "2026:09:18 12:18:24+06:00",
+   "codec": "AVC140_3840_2160_H422P@L51",
+   "frames": 10200,
+   "f_number": 18.0,
+   "shutter_s": "1/64",
+   "iso": 100,
+   "gain_db": 0,
+   "white_balance_raw": 33,
+   "settings_constant_over_clip": true,
+   "gamma_primaries": "rec709",
+   "mean_luma_first_last_10s": [
+    95.6,
+    95.9
+   ],
+   "static_pixel_luma_min_max_1s": [
+    97.0,
+    108.2
+   ]
+  },
+  "C3897": {
+   "camera": "Sony ILCE-6700",
+   "recording_start_camera_clock": "2026:09:18 12:24:47+06:00",
+   "codec": "AVC140_3840_2160_H422P@L51",
+   "frames": 9525,
+   "f_number": 18.0,
+   "shutter_s": "1/64",
+   "iso": 100,
+   "gain_db": 0,
+   "white_balance_raw": 33,
+   "settings_constant_over_clip": true,
+   "gamma_primaries": "rec709",
+   "mean_luma_first_last_10s": [
+    94.8,
+    95.1
+   ],
+   "static_pixel_luma_min_max_1s": [
+    96.8,
+    103.9
+   ]
+  },
+  "C3902": {
+   "camera": "Sony ILCE-6700",
+   "recording_start_camera_clock": "2026:09:18 17:58:18+06:00",
+   "codec": "AVC140_3840_2160_H422P@L51",
+   "frames": 9525,
+   "f_number": 5.0,
+   "shutter_s": "1/64",
+   "iso": 100,
+   "gain_db": 0,
+   "white_balance_raw": 33,
+   "settings_constant_over_clip": true,
+   "gamma_primaries": "rec709",
+   "mean_luma_first_last_10s": [
+    69.2,
+    58.3
+   ],
+   "static_pixel_luma_min_max_1s": [
+    51.4,
+    65.9
+   ]
+  },
+  "C3905": {
+   "camera": "Sony ILCE-6700",
+   "recording_start_camera_clock": "2026:09:18 18:22:21+06:00",
+   "codec": "AVC140_3840_2160_H422P@L51",
+   "frames": 3825,
+   "f_number": 5.6,
+   "shutter_s": "1/64",
+   "iso": 250,
+   "gain_db": 8,
+   "white_balance_raw": 33,
+   "settings_constant_over_clip": true,
+   "gamma_primaries": "rec709",
+   "mean_luma_first_last_10s": [
+    38.7,
+    35.9
+   ],
+   "static_pixel_luma_min_max_1s": [
+    28.4,
+    41.1
+   ]
+  }
+ }
+}
